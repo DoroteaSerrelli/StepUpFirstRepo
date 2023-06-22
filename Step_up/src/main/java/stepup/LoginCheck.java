@@ -44,6 +44,7 @@ public class LoginCheck extends HttpServlet {
 		List<String> errors = new ArrayList<>();	//elenco degli errori riscontrati
 		RequestDispatcher dispatcherToLoginPage = request.getRequestDispatcher("Login.jsp");
 		
+		
 		//Errori di compilazione del form per il login
 		if(user == null || user.trim().isEmpty()) {
 			errors.add("Il campo username non può essere vuoto!");

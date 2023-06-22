@@ -12,10 +12,11 @@
 <link type="text/css" rel="stylesheet" href="Login.css">
 
 </head>
+
 <body>
+
 	<h1>Step up</h1>
-	<% 
-List<String> errors = (List<String>) request.getAttribute("errors");
+	<% List<String> errors = (List<String>) request.getAttribute("errors");
 if (errors != null){
 	for (String error: errors){ %>
 		<%=error %> <br>		
@@ -23,7 +24,6 @@ if (errors != null){
 	}
 }
 %>
-
 	<form name="login" method="post" action="LoginCheck">
 		<h2>Login</h2>
 		<p>Accedi a tutti i tuoi acquisti e servizi presso Step up</p>
