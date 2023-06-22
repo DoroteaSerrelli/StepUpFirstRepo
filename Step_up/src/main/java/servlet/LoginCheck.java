@@ -1,4 +1,4 @@
-package stepup;
+package servlet;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +58,8 @@ public class LoginCheck extends HttpServlet {
         	return;
         }
 		
-		//Verifica corrispondenza credenziali inserite con credenziali memorizzate nel database
+		
+		/*//Verifica corrispondenza credenziali inserite con credenziali memorizzate nel database
 		if(user.equals("admin") && pwd.equals("mypass")){ //admin
 			request.getSession().setAttribute("isAdmin", Boolean.TRUE); //inserisco il token nella sessione
 			response.sendRedirect("admin/protected.jsp");
@@ -70,6 +71,7 @@ public class LoginCheck extends HttpServlet {
 			request.setAttribute("errors", errors);
 			dispatcherToLoginPage.forward(request, response);
 		}
+		*/
 	}
 
 }

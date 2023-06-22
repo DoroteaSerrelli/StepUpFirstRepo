@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link type = "text/css" rel = "stylesheet" href = "Footer.css">
+<link type = "text/css" rel = "stylesheet" href = "../style/Footer.css">
 </head>
 <body>
 
