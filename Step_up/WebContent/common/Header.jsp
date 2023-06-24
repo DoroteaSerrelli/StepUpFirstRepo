@@ -8,8 +8,16 @@
 <link type = "text/css" rel = "stylesheet" href = "../style/Header.css">
 </head>
 <body>
-<p>
-<img class = "logo" src = "../images/Logo.png"/>
-</p>
+<h1><img src = "../images/Logo.png"/></h1>
+<nav>
+	<ul>
+		<li><a href = "Sport.jsp">SPORT</a></li>
+		<li><a href = "Brand.jsp">BRAND</a></li>
+		<li><a href = "Scarpe.jsp">SCARPE</a></li>
+		<li><a href = "Moda.jsp">MODA</a></li>
+		<li><a href = "Accessori.jsp">ACCESSORI</a></li>
+		<li><a href = "Integratori.jsp">INTEGRATORI</a></li>
+	</ul>
+</nav>
 </body>
 </html>

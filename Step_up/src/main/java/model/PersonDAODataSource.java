@@ -12,10 +12,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import model.PersonBean;
 import model.PersonDAODataSource;
 
-public class PersonDAODataSource implements IBeanDAO<PersonBean>{
+public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 	private static DataSource ds;
 
 	static {
@@ -33,26 +32,28 @@ public class PersonDAODataSource implements IBeanDAO<PersonBean>{
 	private static final String TABLE_NAME = "user_account";
 	
 	@Override
-	public synchronized void doSave(PersonBean user_account) throws SQLException {
+	public synchronized void doSave(PersonDTO user_account) throws SQLException {
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		String insertSQL = "INSERT INTO " + PersonDAODataSource.TABLE_NAME
-				+ " (USERNAME, USERPASSWORD, NOME, COGNOME, EMAIL, TELEFONO, SESSO) VALUES (?, ?, ?, ?, ?, ?, ?);";
+				+ " (USERNAME, USERPASSWORD) VALUES (?, ?);";
 
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, user_account.getUsername());
 			preparedStatement.setString(2, user_account.getUserPassword());
-			preparedStatement.setString(3, user_account.getNome());
+			/*preparedStatement.setString(3, user_account.getNome());
 			preparedStatement.setString(4, user_account.getCognome());
 			preparedStatement.setString(5, user_account.getEmail());
 			preparedStatement.setString(6, user_account.getTelefono());
-			preparedStatement.setString(7, user_account.getSesso());
+			preparedStatement.setString(7, user_account.getSesso());*/
 
-			preparedStatement.executeUpdate();
+			if(preparedStatement.executeUpdate() == 0) {
+				System.out.println("Errore");
+			}
 
 			connection.commit();
 		} finally {
@@ -95,17 +96,17 @@ public class PersonDAODataSource implements IBeanDAO<PersonBean>{
 	}
 
 	@Override
-	public synchronized Collection<PersonBean> doRetrieveAll(String telefono) throws SQLException {
+	public synchronized Collection<PersonDTO> doRetrieveAll(String telefono) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		Collection<PersonBean> users = new LinkedList<PersonBean>();
+		Collection<PersonDTO> users = new LinkedList<PersonDTO>();
 
 		String selectSQL = "SELECT * FROM " + PersonDAODataSource.TABLE_NAME;
 
-		if (telefono != null && !telefono.equals("")) {
+		/*if (telefono != null && !telefono.equals("")) {
 			selectSQL += " ORDER BY " + telefono;
-		}
+		}*/
 
 		try {
 			connection = ds.getConnection();
@@ -114,16 +115,16 @@ public class PersonDAODataSource implements IBeanDAO<PersonBean>{
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
-				PersonBean bean = new PersonBean();
+				PersonDTO dto = new PersonDTO();
 
-				bean.setUsername(rs.getString("USERNAME"));
-				bean.setUserPassword(rs.getString("USERPASSWORD"));
-				bean.setNome(rs.getString("NOME"));
+				dto.setUsername(rs.getString("USERNAME"));
+				dto.setUserPassword(rs.getString("USERPASSWORD"));
+				/*bean.setNome(rs.getString("NOME"));
 				bean.setCognome(rs.getString("COGNOME"));
 				bean.setEmail(rs.getString("EMAIL"));
 				bean.setTelefono(rs.getString("TELEFONO"));
-				bean.setSesso(rs.getString("SESSO"));
-				users.add(bean);
+				bean.setSesso(rs.getString("SESSO"));*/
+				users.add(dto);
 			}
 
 		} finally {
@@ -139,10 +140,10 @@ public class PersonDAODataSource implements IBeanDAO<PersonBean>{
 	}
 	
 	@Override
-	public synchronized PersonBean doRetrieveByKey(String username) throws SQLException {
+	public synchronized PersonDTO doRetrieveByKey(String username) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		PersonBean bean = new PersonBean();
+		PersonDTO dto = new PersonDTO();
 		String selectSQL = "SELECT * FROM " + PersonDAODataSource.TABLE_NAME + " WHERE USERNAME = ?";
 		try {
 			connection = ds.getConnection();	
@@ -150,12 +151,12 @@ public class PersonDAODataSource implements IBeanDAO<PersonBean>{
 			preparedStatement.setString(1, username);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				bean.setUsername(rs.getString("USERNAME"));
-				bean.setNome(rs.getString("NOME"));
+				dto.setUsername(rs.getString("USERNAME"));
+				/*bean.setNome(rs.getString("NOME"));
 				bean.setCognome(rs.getString("COGNOME"));
 				bean.setEmail(rs.getString("EMAIL"));
 				bean.setTelefono(rs.getString("TELEFONO"));
-				bean.setSesso(rs.getString("SESSO"));
+				bean.setSesso(rs.getString("SESSO"));*/
 			}
 		} finally {
 			try {
@@ -166,7 +167,7 @@ public class PersonDAODataSource implements IBeanDAO<PersonBean>{
 					connection.close();
 			}
 		}
-		return bean;
+		return dto;
 	}
 	
 }

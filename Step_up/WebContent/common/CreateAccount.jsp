@@ -1,23 +1,19 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<!-- icona -->
-<title>Creazione account</title>
+<title>Signup - Step Up</title>
 </head>
 <body>
-<header>
-<!-- Menù di navigazione, logo, area utente, wishlist, carrello -->
-</header>
-
 <h1>Creazione account</h1>
 <p>Unisciti a noi! Compila i seguenti campi del form per creare il tuo account su Step Up.</p>
-<form action = "" name = "account" method = "POST">
+<form action = "../CreateAccount" name = "account" method = "POST">
 	Username: <input type = "text" name = "username" placeholder = "Username" maxlength="50">
     Password: <input type = "password" name = "password" placeholder = "Password">
     <input type = "submit" name = "Iscriviti">
           
 </form>
-
 </body>
 </html>
