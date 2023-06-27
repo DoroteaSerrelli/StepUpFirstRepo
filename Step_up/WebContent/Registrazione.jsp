@@ -9,7 +9,7 @@
 <body>
 <h1>Creazione account</h1>
 <p>Unisciti a noi! Compila i seguenti campi del form per creare il tuo account su Step Up.</p>
-<form action = "../CreateAccount" name = "account" method = "POST">
+<form action = "CreateAccount" name = "account" method = "POST">
 	Username: <input type = "text" name = "username" placeholder = "Username" maxlength="50">
     Password: <input type = "password" name = "password" placeholder = "Password">
     <input type = "submit" name = "Iscriviti">

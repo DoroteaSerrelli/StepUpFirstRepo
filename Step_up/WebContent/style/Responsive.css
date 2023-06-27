@@ -1,0 +1,15 @@
+@charset "ISO-8859-1";
+
+header, footer{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+footer{
+	clear: both;
+}
+
+header{
+	margin-bottom: 20px;
+}

@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.PersonDAODataSource;
 import model.PersonDTO;
-import model.IBeanDAO;
 
 /**
  * Servlet implementation class LoginCheck
@@ -66,16 +66,24 @@ public class LoginCheck extends HttpServlet {
 		//Verifica corrispondenza credenziali inserite con credenziali memorizzate nel database
 		
 		PersonDAODataSource p = new PersonDAODataSource();
-		PersonDTO p1 = p.doRetrieveByKey(user);	//le corrette credenziali dell'amministratore
+		PersonDTO p1 = null;
+		try {
+			p1 = p.doRetrieveByKey(user);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	//le corrette credenziali dell'amministratore
 		PersonDTO p2 = new PersonDTO();
 		p2.setUserPassword(pwd);
+		System.out.println(p2.getUserPassword());
+		System.out.println("Password p1:" + p1.getUserPassword());
 		
 		if(user.equals("admin") && (p2.getUserPassword()).equals(p1.getUserPassword())){ //admin
 			request.getSession().setAttribute("isAdmin", Boolean.TRUE); //inserisco il token nella sessione
 			response.sendRedirect("admin/protected.jsp");
-		} else if (user.equals("user") && pwd.equals("mypass")){ //user
+		} else if (user.equals("user") && (p2.getUserPassword()).equals(p1.getUserPassword())){ //user
 			request.getSession().setAttribute("isAdmin", Boolean.FALSE); //inserisco il token nella sessione
-			response.sendRedirect("common/protected.jsp");
+			response.sendRedirect("common/Profilo.jsp");
 		} else {
 			errors.add("Username o password non validi!");
 			request.setAttribute("errors", errors);

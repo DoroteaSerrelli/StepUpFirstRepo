@@ -4,11 +4,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Step up - Homepage</title>
-<%@include file = "Header.jsp" %>
+<title>Servizio clienti</title>
 </head>
 <body>
 
-<%@ include file="Footer.jsp" %>
 </body>
 </html>

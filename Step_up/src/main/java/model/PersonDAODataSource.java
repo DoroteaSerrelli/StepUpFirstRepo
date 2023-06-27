@@ -54,7 +54,7 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 			if(preparedStatement.executeUpdate() == 0) {
 				System.out.println("Errore");
 			}
-
+			connection.setAutoCommit(false);
 			connection.commit();
 		} finally {
 			try {
@@ -152,6 +152,7 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				dto.setUsername(rs.getString("USERNAME"));
+				//dto.userpassword = rs.getString("USERPASSWORD");
 				/*bean.setNome(rs.getString("NOME"));
 				bean.setCognome(rs.getString("COGNOME"));
 				bean.setEmail(rs.getString("EMAIL"));

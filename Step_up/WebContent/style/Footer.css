@@ -1,3 +1,39 @@
-body{
-	background-image: url(../images/Footer.png);
+footer{
+	background-color: #DF1B3F;
+	font-style: Arial, Geneva, sans-serif;
+	color: #D6D6D6;
+}
+
+table{
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+td, th{
+	padding: 15px;
+	text-align: left;
+	border-spacing: 5px;
+	line-height: 10px;
+}
+
+th{
+	font-weight: bolder;
+	color: #19204E;
+	font-size: 20px;
+}
+
+td{
+	font-size: 15px;
+	text-transform: capitalize;
+	padding: 10px;
+}
+
+td a{
+	text-decoration: none;
+	color: #D7D7D7;
+}
+
+td a:hover{
+	color: #19204E;
+	text-decoration: underline;
 }

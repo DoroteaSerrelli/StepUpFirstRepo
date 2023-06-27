@@ -5,7 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Aggiornamento profilo - Step Up</title>
-<%@include file = "Header.jsp" %>
+<%@include file = "../Header.jsp" %>
 </head>
 <body>
 
@@ -44,6 +44,6 @@
 
 		<input type = "submit" name = "UpdateProfile" value = "Aggiorna il profilo">
 		</form>
-		<%@ include file="Footer.jsp" %>
+		<%@ include file="../Footer.jsp" %>
 </body>
 </html>
