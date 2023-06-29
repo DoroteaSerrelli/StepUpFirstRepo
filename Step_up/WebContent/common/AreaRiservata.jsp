@@ -1,0 +1,40 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import = "model.ProfileDTO, model.ProfileDAODataSource"
+    %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Area riservata</title>
+</head>
+<body>
+
+
+<h1>Area riservata</h1>
+
+<p>Benvenuto nella tua area riservata.<br>
+Qui puoi visionare il tuo profilo: i tuoi dati personali e gli ordini effettuati</p>
+<fieldset>
+
+<legend>Dati personali --- modifica</legend>
+<jsp:useBean id="bean" class = "model.ProfileDTO" scope = "page">
+<%ProfileDAODataSource dao = new ProfileDAODataSource();
+	bean = dao.doRetrieveByKey((String)session.getAttribute("username"));
+%>
+
+<p>	Nome: <%= bean.getNome() %>
+	Cognome: <%= bean.getCognome() %>
+	Telefono: <%= bean.getTelefono() %>
+	Sesso: <%= bean.getSesso() %>
+	</p>
+</jsp:useBean>	
+	<a href = "https://localhost/Step_up/common/Profilo.jsp">Aggiorna i dati personali</a>
+	
+
+</fieldset>
+<fieldset>
+<legend>Ordini effettuati</legend>
+</fieldset>
+</body>
+</html>

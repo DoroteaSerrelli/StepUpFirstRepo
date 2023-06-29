@@ -11,10 +11,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import model.UserAccountDAODataSource;
 
-import model.PersonDAODataSource;
-
-public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
+public class UserAccountDAODataSource implements IBeanDAO<UserAccountDTO>{
 	private static DataSource ds;
 
 	static {
@@ -32,24 +31,20 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 	private static final String TABLE_NAME = "user_account";
 	
 	@Override
-	public synchronized void doSave(PersonDTO user_account) throws SQLException {
+	public synchronized void doSave(UserAccountDTO user_account) throws SQLException {
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertSQL = "INSERT INTO " + PersonDAODataSource.TABLE_NAME
-				+ " (USERNAME, USERPASSWORD) VALUES (?, ?);";
+		String insertSQL = "INSERT INTO " + UserAccountDAODataSource.TABLE_NAME
+				+ " (USERNAME, USERPASSWORD, EMAIL) VALUES (?, ?, ?);";
 
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, user_account.getUsername());
 			preparedStatement.setString(2, user_account.getUserPassword());
-			/*preparedStatement.setString(3, user_account.getNome());
-			preparedStatement.setString(4, user_account.getCognome());
-			preparedStatement.setString(5, user_account.getEmail());
-			preparedStatement.setString(6, user_account.getTelefono());
-			preparedStatement.setString(7, user_account.getSesso());*/
+			preparedStatement.setString(3, user_account.getEmail());
 
 			if(preparedStatement.executeUpdate() == 0) {
 				System.out.println("Errore");
@@ -67,6 +62,7 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 		}
 	}
 
+
 	@Override
 	public synchronized boolean doDelete(String username) throws SQLException {
 		Connection connection = null;
@@ -74,7 +70,7 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 
 		int result = 0;
 
-		String deleteSQL = "DELETE FROM " + PersonDAODataSource.TABLE_NAME + " WHERE USERNAME = ?";
+		String deleteSQL = "DELETE FROM " + UserAccountDAODataSource.TABLE_NAME + " WHERE USERNAME = ?";
 
 		try {
 			connection = ds.getConnection();
@@ -96,18 +92,18 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 	}
 
 	@Override
-	public synchronized Collection<PersonDTO> doRetrieveAll(String telefono) throws SQLException {
+	public synchronized Collection<UserAccountDTO> doRetrieveAll(String order) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		Collection<PersonDTO> users = new LinkedList<PersonDTO>();
+		Collection<UserAccountDTO> users = new LinkedList<UserAccountDTO>();
 
-		String selectSQL = "SELECT * FROM " + PersonDAODataSource.TABLE_NAME;
-
-		/*if (telefono != null && !telefono.equals("")) {
-			selectSQL += " ORDER BY " + telefono;
-		}*/
-
+		String selectSQL = "SELECT * FROM " + UserAccountDAODataSource.TABLE_NAME;
+		
+		if (order != null && !order.equals("")) {
+			selectSQL += " ORDER BY " + order;
+		}
+		
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
@@ -115,15 +111,11 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
-				PersonDTO dto = new PersonDTO();
+				UserAccountDTO dto = new UserAccountDTO();
 
 				dto.setUsername(rs.getString("USERNAME"));
 				dto.setUserPassword(rs.getString("USERPASSWORD"));
-				/*bean.setNome(rs.getString("NOME"));
-				bean.setCognome(rs.getString("COGNOME"));
-				bean.setEmail(rs.getString("EMAIL"));
-				bean.setTelefono(rs.getString("TELEFONO"));
-				bean.setSesso(rs.getString("SESSO"));*/
+				dto.setEmail(rs.getString("EMAIL"));
 				users.add(dto);
 			}
 
@@ -140,11 +132,11 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 	}
 	
 	@Override
-	public synchronized PersonDTO doRetrieveByKey(String username) throws SQLException {
+	public synchronized UserAccountDTO doRetrieveByKey(String username) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		PersonDTO dto = new PersonDTO();
-		String selectSQL = "SELECT * FROM " + PersonDAODataSource.TABLE_NAME + " WHERE USERNAME = ?";
+		UserAccountDTO dto = new UserAccountDTO();
+		String selectSQL = "SELECT * FROM " + UserAccountDAODataSource.TABLE_NAME + " WHERE USERNAME = ?";
 		try {
 			connection = ds.getConnection();	
 			preparedStatement = connection.prepareStatement(selectSQL);
@@ -152,12 +144,8 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				dto.setUsername(rs.getString("USERNAME"));
-				//dto.userpassword = rs.getString("USERPASSWORD");
-				/*bean.setNome(rs.getString("NOME"));
-				bean.setCognome(rs.getString("COGNOME"));
-				bean.setEmail(rs.getString("EMAIL"));
-				bean.setTelefono(rs.getString("TELEFONO"));
-				bean.setSesso(rs.getString("SESSO"));*/
+				dto.setUserPasswordRetrieve(rs.getString("USERPASSWORD"));
+				dto.setEmail(rs.getString("EMAIL"));
 			}
 		} finally {
 			try {
@@ -169,6 +157,5 @@ public class PersonDAODataSource implements IBeanDAO<PersonDTO>{
 			}
 		}
 		return dto;
-	}
-	
+	}	
 }

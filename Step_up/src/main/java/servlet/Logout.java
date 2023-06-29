@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Logout
  */
-@WebServlet("/Logout")
+@WebServlet("/common/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -27,15 +27,8 @@ public class Logout extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		Boolean isAdmin = (Boolean) request.getSession().getAttribute("isAdmin");
-		//Si verifica se l'utente ha effettuato il login in precedenza
-		if (isAdmin == null){	
-		    response.sendRedirect(request.getContextPath() + "/Login.jsp"); 
-		    return;
-		}
-		
 		request.getSession().invalidate();
-		response.sendRedirect(request.getContextPath() + "/Login.jsp");
+		response.sendRedirect(request.getContextPath() + "/Login.jsp");	
 	}
 
 	/**

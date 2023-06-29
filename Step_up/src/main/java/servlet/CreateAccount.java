@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.PersonDTO;
-import model.PersonDAODataSource;
+import model.UserAccountDTO;
+import model.UserAccountDAODataSource;
 /**
  * Servlet implementation class CreateAccount
  */
@@ -38,14 +38,16 @@ public class CreateAccount extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
+		String email = request.getParameter("email");
 		
 		//Verificare che non esista un account con l'username passato nel DB
 		
-		PersonDTO utente = new PersonDTO();
+		UserAccountDTO utente = new UserAccountDTO();
 		utente.setUsername(username);
 		utente.setUserPassword(password);
+		utente.setEmail(email);
 		
-		PersonDAODataSource utentedao = new PersonDAODataSource();
+		UserAccountDAODataSource utentedao = new UserAccountDAODataSource();
 		try {
 			utentedao.doSave(utente);
 		} catch (SQLException e) {

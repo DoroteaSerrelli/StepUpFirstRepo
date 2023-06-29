@@ -4,9 +4,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Wishlist</title>
 </head>
 <body>
+<%
+
+%>
+<p id = "wishlist"></p>
+
 
 </body>
 </html>

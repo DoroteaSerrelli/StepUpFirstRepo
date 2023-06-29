@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form name = "dati personali" action = "UpdateDatipersonali" enctype = "application/x-www-form-urlencoded">
+<form name = "datiPersonali" action = "../UpdateProfile" enctype = "application/x-www-form-urlencoded" method = "POST">
 		<fieldset>
 		<legend>Informazioni personali</legend>
 			<label for="Nome">Nome</label>
@@ -26,24 +26,11 @@
 			<br>
 			<input type = "radio" name = "sesso" value = "Donna">Donna
 		</fieldset>
-		<fieldset>
-		<legend>Indirizzi di spedizione</legend>
-			<%int i = 1; %>
-			<label for = "Indirizzo<%= i%>">Indirizzo <%= i %></label><br>
-			
-			<input type = "text" name = "Address<%=i %>" value = "" placeholder = "Inserisci Via e numero civico dell'indirizzo<%= i %>">
-			<br>
-			<input type = "text" name = "Città<%=i %>" value = "" placeholder = "Inserisci città dell'indirizzo<%= i %>">
-			<br>
-			<input type = "text" name = "CAP<%=i %>" value = "" placeholder = "Inserisci CAP dell'indirizzo<%= i %>">
-			<br>
-			<input type = "text" name = "Provincia<%=i %>" value = "" placeholder = "Inserisci città di provincia dell'indirizzo<%= i %>">
-			<button><img src = "../images/Addbutton.png" width = "20px" height = "20px"></button>
-		<!-- Se si clicca questo pulsante devo generare un nuovo inserimento di indirizzo -->
-		</fieldset>
-
-		<input type = "submit" name = "UpdateProfile" value = "Aggiorna il profilo">
+		<input type = "submit" value = "Aggiorna il profilo">
 		</form>
+		
+
+		
 		<%@ include file="../Footer.jsp" %>
 </body>
 </html>
