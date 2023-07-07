@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"
-    import = "model.ProfileDTO, model.ProfileDAODataSource"
+    import = "model.ProfileDTO,dao.ProfileDAODataSource"
     %>
 <!DOCTYPE html>
 <html>
@@ -36,5 +36,7 @@ Qui puoi visionare il tuo profilo: i tuoi dati personali e gli ordini effettuati
 <fieldset>
 <legend>Ordini effettuati</legend>
 </fieldset>
+
+<a href="Logout">Logout</a>
 </body>
 </html>

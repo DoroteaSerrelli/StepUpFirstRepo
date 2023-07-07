@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="4.0">
 	<display-name>Step_up</display-name>
 	<welcome-file-list>
-		<welcome-file>common/Homepage.jsp</welcome-file>
+		<welcome-file>Homepage.jsp</welcome-file>
 	</welcome-file-list>
 	<resource-ref>
 		<description>Riferimento JNDI ad un DataSource</description>

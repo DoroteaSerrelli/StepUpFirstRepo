@@ -1,0 +1,54 @@
+@charset "ISO-8859-1";
+
+h2{
+	text-align: center;
+	color:  #252525;
+}
+
+form{
+	border: 5px solid #252525;
+	display: table;
+	background-color: #F1797A;
+	width: 600px;
+	height: 300px;
+	margin: 0 auto;
+	
+}
+
+div.tableRow {
+	display: table-row;
+	text-align: right
+}
+
+div.tableRow input {
+	display: table-cell;
+	padding: 3px;
+	vertical-align: top;
+}
+
+form>p{
+	text-align: center;
+}
+
+form #pulsante{
+	margin: 0 auto;
+}
+
+form textarea {
+	width: 400px;
+	height: 250px;
+}
+
+div.tableRow {
+	display: table-row;
+}
+
+div.tableRow>input, div.tableRow>label{
+	display: table-cell;
+	padding: 3px;
+	vertical-align: top;
+}
+
+div.tableRow>label:first-child {
+	text-align: right;
+}

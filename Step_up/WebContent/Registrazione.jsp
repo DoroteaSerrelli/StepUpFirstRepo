@@ -4,17 +4,35 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<meta name="viewport" content="width:device-width, initial-scale = 1.0">
 <title>Signup - Step Up</title>
+<link rel="stylesheet" type="text/css" href="style/Responsive.css">
+<link rel="stylesheet" type="text/css" href="style/Form.css">
+<%@include file="Header.jsp"%>
 </head>
 <body>
-<h1>Creazione account</h1>
-<p>Unisciti a noi! Compila i seguenti campi del form per creare il tuo account su Step Up.</p>
-<form action = "CreateAccount" name = "account" method = "POST">
-	Email: <input type = "email" name = "email" placeholder = "E-mail" maxlength="50">
-	Username: <input type = "text" name = "username" placeholder = "Username" maxlength="50">
-    Password: <input type = "password" name = "password" placeholder = "Password">
-    <input type = "submit" name = "Iscriviti">
-          
-</form>
+	<div id="page">
+
+		<form action="CreateAccount" name="account" method="POST">
+			<h2>Creazione account</h2>
+			<p>Unisciti a noi!<br> Compila i seguenti campi del form per creare
+				il tuo account su Step Up.</p>
+			<div id=tebleRow>
+				<label for="email">Email: </label> <input type="email" name="email"
+					placeholder="E-mail" maxlength="50">
+			</div>
+			<div id="tableRow">
+				<label for="username">Username: </label> <input type="text"
+					name="username" placeholder="Username" maxlength="50">
+			</div>
+			<div id="tableRow">
+				<label for="password">Password: </label> <input type="password"
+					name="password" placeholder="Password">
+			</div>
+			<button id="pulsante" type="submit" name="Iscriviti">Iscriviti</button>
+
+		</form>
+	</div>
+	<%@ include file="Footer.jsp"%>
 </body>
 </html>

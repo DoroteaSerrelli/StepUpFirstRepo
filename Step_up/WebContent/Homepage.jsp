@@ -10,7 +10,10 @@
 </head>
 <body>
 
-	
+	<div id = "page">
+
+
+	</div>
 
 <%@ include file="Footer.jsp" %>
 </body>

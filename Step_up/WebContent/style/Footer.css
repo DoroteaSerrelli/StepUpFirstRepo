@@ -1,12 +1,12 @@
 footer{
-	background-color: #DF1B3F;
-	font-style: Arial, Geneva, sans-serif;
-	color: #D6D6D6;
+	background-color: #252525;
+	color: #f1797a;
 }
 
 table{
 	margin-left: 20px;
 	margin-right: 20px;
+	padding: 0px 50px 0 50px;
 }
 
 td, th{
@@ -18,22 +18,23 @@ td, th{
 
 th{
 	font-weight: bolder;
-	color: #19204E;
+	color: #f2f2f2;
 	font-size: 20px;
 }
 
 td{
 	font-size: 15px;
 	text-transform: capitalize;
+	color: #f1797a;
 	padding: 10px;
 }
 
 td a{
 	text-decoration: none;
-	color: #D7D7D7;
+	color: #f1797a;;
 }
 
 td a:hover{
-	color: #19204E;
+	color: #f2f2f2;
 	text-decoration: underline;
 }

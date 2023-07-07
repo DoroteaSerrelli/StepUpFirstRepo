@@ -1,48 +1,46 @@
 header{
-	background-color:  #19204E;
+	background-color: #F1797A;
 	font-size: 16px;
-	font-style: Arial, Geneva, sans-serif;
-	color: #D6D6D6;
+	color: #f2f2f2;
 }
 
 header img.logo{
 	margin-left: 50px; 
+	padding: 0px;
 }
 
-#icon i{
-	width: 50px;
-	height: 50px;
+#icon-container{
 	display: inline;
 	float: right;
 }
 
 nav ul{
-	margin: 10px 10px 10px 10px;
-	background-color: #FCB300;
+	margin: 0px auto;
+	background-color: #252525;
 	padding: 5px 0px 5px 0px;
 	display: inline;
 	list-style-type: none;
 	border-style: solid;
 	border-width : thin;
-	border-color: #FCB300;
+	border-color: #252525;
 }
 
 nav ul li{
 	text-align: center;
 	padding: 0px 20px;
 	display: inline;
-	background-color: #FCB300;
-	border-color: #19204E;
+	background-color: #252525;
+	border-color: #F1797A;
 }
 
 nav li a{
 	text-decoration: none;	/*elimino le sottolineature dei link*/
-	color:#F7F7F7;
+	color:#A50D36;
 	transition: 0.3s ease;
 }
 
 nav li a:hover{
-	color: #19204E;
-	background-color: #D6D6D6;
+	color: #f2f2f2;
+	background-color: #aaaeac;
 	text-decoration: underline;
 }

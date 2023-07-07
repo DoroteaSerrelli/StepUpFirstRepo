@@ -5,11 +5,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Aggiornamento profilo - Step Up</title>
+<script src = "../scripts/Validate.js"></script>
 <%@include file = "../Header.jsp" %>
 </head>
 <body>
 
-<form name = "datiPersonali" action = "../UpdateProfile" enctype = "application/x-www-form-urlencoded" method = "POST">
+<form name = "datiPersonali" action = "UpdateProfile" enctype = "application/x-www-form-urlencoded" method = "POST">
 		<fieldset>
 		<legend>Informazioni personali</legend>
 			<label for="Nome">Nome</label>
@@ -25,6 +26,8 @@
 			<input type = "radio" name = "sesso" value = "Uomo">Uomo
 			<br>
 			<input type = "radio" name = "sesso" value = "Donna">Donna
+			<br>
+			<input type = "text" name = "Indirizzo1">
 		</fieldset>
 		<input type = "submit" value = "Aggiorna il profilo">
 		</form>

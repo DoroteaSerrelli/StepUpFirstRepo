@@ -8,8 +8,72 @@ header, footer{
 
 footer{
 	clear: both;
+	padding:0;
+	margin:0; 
 }
 
 header{
 	margin-bottom: 20px;
+	padding: 20px;
+}
+
+header, nav, footer, h1, h2, h3 {
+  font-family: Arial, Geneva, sans-serif;
+}
+
+#search_mini_form{
+	height: 20px;
+	width: 50px;
+}
+
+/*--- BODY ---*/
+body {
+  	padding: 0px;
+	margin: 0px;
+	font-family: Arial, Geneva, sans-serif;
+	line-height: 1.2em;
+	font-size: 1em;
+	background-color: #D6D6D6;
+}
+
+h1{
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/*---- INIZIO FORM ----*/
+
+
+
+/*---- FINE FORM ----*/
+aside{
+	border: 3px solid #19204E;
+	display: block;
+	background-color: #F1797A;
+	float: right;
+	margin: 0 0 20px 0;
+	padding: 0px;
+}
+
+#InfCustomerService{
+	display: block;
+	text-align: center;
+}
+
+/*---- BOTTONI ----*/
+#pulsante {
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-style: bold;
+	color: #fff;
+	padding: 10px 20px;
+	border: solid 1px #252525;
+	background: #F1797A;
+	margin: 0 auto;
+}
+
+#pulsante:hover{
+	background: #AAAEAC;
 }

@@ -5,10 +5,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <script src="https://kit.fontawesome.com/1571ce3e73.js" crossorigin="anonymous"></script>
-<link type = "text/css" rel = "stylesheet" href = "../style/Footer.css">
+<meta name = "viewport" content = "width:device-width, initial-scale = 1.0">
+<link type = "text/css" rel = "stylesheet" href = "style/Footer.css">
 </head>
 <body>
-
 <footer>
 <table>
 	<tr>

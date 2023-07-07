@@ -1,0 +1,68 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"
+    import = "dao.ProductDAODataSource, model.ProductDTO,dao.IBeanProductDAO, java.util.*"
+    %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Aggiornamento catalogo</title>
+<%@include file = "../Header.jsp" %>
+</head>
+<body>
+<%  ProductDAODataSource dao = new ProductDAODataSource();
+	Collection<ProductDTO> products = dao.doRetrieveAll("nomeprodotto"); %>
+	
+	<h2>Prodotti</h2>
+	<a href="product">List</a>
+	<table border="1">
+		<%
+			if (products != null && products.size() != 0) {
+				Iterator<?> it = products.iterator();
+				while (it.hasNext()) {
+					ProductDTO bean = (ProductDTO) it.next();
+		%>
+		<tr>
+			<td><%=bean.getIDProdotto()%></td>
+			<td><%=bean.getNomeProdotto()%></td>
+			<td><%=bean.getDescrizione_breve()%></td>
+			
+		</tr>
+		<%
+				}
+			} else {
+		%>
+		<tr>
+			<td colspan="6">Nessun prodotto disponibile</td>
+		</tr>
+		<%
+			}
+		%>
+	</table>
+	<h2>Inserimento prodotto</h2>
+	<form action="../Catalogo" method="post">
+		<input type="hidden" name="action" value="insert" enctype = "multipart/form-data"> 
+		
+		<label for="Codice">Codice:</label><br> 
+		<input name="Codice" type="text" maxlength="20" required placeholder="Inserisci codice prodotto"><br> 
+		
+		<label for="Nome">Name:</label><br> 
+		<input name="Nome" type="text" maxlength="20" required placeholder="Inserisci nome prodotto"><br> 
+		
+		<label for="DescrizioneBreve">Descrizione:</label><br>
+		<textarea name="DescrizioneBreve" maxlength="100" rows="3" required placeholder="enter description"></textarea><br>
+		
+		<label for="Prezzo">Prezzo:</label><br> 
+		<input name="Prezzo" type="number" min="0" value="0" required><br>
+
+		<label for="Categoria">Categoria:</label><br> 
+		<input name="Categoria" type="text" required><br>
+		
+		<label for = "TopImage">Immagine in primo piano</label>
+		<input name = "TopImage" type = "file" accept = "image/*">
+
+		<input type="submit" value="Aggiungi"><input type="reset" value="Reset">
+	</form>
+	<%@ include file="../Footer.jsp" %>
+</body>
+</html>
