@@ -8,6 +8,7 @@ public class ProductDTO{
 	private String Descrizione_dettagliata;
 	private float Prezzo;
 	private String Categoria;
+	private String Brand;
 	private byte[] TopImage;
 
 
@@ -19,9 +20,24 @@ public class ProductDTO{
 		Descrizione_dettagliata = "";
 		Prezzo = 0;
 		Categoria = "";
+		Brand = "";
 		TopImage = null;
 	}
 	
+	
+	
+	public String getBrand() {
+		return Brand;
+	}
+
+
+
+	public void setBrand(String brand) {
+		Brand = brand;
+	}
+
+
+
 	public byte[] getTopImage() {
 		return TopImage;
 	}

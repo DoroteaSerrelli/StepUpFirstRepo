@@ -55,7 +55,7 @@ public class CreateAccount extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("common/Profilo.jsp").forward(request, response);
+		request.getRequestDispatcher("common/AreaRiservata.jsp").forward(request, response);
 	}
 
 }

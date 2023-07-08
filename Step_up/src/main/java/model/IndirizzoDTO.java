@@ -1,12 +1,32 @@
 package model;
 
 public class IndirizzoDTO {
+	private int IDIndirizzo;
+	private String username;
 	private String via;
 	private int numCivico;
 	private String città;
 	private int cap;
 	private String provincia;
 	
+
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getIDIndirizzo() {
+		return IDIndirizzo;
+	}
+
+	public void setIDIndirizzo(int iDIndirizzo) {
+		IDIndirizzo = iDIndirizzo;
+	}
+
 	public String getVia() {
 		return via;
 	}

@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Ordini evasi</title>
+<title>Ordini commissionati</title>
 </head>
 <body>
 	<%	OrdineDAODataSource dao = new OrdineDAODataSource();

@@ -31,30 +31,87 @@ public class Catalogo extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */		
     
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
-		if(action == "insert") {
-			int codice = Integer.parseInt(request.getParameter("Codice"));
-			String nome = request.getParameter("Nome");
-			String descrBreve = request.getParameter("DescrizioneBreve");
-			float prezzo = Float.parseFloat(request.getParameter("Prezzo"));
-			String categoria = request.getParameter("Categoria");
-			
-			ProductDTO p = new ProductDTO();
-			p.setIDProdotto(codice);
-			p.setNomeProdotto(nome);
-			p.setDescrizione_breve(descrBreve);
-			p.setPrezzo(prezzo);
-			p.setCategoria(categoria);
-			p.setTopImage(null);
-			
-			ProductDAODataSource dao = new ProductDAODataSource();
-			try {
-				dao.doSave(p);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		if(action != null) {
+			if(action.equals("insert")) {
+				int codice = Integer.parseInt(request.getParameter("Codice"));
+				String nome = request.getParameter("Nome");
+				String descrBreve = request.getParameter("DescrizioneBreve");
+				float prezzo = Float.parseFloat(request.getParameter("Prezzo"));
+				String categoria = request.getParameter("Categoria");
+
+				ProductDTO p = new ProductDTO();
+				p.setIDProdotto(codice);
+				p.setNomeProdotto(nome);
+				p.setDescrizione_breve(descrBreve);
+				p.setPrezzo(prezzo);
+				p.setCategoria(categoria);
+
+				ProductDAODataSource dao = new ProductDAODataSource();
+				try {
+					dao.doSave(p);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			
+			if(action.equals("delete")) {
+				int codice = Integer.parseInt(request.getParameter("Codice"));
+				
+				ProductDAODataSource dao = new ProductDAODataSource();
+				try {
+					dao.doDelete(codice);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
+			if(action.equals("update")) {
+				int codice = Integer.parseInt(request.getParameter("Codice"));
+				String nome = request.getParameter("Nome");
+				String descrBreve = request.getParameter("DescrizioneBreve");
+				float prezzo = Float.parseFloat(request.getParameter("Prezzo"));
+				String categoria = request.getParameter("Categoria");
+
+				ProductDTO p = new ProductDTO();
+				ProductDAODataSource dao = new ProductDAODataSource();
+				try {
+					p = dao.doRetrieveByKey(codice);
+					System.out.println("Prodotto trovato");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				if((nome != null) && (!nome.trim().equals(""))){
+					p.setNomeProdotto(nome);
+				}
+				if((descrBreve != null) && (!descrBreve.trim().equals(""))) {
+					p.setDescrizione_breve(descrBreve);
+				}
+				if(prezzo != 0) {
+					p.setPrezzo(prezzo);
+				}
+				if((categoria != null) && (!categoria.trim().equals(""))){
+					p.setCategoria(categoria);
+				}
+				
+				
+				try {
+					dao.doDelete(codice);
+					System.out.println("Prodotto cancellato!");
+					dao.doSave(p);
+					System.out.println("Prodotto salvato!");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin/UpdateCatalogo.jsp");
 		dispatcher.forward(request, response);
@@ -64,7 +121,7 @@ public class Catalogo extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 }

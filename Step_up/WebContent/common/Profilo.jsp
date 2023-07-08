@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Aggiornamento profilo - Step Up</title>
+<title>Aggiornamento profilo</title>
 <script src = "../scripts/Validate.js"></script>
 <%@include file = "../Header.jsp" %>
 </head>

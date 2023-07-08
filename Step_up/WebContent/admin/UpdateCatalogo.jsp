@@ -40,29 +40,59 @@
 		%>
 	</table>
 	<h2>Inserimento prodotto</h2>
-	<form action="../Catalogo" method="post">
-		<input type="hidden" name="action" value="insert" enctype = "multipart/form-data"> 
+	<form name = "inserimento" action="Catalogo" method="POST">
+		<input type = "hidden" name = "action" value = "insert">
 		
 		<label for="Codice">Codice:</label><br> 
-		<input name="Codice" type="text" maxlength="20" required placeholder="Inserisci codice prodotto"><br> 
+		<input name="Codice" type="text" required placeholder="Inserisci codice prodotto"><br> 
 		
-		<label for="Nome">Name:</label><br> 
-		<input name="Nome" type="text" maxlength="20" required placeholder="Inserisci nome prodotto"><br> 
+		<label for="Nome">Nome:</label><br> 
+		<input name="Nome" type="text" required placeholder="Inserisci nome prodotto"><br> 
 		
 		<label for="DescrizioneBreve">Descrizione:</label><br>
 		<textarea name="DescrizioneBreve" maxlength="100" rows="3" required placeholder="enter description"></textarea><br>
 		
 		<label for="Prezzo">Prezzo:</label><br> 
-		<input name="Prezzo" type="number" min="0" value="0" required><br>
+		<input name="Prezzo" type="number" min="0" value="" required><br>
 
 		<label for="Categoria">Categoria:</label><br> 
 		<input name="Categoria" type="text" required><br>
-		
-		<label for = "TopImage">Immagine in primo piano</label>
-		<input name = "TopImage" type = "file" accept = "image/*">
 
-		<input type="submit" value="Aggiungi"><input type="reset" value="Reset">
+		<button id = "pulsante" type="submit">Aggiungi</button><input type="reset" value="Reset">
 	</form>
+	
+	<h2>Cancellazione di un prodotto</h2>
+	<form name = "inserimento" action="Catalogo" method="POST">
+		<input type = "hidden" name = "action" value = "delete">
+		
+		<label for="Codice">Codice:</label><br> 
+		<input name="Codice" type="text" required placeholder="Inserisci codice prodotto"><br> 
+		
+		<button id = "pulsante" type="submit">Cancella</button><input type="reset" value="Reset">
+	</form>
+	
+	<h2>Modificare un prodotto - inserisci i valori nei campi che vuoi modificare</h2>
+	<form name = "inserimento" action="Catalogo" method="POST">
+		<input type = "hidden" name = "action" value = "update">
+		
+		<label for="Codice">Codice:</label><br> 
+		<input name="Codice" type="text" required placeholder="Inserisci codice prodotto"><br> 
+		
+		<label for="Nome">Nome:</label><br> 
+		<input name="Nome" type="text" placeholder="Inserisci nome prodotto"><br> 
+		
+		<label for="DescrizioneBreve">Descrizione:</label><br>
+		<textarea name="DescrizioneBreve" maxlength="100" rows="3" placeholder="enter description"></textarea><br>
+		
+		<label for="Prezzo">Prezzo:</label><br> 
+		<input name="Prezzo" type="number" min="0" value="0"><br>
+
+		<label for="Categoria">Categoria:</label><br> 
+		<input name="Categoria" type="text"><br>
+
+		<button id = "pulsante" type="submit">Modifica</button><input type="reset" value="Reset">
+	</form>
+	
 	<%@ include file="../Footer.jsp" %>
 </body>
 </html>

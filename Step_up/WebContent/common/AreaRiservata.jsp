@@ -11,29 +11,37 @@
 <body>
 
 
-<h1>Area riservata</h1>
+	<h1>Area riservata</h1>
 
-<p>Benvenuto nella tua area riservata.<br>
-Qui puoi visionare il tuo profilo: i tuoi dati personali e gli ordini effettuati</p>
-<fieldset>
+	<p>
+		Benvenuto nella tua area riservata.<br> Qui puoi visionare il tuo
+		profilo: i tuoi dati personali e gli ordini effettuati
+	</p>
+	<fieldset>
 
-<legend>Dati personali --- modifica</legend>
-<jsp:useBean id="bean" class = "model.ProfileDTO" scope = "page">
-<%ProfileDAODataSource dao = new ProfileDAODataSource();
+		<legend>Dati personali</legend>
+		<jsp:useBean id="bean" class="model.ProfileDTO" scope="page">
+			<%ProfileDAODataSource dao = new ProfileDAODataSource();
 	bean = dao.doRetrieveByKey((String)session.getAttribute("username"));
 %>
 
-<p>	Nome: <%= bean.getNome() %>
-	Cognome: <%= bean.getCognome() %>
-	Telefono: <%= bean.getTelefono() %>
-	Sesso: <%= bean.getSesso() %>
-	</p>
-</jsp:useBean>	
-	<a href = "https://localhost/Step_up/common/Profilo.jsp">Aggiorna i dati personali</a>
-	
+			<p>
+				Nome:
+				<%= bean.getNome() %>
+				Cognome:
+				<%= bean.getCognome() %>
+				Telefono:
+				<%= bean.getTelefono() %>
+				Sesso:
+				<%= bean.getSesso() %>
+			</p>
+		</jsp:useBean>
+		<a href="<%= request.getContextPath() %>/common/Profilo.jsp">Aggiorna i
+			dati personali</a>
 
-</fieldset>
-<fieldset>
+
+	</fieldset>
+	<fieldset>
 <legend>Ordini effettuati</legend>
 </fieldset>
 

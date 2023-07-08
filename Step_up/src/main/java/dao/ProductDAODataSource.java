@@ -39,7 +39,7 @@ public class ProductDAODataSource implements IBeanProductDAO{
 		PreparedStatement preparedStatement = null;
 
 		String insertSQL = "INSERT INTO " + ProductDAODataSource.TABLE_NAME
-				+ " (IDPRODOTTO, NOMEPRODOTTO, DESCRIZIONE_BREVE, DESCRIZIONE_DETTAGLIATA, PREZZO, CATEGORIA, TOPIMAGE) VALUES (?, ?, ?, ?, ?, ?, ?)";
+				+ " (IDPRODOTTO, NOMEPRODOTTO, DESCRIZIONE_BREVE, DESCRIZIONE_DETTAGLIATA, PREZZO, CATEGORIA, BRAND, TOPIMAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			connection = ds.getConnection();
@@ -50,9 +50,11 @@ public class ProductDAODataSource implements IBeanProductDAO{
 			preparedStatement.setString(4, product.getDescrizione_dettagliata());
 			preparedStatement.setFloat(5, product.getPrezzo());
 			preparedStatement.setString(6, product.getCategoria());
-			preparedStatement.setBytes(7, product.getTopImage());
+			preparedStatement.setString(7, product.getBrand());
+			preparedStatement.setBytes(8, product.getTopImage());
 
-			preparedStatement.executeUpdate();
+			
+			System.out.println("Righe aggiornate: " + preparedStatement.executeUpdate());
 			
 			connection.setAutoCommit(false);
 			connection.commit();
@@ -90,6 +92,7 @@ public class ProductDAODataSource implements IBeanProductDAO{
 				dto.setDescrizione_dettagliata(rs.getString("DESCRIZIONE_DETTAGLIATA"));
 				dto.setPrezzo(rs.getFloat("PREZZO"));
 				dto.setCategoria(rs.getString("CATEGORIA"));
+				dto.setBrand(rs.getString("BRAND"));
 				dto.setTopImage(rs.getBytes("TOPIMAGE"));
 			}
 
@@ -120,6 +123,7 @@ public class ProductDAODataSource implements IBeanProductDAO{
 			preparedStatement.setInt(1, IDProduct);
 
 			result = preparedStatement.executeUpdate();
+			connection.setAutoCommit(false);
 			connection.commit();
 
 		} finally {
@@ -162,6 +166,7 @@ public class ProductDAODataSource implements IBeanProductDAO{
 				dto.setDescrizione_dettagliata(rs.getString("DESCRIZIONE_DETTAGLIATA"));
 				dto.setPrezzo(rs.getFloat("PREZZO"));
 				dto.setCategoria(rs.getString("CATEGORIA"));
+				dto.setBrand(rs.getString("BRAND"));
 				dto.setTopImage(rs.getBytes("TOPIMAGE"));
 				products.add(dto);
 			}
