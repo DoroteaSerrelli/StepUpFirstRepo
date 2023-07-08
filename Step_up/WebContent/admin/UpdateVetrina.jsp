@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"
-    import = "model.ProductDTO, model.VetrinaDTO, dao.IBeanProductDAO, dao.ProductDAODataSource, java.util.*"
+    import = "model.ProductDTO, model.VetrinaDTO, dao.VetrinaDAODataSource, dao.IBeanProductDAO, dao.ProductDAODataSource, java.util.*"
     %>
 <!DOCTYPE html>
 <html>
@@ -10,26 +10,38 @@
 </head>
 <body>
 
-<%	ProductDAODataSource dao = new ProductDAODataSource();
-	Collection <VetrinaDTO> vetrine = dao.doRetrieveAll("nomevetrina");  
+<%	VetrinaDAODataSource dao = new VetrinaDAODataSource();
+	Collection <VetrinaDTO> vetrine = dao.doRetrieveAll("idvetrina");
 	%>
 	
 	<h2>Vetrine del sito web esposte</h2>
 	<table border="1">
 	<tr>
 		<th>Nome vetrina</th>
+		<th>Codice</th>
 		<th>Numero prodotti</th>
 	</tr>
 		<% if((vetrine != null) && (vetrine.size() != 0)){
 			for(VetrinaDTO v: vetrine){%>
 			<tr>
 				<td> <%= v.getNomeVetrina() %> </td>
-				<td> <%= v.getNumProdotti() %></td>
-			</tr>		
+				<td><%= v.getIDVetrina() %></td>
+			<td>
+				<%
+				if ((dao.doRetrieveAllProducts("idprodotto", v.getIDVetrina())) == null) {
+				%>
+				0 <%
+				} else {
+				%> <%=(dao.doRetrieveAllProducts("idprodotto", v.getIDVetrina()).size())%>
+				<%
+				}
+				%>
+			</td>
+		</tr>		
 			<%}
 			}else{%>
 		<tr>
-			<td colspan = "2">Non ci sono vetrine definite nel sito</td>
+			<td colspan = "3">Non ci sono vetrine definite nel sito</td>
 		</tr>
 		<%}%>
 	</table>
@@ -51,7 +63,8 @@
 		<fieldset>
 			<legend>Prodotti</legend>
 			<% 
-			   Collection<ProductDTO> products = dao.doRetrieveAll("IDPRODOTTO");
+				ProductDAODataSource pdao = new ProductDAODataSource();
+			   Collection<ProductDTO> products = pdao.doRetrieveAll("IDPRODOTTO");
 			   if(products.size() != 0){
 				   for(ProductDTO p: products){ %>
 				   	<label for = "product"><%= p.getNomeProdotto() %> (Codice : <%=p.getIDProdotto() %>)</label>

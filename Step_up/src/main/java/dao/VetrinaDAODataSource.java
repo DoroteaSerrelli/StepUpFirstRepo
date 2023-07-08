@@ -39,7 +39,7 @@ public class VetrinaDAODataSource implements IBeanVetrinaDAO{
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		String insertSQL = "INSERT INTO " + IndirizzoDAODataSource.TABLE_NAME
+		String insertSQL = "INSERT INTO " + VetrinaDAODataSource.TABLE_NAME
 				+ " (IDVETRINA, NOMEVETRINA) VALUES (?, ?)";
 
 		try {
@@ -65,7 +65,7 @@ public class VetrinaDAODataSource implements IBeanVetrinaDAO{
 		String insertSQL2 = "INSERT INTO EVIDENZA (IDPRODOTTO, IDVETRINA) VALUES (?, ?)";
 		try {
 			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(insertSQL);
+			preparedStatement = connection.prepareStatement(insertSQL2);
 			preparedStatement.setInt(1, code);
 			preparedStatement.setString(2, view.getNomeVetrina());
 
@@ -147,13 +147,13 @@ public class VetrinaDAODataSource implements IBeanVetrinaDAO{
 
 
 	@Override
-	public synchronized Collection<IndirizzoDTO> doRetrieveAll(String order, String username) throws SQLException {	//tutti gli indirizzi dell'utente
+	public synchronized Collection<VetrinaDTO> doRetrieveAll(String order) throws SQLException {	//tutte le vetrine del sito
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
-		Collection<IndirizzoDTO> addresses = new LinkedList<IndirizzoDTO>();
+		Collection<VetrinaDTO> vetrine = new LinkedList<VetrinaDTO>();
 
-		String selectSQL = "SELECT * FROM " + IndirizzoDAODataSource.TABLE_NAME + "WHERE USERNAME = ?";
+		String selectSQL = "SELECT * FROM " + VetrinaDAODataSource.TABLE_NAME;
 
 		if (order != null && !order.equals("")) {
 			selectSQL += " ORDER BY " + order;
@@ -162,21 +162,15 @@ public class VetrinaDAODataSource implements IBeanVetrinaDAO{
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
-			preparedStatement.setString(2, username);
 
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
-				IndirizzoDTO dto = new 	IndirizzoDTO();
+				VetrinaDTO dto = new VetrinaDTO();
 
-				dto.setIDIndirizzo(rs.getInt("IDINDIRIZZO"));
-				dto.setUsername(rs.getString("USERNAME"));
-				dto.setVia(rs.getString("VIA"));
-				dto.setNumCivico(rs.getInt("NUMCIVICO"));
-				dto.setCittà(rs.getString("CITTA"));
-				dto.setCap(rs.getInt("CAP"));
-				dto.setProvincia(rs.getString("PROVINCIA"));
-				addresses.add(dto);
+				dto.setIDVetrina(rs.getInt("IDVETRINA"));
+				dto.setNomeVetrina(rs.getString("NOMEVETRINA"));
+				vetrine.add(dto);
 			}
 
 		} finally {
@@ -188,30 +182,111 @@ public class VetrinaDAODataSource implements IBeanVetrinaDAO{
 					connection.close();
 			}
 		}
-		return addresses;
+		return vetrine;
 	}
 
 	@Override
 	public void addProduct(VetrinaDTO view, int code) throws SQLException {
-		// TODO Auto-generated method stub
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 		
+		ProductDTO product = new ProductDTO();
+		ProductDAODataSource productdao = new ProductDAODataSource();
+		product = productdao.doRetrieveByKey(code);
+		if(product != null) {
+			String SQLinsert = "INSERT INTO EVIDENZA(IDPRODOTTO, IDVETRINA) VALUES (?, ?)";
+			try {
+				connection = ds.getConnection();
+				preparedStatement = connection.prepareStatement(SQLinsert);
+				
+				preparedStatement.setInt(1, product.getIDProdotto());
+				preparedStatement.setInt(2, view.getIDVetrina());
+				
+				preparedStatement.executeUpdate();
+				connection.setAutoCommit(false);
+				connection.commit();				
+			}finally {
+				try {
+					if (preparedStatement != null)
+						preparedStatement.close();
+				} finally {
+					if (connection != null)
+						connection.close();
+				}
+			}
+			
+		}
 	}
 
 	@Override
 	public void deleteProduct(VetrinaDTO view, int code) throws SQLException {
-		// TODO Auto-generated method stub
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 		
+		ProductDTO product = new ProductDTO();
+		ProductDAODataSource productdao = new ProductDAODataSource();
+		product = productdao.doRetrieveByKey(code);
+		if(product != null) {
+			String SQLinsert = "DELETE FROM EVIDENZA WHERE (IDVETRINA = ? AND IDPRODOTTO = ?)";
+			try {
+				connection = ds.getConnection();
+				preparedStatement = connection.prepareStatement(SQLinsert);
+				
+				preparedStatement.setInt(1, view.getIDVetrina());
+				preparedStatement.setInt(2, product.getIDProdotto());
+				
+				preparedStatement.executeUpdate();
+				connection.setAutoCommit(false);
+				connection.commit();				
+			}finally {
+				try {
+					if (preparedStatement != null)
+						preparedStatement.close();
+				} finally {
+					if (connection != null)
+						connection.close();
+				}
+			}
+			
+		}
 	}
 
 	@Override
 	public Collection<ProductDTO> doRetrieveAllProducts(String order, int IDView) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 
-	@Override
-	public Collection<VetrinaDTO> doRetrieveAll(String order) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Collection<ProductDTO> products = new LinkedList<ProductDTO>();
+
+		String selectSQL = "SELECT * FROM EVIDENZA WHERE IDVETRINA = ?";
+
+		if (order != null && !order.equals("")) {
+			selectSQL += " ORDER BY " + order;
+		}
+
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, IDView);
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				ProductDTO dto = new ProductDTO();
+				ProductDAODataSource pdao = new ProductDAODataSource();
+				dto.setIDProdotto(rs.getInt("IDPRODOTTO"));
+				dto = pdao.doRetrieveByKey(dto.getIDProdotto());
+				products.add(dto);
+			}
+
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		return products;
 	}
 }

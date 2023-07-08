@@ -45,6 +45,6 @@
 <legend>Ordini effettuati</legend>
 </fieldset>
 
-<a href="Logout">Logout</a>
+<a href="<%= request.getContextPath() %>/common/Logout">Logout</a>
 </body>
 </html>
