@@ -39,15 +39,15 @@ public class ManageCarrello extends HttpServlet {
 		String action = request.getParameter("action");
 
 		if (action != null) {
-			if(action == "delete") {
-				int id = Integer.parseInt(request.getHeader("id"));
+			if(action.equals("delete")) {
+				int id = Integer.parseInt(request.getParameter("codice"));
 				ItemCarrello item = new ItemCarrello();
 				item.setIDProdotto(id);
 				cart.deleteProduct(item);
 			}
 			
-			if(action == "insert") {
-				int id = Integer.parseInt(request.getHeader("id"));
+			if(action.equals("insert")) {
+				int id = Integer.parseInt(request.getParameter("codice"));
 				ItemCarrello item = new ItemCarrello();
 				item.setIDProdotto(id);
 				cart.addProduct(item);

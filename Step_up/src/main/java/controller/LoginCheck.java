@@ -79,6 +79,7 @@ public class LoginCheck extends HttpServlet {
 		
 		if(user.equals("admin") && (p2.getUserPassword()).equals(p1.getUserPassword())){ //admin
 			request.getSession().setAttribute("isAdmin", Boolean.TRUE); //inserisco il token nella sessione
+			request.getSession().setAttribute("username", p1.getUsername());
 			response.sendRedirect("admin/DashboardAdmin.jsp");
 		} else if ((!p1.equals(null)) && (p2.getUserPassword()).equals(p1.getUserPassword())){ //se esiste user e coincide la password
 			request.getSession().setAttribute("isAdmin", Boolean.FALSE); //inserisco il token nella sessione

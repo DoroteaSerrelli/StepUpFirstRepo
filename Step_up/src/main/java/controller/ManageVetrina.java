@@ -73,6 +73,42 @@ public class ManageVetrina extends HttpServlet {
 				System.out.println("Nessun prodotto selezionato");
 			}
 		}
+		
+		if(action.equals("delete")) {
+			int codice = Integer.parseInt(request.getParameter("Codice"));
+			VetrinaDAODataSource dao = new VetrinaDAODataSource();
+			try {
+				dao.doDelete(codice);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		if(action.equals("update")) {
+			int codice = Integer.parseInt(request.getParameter("Codice"));
+			VetrinaDAODataSource dao = new VetrinaDAODataSource();
+
+			try {
+				VetrinaDTO dto = dao.doRetrieveByKey(codice);
+				String[] deleteProducts = request.getParameterValues("productDelete");
+				if(deleteProducts != null) {
+					for(String value: deleteProducts){
+						dao.deleteProduct(dto, Integer.parseInt(value));
+					}
+				}
+
+				String[] addProducts = request.getParameterValues("product");
+				System.out.println(addProducts);
+				if(addProducts != null) {
+					for(String value: addProducts){
+						dao.addProduct(dto, Integer.parseInt(value));
+					}
+				}
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin/UpdateVetrina.jsp");
 		dispatcher.forward(request, response);

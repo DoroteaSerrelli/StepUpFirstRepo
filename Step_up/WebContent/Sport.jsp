@@ -9,9 +9,8 @@
 <meta name = "viewport" content = "width:device-width, initial-scale = 1.0">
 <title>Sport</title>
 </head>
-<%@include file = "Header.jsp" %>
-</head>
 <body>
+<%@include file = "Header.jsp" %>
 
 	<%ProductDAODataSource pdao = new ProductDAODataSource();
 Collection<ProductDTO> products = pdao.doRetrieveAll("nomeprodotto");
@@ -24,18 +23,24 @@ Collection<ProductDTO> products = pdao.doRetrieveAll("nomeprodotto");
 		{
 			for(ProductDTO p: products){
 				if(p.getCategoria().equals("Sport")){%>
-				<div id = "product">
-					<img class = "TopProduct" src = "images/product-image/<%= p.getTopImage() %>"/>
-					<h5><%= p.getNomeProdotto() %></h5>
-					<h6>Prezzo: <%=p.getPrezzo() %></h6>
-					<h6>Descrizione breve: <%=p.getDescrizione_breve() %></h6>
-					<button type = "button" name = "Acquista" value = "Aggiungi al carrello" onclick = "ManageCarrello?action=insert"></button>
-					<button type = "button" name = "Wishlist" value = "Aggiungi alla wishlist"></button>
-				</div>
-			<%}
+		<div id="product">
+				<img class="TopProduct"
+					src="GetProductTopImage?Codice=<%= p.getIDProdotto()%>" onerror="this.src='<%=request.getContextPath() %>/images/NoPhotoAvailable.jpg'" style="width:100px;height:100px" alt="Product_image" />
+				<h5><%=p.getNomeProdotto()%></h5>
+				<h6>
+					Prezzo:
+					<%=p.getPrezzo()%></h6>
+				<h6>
+					Descrizione breve:
+					<%=p.getDescrizione_breve()%></h6>
+				<a href = "ManageCarrello?action=insert"><input type="button" name="Acquista" value="Aggiungi al carrello"></a>
+				<a href = "<%=request.getContextPath() %>/common/ManageWishlist?action=insert&codice=<%= p.getIDProdotto()%>"><input type="button" name="Wishlist" value="Aggiungi alla wishlist"></a>
+				<a href="Prodotto.jsp?Codice=<%= p.getIDProdotto() %>"><input type="button" name="Wishlist" value="Dettagli"></a>
+			</div>
+			
+		<%}
 			}
-		}
-	%>
+		}%>
 
 </div>	
 

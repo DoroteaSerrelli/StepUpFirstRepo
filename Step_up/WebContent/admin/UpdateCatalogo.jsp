@@ -11,7 +11,7 @@
 </head>
 <body>
 <%  ProductDAODataSource dao = new ProductDAODataSource();
-	Collection<ProductDTO> products = dao.doRetrieveAll("nomeprodotto"); %>
+	Collection<ProductDTO> products = dao.doRetrieveAll("idprodotto"); %>
 	
 	<h2>Prodotti</h2>
 	<a href="product">List</a>
@@ -24,6 +24,7 @@
 		%>
 		<tr>
 			<td><%=bean.getIDProdotto()%></td>
+			<td><img src="../GetProductTopImage?Codice=<%=bean.getIDProdotto()%>" onerror="this.src='../images/NoPhotoAvailable.jpg'" style="width:100px;height:100px"></td>
 			<td><%=bean.getNomeProdotto()%></td>
 			<td><%=bean.getDescrizione_breve()%></td>
 			
@@ -40,6 +41,28 @@
 		%>
 	</table>
 	<h2>Inserimento prodotto</h2>
+	<br>
+	<h3>Inserimento immagine</h3>
+	<form action="UploadProductTopImage" enctype="multipart/form-data" method="post">
+		Nome prodotto: 
+		<select name="id">
+			<%
+			if (products != null && products.size() > 0) {
+				Iterator<?> it = products.iterator();
+				while (it.hasNext()) {
+					ProductDTO item = (ProductDTO) it.next();
+			%>
+			<option value="<%=item.getIDProdotto()%>"><%=item.getNomeProdotto()%></option>
+			<%
+			}
+			}
+			%>
+		</select> <br> 
+		<input class="file" type="file" name="talkPhoto" value="" maxlength="255"> <br> 
+		<button id = "pulsante" type="submit" value="Upload"></button>
+		<button id = "pulsante" type="reset">Reset</button>
+	</form>
+	<h3>Inserimento dati</h3>
 	<form name = "inserimento" action="Catalogo" method="POST">
 		<input type = "hidden" name = "action" value = "insert">
 		

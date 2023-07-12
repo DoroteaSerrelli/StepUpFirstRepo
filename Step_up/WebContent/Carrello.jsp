@@ -40,7 +40,7 @@
 							<td><%= i.getDescrizione_breve() %></td>
 							<td> <%= i.getQuantità() %></td>
 							<td><%= i.getPrezzo()*i.getQuantità() %></td>
-							<td><a href = "ManageCarrello?action=delete">Cancella</a></td>
+							<td><a href = "ManageCarrello?action=delete&codice=<%=i.getIDProdotto()%>">Cancella</a></td>
 						
 						</tr>
 					<%}}

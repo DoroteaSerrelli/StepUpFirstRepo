@@ -26,25 +26,17 @@ FOREIGN KEY (username) REFERENCES user_account(username)
 
 CREATE TABLE indirizzo(
 idIndirizzo smallint NOT NULL AUTO_INCREMENT, 
+username varchar(25) NOT NULL,
 via char(50) NOT NULL,
 numCivico smallint NOT NULL,
-città varchar(50) NOT NULL,
+citta varchar(50) NOT NULL,
 CAP smallint NOT NULL,
 provincia varchar(50) NOT NULL,
 
-PRIMARY KEY(idIndirizzo)
+PRIMARY KEY(idIndirizzo, username),
+FOREIGN KEY(username) REFERENCES user_account(username) 
+						ON DELETE CASCADE	ON UPDATE CASCADE
 )ENGINE=InnoDB AUTO_INCREMENT = 1;
-
-CREATE TABLE possiede(
-username varchar(25) NOT NULL,
-idIndirizzo smallint NOT NULL,
-
-PRIMARY KEY (username, idIndirizzo),
-FOREIGN KEY(username) REFERENCES user_account(username)
-					ON DELETE CASCADE	ON UPDATE CASCADE,
-FOREIGN KEY(idIndirizzo) REFERENCES indirizzo(idIndirizzo)
-								ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB;
 
 CREATE TABLE categoria(
 nomeCategoria varchar(50) NOT NULL,
@@ -119,8 +111,6 @@ PRIMARY KEY(IDVetrina)
 CREATE TABLE evidenza(
 IDProdotto int NOT NULL,
 IDVetrina int NOT NULL,
-TestoEvidenza text,
-ImmagineEvidenza blob,
 
 PRIMARY KEY(IDProdotto, IDVetrina),
 FOREIGN KEY(IDProdotto) REFERENCES prodotto(IDProdotto)
@@ -154,3 +144,11 @@ PRIMARY KEY(IDPagamento),
 FOREIGN KEY (IDOrdine) REFERENCES ordine(IDOrdine)
 						ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
+
+
+
+INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Sport", "Raccolta di attrezzature sportive");
+INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Moda", "Abbigliamento sportivo");
+INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Integratori", "Raccolta di integratori sportivi");
+INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Scarpe", "Scarpe per attività fisica");
+INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Accessori", "Accessori per il wellness e il fitness");

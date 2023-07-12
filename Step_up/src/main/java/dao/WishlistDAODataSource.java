@@ -125,39 +125,16 @@ public class WishlistDAODataSource implements IBeanWishlistDAO{
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
-		if(doRetrieveWishlistByKey(ws.getUsername()) == null) {
+		
+		if(((doRetrieveWishlistByKey(ws.getUsername())).getUsername()).equals("")) {
 			doSaveWishlist(ws);
 		}
-
-		String updateSQL = "UPDATE " + WishlistDAODataSource.TABLE_NAME
-				+ "SET NUMPRODOTTI = ? WHERE USERNAME = ?";
-
-		try {
-			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(updateSQL);
-			preparedStatement.setInt(1, ws.getNumProdotti()+1);
-			preparedStatement.setString(2, ws.getUsername());
-
-			if(preparedStatement.executeUpdate() == 0) {
-				System.out.println("Errore");
-			}
-			
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				if (connection != null)
-					connection.close();
-			}
-		}
 		
-		preparedStatement = null;
-
-		String insertSQL = "INSERT INTO COSTITUITA" + " (USERNAME, IDPRODOTTO) VALUES (?, ?);";
+		String insertSQL = "INSERT INTO COSTITUITA (USERNAME, IDPRODOTTO) VALUES (?, ?);";
 
 		try {
 			connection = ds.getConnection();
+			connection.setAutoCommit(false);
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, ws.getUsername());
 			preparedStatement.setInt(2, bean.getIDProdotto());
@@ -165,7 +142,7 @@ public class WishlistDAODataSource implements IBeanWishlistDAO{
 			if(preparedStatement.executeUpdate() == 0) {
 				System.out.println("Errore");
 			}
-			connection.setAutoCommit(false);
+
 			connection.commit();
 			
 		} finally {
@@ -178,21 +155,47 @@ public class WishlistDAODataSource implements IBeanWishlistDAO{
 			}
 		}
 		
-	}
+		preparedStatement = null;
+		String updateSQL = "UPDATE " + WishlistDAODataSource.TABLE_NAME+ " SET NUMPRODOTTI = ? WHERE USERNAME = ?";
 
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(updateSQL);
+			System.out.println("NumeroProdotti add: "+(ws.getNumProdotti()+1));
+			WishlistDTO wdto2 = doRetrieveWishlistByKey(ws.getUsername());
+			preparedStatement.setInt(1, wdto2.getNumProdotti()+1);
+			preparedStatement.setString(2, wdto2.getUsername());
+
+			if(preparedStatement.executeUpdate() == 0) {
+				System.out.println("Errore stringa");
+			}
+
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}	
+	}
 
 	@Override
 	public synchronized boolean doDeleteProduct(int IDProduct, WishlistDTO ws) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
-		if((doRetrieveWishlistByKey(ws.getUsername()) == null) || (ws.getNumProdotti() == 0)) {
+		if(((doRetrieveWishlistByKey(ws.getUsername()).getUsername()).equals(""))) {
 			return false;
 		}
+		
+		if(ws.getNumProdotti() == 1)
+			doDeleteWishlist(ws.getUsername());
 
 		int result = 0;
 
-		String deleteSQL = "DELETE FROM COSTITUITA" + " WHERE (USERNAME = ? AND IDPRODOTTO = ?)";
+		String deleteSQL = "DELETE FROM COSTITUITA WHERE (USERNAME = ? AND IDPRODOTTO = ?)";
 
 		try {
 			connection = ds.getConnection();
@@ -215,12 +218,14 @@ public class WishlistDAODataSource implements IBeanWishlistDAO{
 					connection.close();
 			}
 		}
-		String updateSQL = "UPDATE " + WishlistDAODataSource.TABLE_NAME + "SET NUMPRODOTTI = ? WHERE USERNAME = ?";
-
+		String updateSQL = "UPDATE " + WishlistDAODataSource.TABLE_NAME + " SET NUMPRODOTTI = ? WHERE USERNAME = ?";
+		WishlistDTO wsUpdate = doRetrieveWishlistByKey(ws.getUsername());
+		Connection connection2 = null;
 		try {
-			preparedStatement = connection.prepareStatement(updateSQL);
-			preparedStatement.setInt(1, ws.getNumProdotti()-1);
-			preparedStatement.setInt(2, IDProduct);
+			connection2 = ds.getConnection();
+			preparedStatement = connection2.prepareStatement(updateSQL);
+			preparedStatement.setInt(1, wsUpdate.getNumProdotti()-1);
+			preparedStatement.setString(2, wsUpdate.getUsername());
 
 			result = preparedStatement.executeUpdate();
 
@@ -234,7 +239,7 @@ public class WishlistDAODataSource implements IBeanWishlistDAO{
 					preparedStatement.close();
 			} finally {
 				if (connection != null)
-					connection.close();
+					connection2.close();
 			}
 		}
 		return (result != 0);
