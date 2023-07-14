@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"
-    import = "model.ProfileDTO,dao.ProfileDAODataSource"
+    import = "java.util.*, model.ProfileDTO,dao.ProfileDAODataSource, dao.IndirizzoDAODataSource, model.IndirizzoDTO"
     %>
 <!DOCTYPE html>
 <html>
@@ -21,9 +21,12 @@
 
 		<legend>Dati personali</legend>
 		<jsp:useBean id="bean" class="model.ProfileDTO" scope="page">
-			<%ProfileDAODataSource dao = new ProfileDAODataSource();
-	bean = dao.doRetrieveByKey((String)session.getAttribute("username"));
-%>
+			<%
+			ProfileDAODataSource dao = new ProfileDAODataSource();
+			bean = dao.doRetrieveByKey((String) session.getAttribute("username"));
+			IndirizzoDAODataSource address = new IndirizzoDAODataSource();
+			Collection<IndirizzoDTO> addressesBean = address.doRetrieveAll("IDIndirizzo", bean.getUsername());
+			%>
 
 			<p>
 				Nome:
@@ -34,10 +37,14 @@
 				<%= bean.getTelefono() %>
 				Sesso:
 				<%= bean.getSesso() %>
+				Indirizzi:
+				<%for(IndirizzoDTO dt : addressesBean){%>
+					<p>Indirizzo n. <%= dt.getIDIndirizzo()%>: <%= dt.getVia()%> <%= dt.getNumCivico()%>, <%= dt.getCittà()%> (<%= dt.getProvincia()%>), <%= dt.getCap() %></p>
+			<% } %>
+
 			</p>
 		</jsp:useBean>
-		<a href="<%= request.getContextPath() %>/common/Profilo.jsp">Aggiorna i
-			dati personali</a>
+		<a href="<%= request.getContextPath() %>/common/Profilo.jsp"><button id = "pulsante" >Aggiorna i dati personali</button></a>
 
 
 	</fieldset>

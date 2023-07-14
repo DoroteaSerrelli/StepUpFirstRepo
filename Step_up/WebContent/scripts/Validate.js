@@ -1,8 +1,13 @@
 let count = 1;
-const nameOrLastnameErrorMessage = "Questo campo deve contenere solo caratteri";
+const nameOrLastnameErrorMessage = "Questo campo deve contenere solo lettere ed eventualmente spazi";
 const emailErrorMessage = "L'email deve essere nel formato username@domain.ext";
 const phoneErrorMessage = "Il numero di cellulare deve essere nel formato xxx-xxx-xxxx";
-const emptyFieldErrorMessage = "Questo campo non può essere vuoto"
+const viaErrorMessage = "La via deve essere una sequenza di lettere e spazi";
+const civicoErrorMessage = "Il civico è formato da una sequenza di numeri";
+const cittaErrorMessage = "La città è una sequenza di lettere e spazi";
+const capErrorMessage = "Il CAP è una sequenza di numeri nel formato #####";
+const provinciaErrorMessage = "La provincia è una sequenza di caratteri e spazi";
+const emptyFieldErrorMessage = "Questo campo non può essere vuoto";
 
 function validateFormElem(formElem, span, errorMessage) {
 	if(formElem.checkValidity()){
@@ -37,16 +42,21 @@ function validate() {
 		valid = false;
 	}
 	let spanEmail = document.getElementById("errorEmail");
-	if (!validateFormElem(form.email, spanEmail, emailErrorMessage)){
+	if (!validateFormElem(form.Email, spanEmail, emailErrorMessage)){
+		valid = false;
+	}
+	
+	let spanPhone = document.getElementById("errorPhone");
+	if(!validateFormElem(form.Telefono, spanPhone, phoneErrorMessage)){
 		valid = false;
 	}
 	
 	for (let i = 0; i < count; i++){
-		let spanPhone = document.getElementById("errorPhone" + i);
-		if (spanPhone == null){ // It has been removed
+		let spanAddress = document.getElementById("errorAddress" + i);
+		if (spanAddress == null){ // è stato rimosso
 			continue;
 		} else {
-			if (!validateFormElem(document.getElementById("phone" + i), spanPhone, phoneErrorMessage)){
+			if (!validateFormElem(document.getElementById("address" + i), spanAddress, addressErrorMessage)){
 				valid = false;
 			}
 		}	
@@ -54,15 +64,15 @@ function validate() {
 	return valid;
 }
 
-function addPhone() {
-	let container = document.getElementById("phones");
+function addAddress() {
+	let container = document.getElementById("addresses");
 	
 	let div = document.createElement("div");
-	div.id = "phoneRow" + count;
+	div.id = "addressRow" + count;
 	
 	let label = document.createElement("label");
-	label.htmlFor = "phone" + count;
-	label.appendChild(document.createTextNode("Phone:"));
+	label.htmlFor = "address" + count;
+	label.appendChild(document.createTextNode("Indirizzo:"));	--------->da qui modifica
 	div.appendChild(label);
 	
 	let element = document.createElement("input");
@@ -77,11 +87,11 @@ function addPhone() {
 	let input = document.createElement("input");
 	input.type = "button";
 	input.value = "-";
-	input.addEventListener("click", function() {removePhone(div.id)});
+	input.addEventListener("click", function() {removeAddress(div.id)});
 	div.appendChild(input);
 	
 	let span = document.createElement("span");
-	span.id = "errorPhone" + count;
+	span.id = "errorAddress" + count;
 	div.appendChild(span);
 	element.addEventListener("change", function() {validateFormElem(element, span, phoneErrorMessage)});
 	count++;
@@ -90,7 +100,7 @@ function addPhone() {
 	
 }
 
-function removePhone(id) {
+function removeAddress(id) {
 	let element = document.getElementById(id);
 	element.parentNode.removeChild(element);
 }

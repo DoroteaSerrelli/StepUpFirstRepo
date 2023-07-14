@@ -74,9 +74,7 @@ public class GetAllProducts extends HttpServlet {
 					}
 
 				}
-				
-				System.out.println("JSON: " + jsonArray);
-
+				System.out.println(jsonArray);
 				String jsonProducts = jsonArray.toString();
 				response.setContentType("application/json");
 				response.getWriter().write(jsonProducts);

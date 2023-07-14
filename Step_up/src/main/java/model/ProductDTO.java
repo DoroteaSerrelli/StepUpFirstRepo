@@ -1,6 +1,5 @@
 package model;
 
-
 public class ProductDTO{
 	private int IDProdotto;
 	private String NomeProdotto;
@@ -10,7 +9,6 @@ public class ProductDTO{
 	private String Categoria;
 	private String Brand;
 	private byte[] TopImage;
-
 
 	public ProductDTO() {
 
@@ -25,18 +23,13 @@ public class ProductDTO{
 	}
 	
 	
-	
 	public String getBrand() {
 		return Brand;
 	}
 
-
-
 	public void setBrand(String brand) {
 		Brand = brand;
 	}
-
-
 
 	public byte[] getTopImage() {
 		return TopImage;

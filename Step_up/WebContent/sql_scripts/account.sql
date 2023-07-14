@@ -15,7 +15,7 @@ username varchar(25) NOT NULL,
 nome varchar(30) NOT NULL,
 cognome varchar(40) NOT NULL,
 telefono char(16),
-CHECK(telefono LIKE '+39 ___ ___ ____'),
+CHECK(telefono LIKE '___-___-____'),
 sesso enum('Uomo', 'Donna'),
 
 PRIMARY KEY(nome, cognome, username),
@@ -25,18 +25,26 @@ FOREIGN KEY (username) REFERENCES user_account(username)
 ) ENGINE=InnoDB;
 
 CREATE TABLE indirizzo(
-idIndirizzo smallint NOT NULL AUTO_INCREMENT, 
-username varchar(25) NOT NULL,
+idIndirizzo int NOT NULL AUTO_INCREMENT, 
 via char(50) NOT NULL,
 numCivico smallint NOT NULL,
 citta varchar(50) NOT NULL,
 CAP smallint NOT NULL,
 provincia varchar(50) NOT NULL,
 
-PRIMARY KEY(idIndirizzo, username),
-FOREIGN KEY(username) REFERENCES user_account(username) 
-						ON DELETE CASCADE	ON UPDATE CASCADE
+PRIMARY KEY(idIndirizzo)
 )ENGINE=InnoDB AUTO_INCREMENT = 1;
+
+CREATE TABLE risiede(
+username varchar(25) NOT NULL,
+idIndirizzo int NOT NULL,
+
+PRIMARY KEY(username, idIndirizzo),
+FOREIGN KEY (idIndirizzo) REFERENCES indirizzo(idIndirizzo)
+			ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (username) REFERENCES user_account(username) 
+			ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 CREATE TABLE categoria(
 nomeCategoria varchar(50) NOT NULL,
@@ -63,7 +71,7 @@ FOREIGN KEY (Categoria) REFERENCES Categoria(NomeCategoria)
 
 CREATE TABLE wishlist(
 username varchar(25) NOT NULL,
-numprodotti smallint NOT NULL,
+numProdotti smallint NOT NULL,
 
 PRIMARY KEY(username),
 FOREIGN KEY(username) REFERENCES user_account(username) 
@@ -96,9 +104,11 @@ FOREIGN KEY(username) REFERENCES user_account(username)
 
 CREATE TABLE galleriaImmagini(
 IDImmagine int AUTO_INCREMENT NOT NULL,
-Immagine blob NOT NULL,
+Prodotto int NOT NULL,
+Immagine mediumblob NOT NULL,
 
-PRIMARY KEY(IDImmagine) 
+PRIMARY KEY(IDImmagine, Prodotto),
+FOREIGN KEY(Prodotto) REFERENCES Prodotto(IDProdotto) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB;
 
 CREATE TABLE vetrina(

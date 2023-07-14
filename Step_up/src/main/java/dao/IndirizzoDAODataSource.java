@@ -38,18 +38,17 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 		PreparedStatement preparedStatement = null;
 
 		String insertSQL = "INSERT INTO " + IndirizzoDAODataSource.TABLE_NAME
-				+ " (IDINDIRIZZO, USERNAME, VIA, NUMCIVICO, CITTA, CAP, PROVINCIA) VALUES (?, ?, ?, ?, ?, ?, ?)";
+				+ " (IDINDIRIZZO, VIA, NUMCIVICO, CITTA, CAP, PROVINCIA) VALUES ( ?, ?, ?, ?, ?, ?)";
 
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setInt(1, address.getIDIndirizzo());
-			preparedStatement.setString(2, username);
-			preparedStatement.setString(3, address.getVia());
-			preparedStatement.setInt(4, address.getNumCivico());
-			preparedStatement.setString(5, address.getCittà());
-			preparedStatement.setInt(6, address.getCap());
-			preparedStatement.setString(7, address.getProvincia());
+			preparedStatement.setString(2, address.getVia());
+			preparedStatement.setInt(3, address.getNumCivico());
+			preparedStatement.setString(4, address.getCittà());
+			preparedStatement.setInt(5, address.getCap());
+			preparedStatement.setString(6, address.getProvincia());
 
 			preparedStatement.executeUpdate();
 			
@@ -64,6 +63,28 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 					connection.close();
 			}
 		}
+		
+		String insertSQL2 = "INSERT INTO risiede(USERNAME, IDINDIRIZZO) VALUES (?, ?)";
+		
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(insertSQL2);
+			preparedStatement.setString(1, username);
+			preparedStatement.setInt(2, address.getIDIndirizzo());
+			preparedStatement.executeUpdate();
+			
+			connection.setAutoCommit(false);
+			connection.commit();
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		
 	}
 
 	@Override
@@ -85,7 +106,6 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 
 			while (rs.next()) {
 				dto.setIDIndirizzo(rs.getInt("IDINDIRIZZO"));
-				dto.setUsername(rs.getString("USERNAME"));
 				dto.setVia(rs.getString("VIA"));
 				dto.setNumCivico(rs.getInt("NUMCIVICO"));
 				dto.setCittà(rs.getString("CITTA"));
@@ -112,7 +132,7 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 
 		int result = 0;
 
-		String deleteSQL = "DELETE FROM " + IndirizzoDAODataSource.TABLE_NAME + " WHERE (USERNAME = ? AND IDINDIRIZZO = ?)";
+		String deleteSQL = "DELETE FROM RISIEDE WHERE (USERNAME = ? AND IDINDIRIZZO = ?)";
 
 		try {
 			connection = ds.getConnection();
@@ -135,13 +155,13 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 	}
 
 	@Override
-	public synchronized Collection<IndirizzoDTO> doRetrieveAll(String order, String username) throws SQLException {
+	public synchronized Collection<IndirizzoDTO> doRetrieveAll(String order, String username) throws SQLException {	//lista degli indirizzi dell'utente
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		Collection<IndirizzoDTO> addresses = new LinkedList<IndirizzoDTO>();
 
-		String selectSQL = "SELECT * FROM " + IndirizzoDAODataSource.TABLE_NAME + "WHERE USERNAME = ?";
+		String selectSQL = "SELECT * FROM (" + IndirizzoDAODataSource.TABLE_NAME + " NATURAL JOIN RISIEDE) WHERE USERNAME = ?";
 
 		if (order != null && !order.equals("")) {
 			selectSQL += " ORDER BY " + order;
@@ -150,7 +170,7 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
-			preparedStatement.setString(2, username);
+			preparedStatement.setString(1, username);
 
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -158,7 +178,6 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 				IndirizzoDTO dto = new 	IndirizzoDTO();
 
 				dto.setIDIndirizzo(rs.getInt("IDINDIRIZZO"));
-				dto.setUsername(rs.getString("USERNAME"));
 				dto.setVia(rs.getString("VIA"));
 				dto.setNumCivico(rs.getInt("NUMCIVICO"));
 				dto.setCittà(rs.getString("CITTA"));

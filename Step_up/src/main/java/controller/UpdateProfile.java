@@ -68,7 +68,7 @@ public class UpdateProfile extends HttpServlet {
 			}
 		}
 		
-		RequestDispatcher dispatcherToPersonalAreaPage = request.getRequestDispatcher("common/AreaRiservata.jsp");
+		RequestDispatcher dispatcherToPersonalAreaPage = getServletContext().getRequestDispatcher("/common/AreaRiservata.jsp");
 		dispatcherToPersonalAreaPage.forward(request, response);
 	}
 }

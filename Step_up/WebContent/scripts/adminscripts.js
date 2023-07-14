@@ -2,6 +2,50 @@
  * 
  */
 
+/***************************** Catalogo dei prodotti ***************************/
+
+$(document).ready(function(){
+	$("#selectImage").change(function() {
+		const fieldset = document.getElementById("image-container");
+		if(fieldset.style.display != "none"){
+			while (fieldset.firstChild) {
+      			fieldset.removeChild(fieldset.firstChild);
+    		}
+			fieldset.style.display = "none";
+		}
+        var productId = $(this).val();
+        const xhr = new XMLHttpRequest();
+		xhr.open("GET", "LoadProductImages?Codice="+productId, true);
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState == 4 && xhr.status == 200){
+				const images = JSON.parse(xhr.responseText);
+				var imageContainer = document.getElementById("image-container");
+				fieldset.style.display = "block";
+    			for (var i = 0; i < images.length; i++) {
+					var checkbox = document.createElement("input");
+					checkbox.type = "checkbox";
+					checkbox.name = "chooseImage";
+      				var image = document.createElement("img");
+      				image.src = "../GetProductImages?CodiceP="+productId+"&CodiceI="+images[i].IDIMMAGINE;
+      				image.onerror="this.src='../images/NoPhotoAvailable.jpg'";
+      				image.style="width:100px;height:100px";
+      				checkbox.value = images[i].IDIMMAGINE;
+      				imageContainer.appendChild(checkbox);
+      				imageContainer.appendChild(image);
+    			}
+          	}
+        };
+        xhr.onerror = function() {
+		console.error("Errore nel recupero delle immagini: ", xhr.statusText);
+			};
+		xhr.send();
+      });
+});
+	
+
+
+
+/************ Catalogo delle vetrine **************/
  function checkValue(nameForm, nameElement){
   var el = document.forms[nameForm].elements[nameElement];
   if (el.value !== null && el.value.trim() !== "") {
@@ -70,8 +114,9 @@ function showOtherProducts(nameForm){
     };
     xhr.send();
   } else {
-    const fieldset = document.forms[nameForm].getElementById("addProductFieldset");
-    fieldset.innerHTML = "";
+    const fieldset = document.getElementById("addOtherProductFieldset");
+  	fieldset.innerHTML = "";
+    fieldset.textContent = "";
     fieldset.style.display = "none";
   }
 }

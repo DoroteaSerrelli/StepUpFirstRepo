@@ -2,7 +2,6 @@ package model;
 
 public class IndirizzoDTO {
 	private int IDIndirizzo;
-	private String username;
 	private String via;
 	private int numCivico;
 	private String città;
@@ -10,14 +9,6 @@ public class IndirizzoDTO {
 	private String provincia;
 	
 
-	
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public int getIDIndirizzo() {
 		return IDIndirizzo;
@@ -69,7 +60,7 @@ public class IndirizzoDTO {
 	
 	@Override
 	public String toString() {
-		return "IndirizzoDTO [via=" + via + ", numCivico=" + numCivico + ", città=" + città + ", cap=" + cap
+		return "Indirizzo [via=" + via + ", numCivico=" + numCivico + ", città=" + città + ", cap=" + cap
 				+ ", provincia=" + provincia + "]";
 	}	
 }
