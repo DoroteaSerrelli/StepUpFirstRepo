@@ -1,46 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"
-    import = "model.ProductDTO,dao.ProductDAODataSource, java.util.*"
+    import = "model.ProductDTO, dao.ProductDAODataSource, java.util.*"
     %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <meta name = "viewport" content = "width:device-width, initial-scale = 1.0">
+<script src = "<%=request.getContextPath() %>/scripts/Cart.js"></script>
 <title>Scarpe</title>
 </head>
-<%@include file = "Header.jsp" %>
-</head>
-<body>
 
+<body>
+<%@include file = "Header.jsp" %>
 	<%ProductDAODataSource pdao = new ProductDAODataSource();
 Collection<ProductDTO> products = pdao.doRetrieveAll("nomeprodotto");
 
 %>
 
 <div id = "page">
-	<%
-		if(!products.isEmpty())
-		{
-			for(ProductDTO p: products){
-				if(p.getCategoria().equals("Integratori")){%>
-				<div id = "product">
-					<img class = "TopProduct" src = "images/product-image/<%= p.getTopImage() %>"/>
-					<h5><%= p.getNomeProdotto() %></h5>
-					<h6>Prezzo: <%=p.getPrezzo() %></h6>
-					<h6>Descrizione breve: <%=p.getDescrizione_breve() %></h6>
-					<button type = "button" name = "Acquista" value = "Aggiungi al carrello"></button>
-					<button type = "button" name = "Wishlist" value = "Aggiungi alla wishlist"></button>
-				</div>
-			<%}
+		<%
+		if (!products.isEmpty()) {
+			for (ProductDTO p : products) {
+				if (p.getCategoria().equals("Scarpe")) {
+		%>
+		<div id="product">
+			<img class="TopProduct"
+				src="GetProductTopImage?Codice=<%=p.getIDProdotto()%>"
+				onerror="this.src='<%=request.getContextPath()%>/images/NoPhotoAvailable.jpg'"
+				style="width: 100px; height: 100px" alt="Product_image" />
+			<h5><%=p.getNomeProdotto()%></h5>
+			<h6>
+				Prezzo:
+				<%=p.getPrezzo()%></h6>
+		
+			<button class = "carrello-button" id = "<%=p.getIDProdotto()%>" type="button" name="Acquista" onclick = "insertCart(this, productAdded<%=p.getIDProdotto()%>)">Aggiungi al carrello</button>
+			
+			<a	href="<%=request.getContextPath()%>/common/ManageWishlist?action=insert&codice="><button
+					class = "wishlist-button" id = "<%=p.getIDProdotto()%>" type="button" name="Wishlist" onclick = "">Aggiungi alla wishlist</button></a>
+		</div>
+		<br><span id="productAdded<%=p.getIDProdotto()%>"></span><br>
+		<%}
+				
 			}
 		}
 	%>
 
-</div>
-
-
-</div>	
+	</div>
 
 <%@ include file="Footer.jsp" %>
 </body>

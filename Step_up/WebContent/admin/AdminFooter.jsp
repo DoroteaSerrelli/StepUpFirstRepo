@@ -1,0 +1,1 @@
+<img src ="<%= request.getContextPath()%>/images/footerAdmin.png">

@@ -219,3 +219,159 @@ function insertOtherProductFieldset(products){
 
   fieldset.style.display = "block";
 }
+
+
+/********************************** ORDINI COMMISSIONATI ***************************************/
+
+function filter() {
+  const option = document.getElementsByName("filter")[0];
+  const divFieldDate = document.getElementById("divFieldDate");
+  const divFieldUser = document.getElementById("divFieldUser");
+  console.log(option.value);
+  if (option.value === "DataOrdine") {
+    divFieldDate.style.display = "block";
+    divFieldUser.style.display = "none";
+  } else if (option.value === "Username") {
+    divFieldDate.style.display = "none";
+    divFieldUser.style.display = "block";
+  }
+}
+
+const errorData = "Il formato data deve essere anno-mese-giorno (aaaa-mm-gg)";
+const errorEmptyField = "Questo campo non può essere vuoto";
+
+function controllo(Elem, span, errorMessage){
+	if(Elem.checkValidity()){
+		Elem.classList.remove("error");
+		span.style.color = "black";
+		span.innerHTML = "";
+		return true;
+	}
+	Elem.classList.add("error");
+	span.style.color = "#A50D36";
+	if (Elem.validity.valueMissing){	//l'utente non ha fornito un valore
+		span.innerHTML = errorEmptyField;
+	} else {
+		span.innerHTML = errorMessage;	//pattern mismatched
+	}
+	return false;
+}
+
+function validDateFields(){
+	let valid = true;	
+	let startDate = document.getElementById("Inizio"); 
+	let endDate = document.getElementById("Fine");
+	
+	let spanInizio = document.getElementById("errorInizio");
+	if(!controllo(startDate, spanInizio, errorData)){
+		valid = false;
+	}
+	let spanFine = document.getElementById("errorFine");
+	if (!controllo(endDate, spanFine, errorData)){
+		valid = false;
+	}
+	return valid;
+}
+
+function getOrdersForDate(){
+	let startDate = document.getElementById("Inizio"); 
+	let endDate = document.getElementById("Fine");
+	if(startDate != null && endDate != null){
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "GetOrdersforDate", true);
+		xhr.setRequestHeader("content-type", "x-www-form-urlencoded");
+		xhr.onreadystatechange = function(){
+		if(xhr.status === 200 && xhr.readyState === 4){
+			const orders = JSON.parse(xhr.responseText);
+			showOrdersForDate(orders);
+		}
+		xhr.onerror = function() {
+     	console.error("Errore nel recupero degli ordini: ", xhr.statusText);
+    	};
+    	xhr.send("start="+startDate.value+"&end="+endDate.value);
+	}
+	}
+}
+
+function showOrdersForDate(orders) {
+  let ordersTable = document.getElementById("ordersTable");
+  ordersTable.innerHTML = "";
+  const table = document.createElement("table");
+  const headerRow = document.createElement("tr");
+  headerRow.innerHTML = "<th>Numero ordine</th><th>Prodotti</th><th>Utente</th><th>Metodo di spedizione</th><th>Metodo di consegna</th><th>Data ordine</th><th>Ora</th>";
+  table.appendChild(headerRow);
+
+  if (orders.length > 0) {
+    orders.forEach(order => {
+      const tableRow = document.createElement("tr");
+      tableRow.innerHTML = `<td>${order.id}</td><td>${order.utente}</td><td>${order.prodotti}</td><td>${order.metodoSpedizione}</td><td>${order.metodoConsegna}</td><td>${order.data}</td><td>${order.ora}</td>`;
+      table.appendChild(tableRow);
+    });
+  } else {
+    const p = document.createElement("p");
+    p.textContent = "Nessun ordine commissionato nel periodo definito";
+    ordersTable.appendChild(p);
+  }
+
+  ordersTable.innerHTML = "";
+  ordersTable.appendChild(table);
+  ordersTable.style.display = "table";
+}
+
+function getUserOrders(){
+	let user = document.getElementById("Utente");
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", "GetOrdersforUser", true);
+	xhr.onreadystatechange = function(){
+		if(xhr.status == 200 && xhr.readyState == 4){
+			const orders = JSON.parse(xhr.responseText);
+			showUserOrders(orders);
+		}
+		xhr.onerror = function() {
+     	console.error("Errore nel recupero degli ordini: ", xhr.statusText);
+    	};
+    	xhr.send();
+	}
+}
+
+function showUserOrders(orders){
+	
+}
+
+
+/*
+	<%	OrdineDAODataSource dao = new OrdineDAODataSource();
+		Collection<OrdineDTO> ordini = dao.doRetrieveAll();
+		ProfileDAODataSource daop = new ProfileDAODataSource();
+	%>
+	
+	<h2>Ordini commissionati</h2>
+	<table border = "1">
+		<tr>
+			<th>ID ordine</th>
+			<th>Data</th>
+			<th>Ora</th>
+			<th>Metodo di spedizione</th>
+			<th>Metodo di consegna</th>
+			<th>Committente</th>
+		</tr>
+		<% if((ordini != null) && (ordini.size()!= 0)){
+				for(OrdineDTO ordine: ordini){%>
+					<tr>
+						<td><%=ordine.getIDOrdine() %></td>
+						<td><%=ordine.getDataOrdine() %></td>
+						<td><%=ordine.getOraOrdine() %></td>
+						<td><%=ordine.getMetodoSpedizione() %></td>
+						<td><%=ordine.getMetodoConsegna() %></td>
+						<%ProfileDTO person = daop.doRetrieveByKey(ordine.getUsernameOrdine()); %>
+						<td><%= person.getNome()%> <%= person.getCognome()%></td>
+					</tr>
+					
+				<%}
+		}else{%>
+			<tr>
+				<td colspan = "6">Nessun ordine commissionato</td>
+			</tr>
+		<% }%> 
+			
+	</table>*/

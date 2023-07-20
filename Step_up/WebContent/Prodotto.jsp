@@ -9,7 +9,7 @@
 <title>Prodotto</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src = "<%= request.getContextPath()%>/scripts/Product_page.js"></script>
-
+<script src = "<%=request.getContextPath() %>/scripts/Cart.js"></script>
 </head>
 <body>
 	<%int codice = Integer.parseInt(request.getParameter("Codice"));
@@ -27,8 +27,10 @@
     		<p><%= product.getDescrizione_dettagliata() %></p>
 		</div>
 		<p>Prezzo: <%= product.getPrezzo() %></p>
-		<a href = "ManageCarrello?action=insert&codice=<%=product.getIDProdotto() %>" ><button id = "pulsante" type = "button">Aggiungi nel carrello</button></a>
+		<button class = "carrello-button" id = "<%=product.getIDProdotto()%>" type="button" name="Acquista" onclick = "insertCart(this, productAdded<%=product.getIDProdotto()%>)">Aggiungi al carrello</button>
 		<a href = "ManageWishlist?action=insert&codice=<%=product.getIDProdotto() %>" ><button id = "pulsante" type = "button">Aggiungi nella wishlist</button></a>
+		<br><span id="productAdded<%=product.getIDProdotto()%>"></span><br>
+		
 	</div>
 </body>
 </html>

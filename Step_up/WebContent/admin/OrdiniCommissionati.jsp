@@ -1,55 +1,53 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"
-    import = "dao.ProfileDAODataSource, model.ProfileDTO;"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import = "java.util.*, dao.ProfileDAODataSource, dao.OrdineDAODataSource, model.ProfileDTO, model.OrdineDTO"
     %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Ordini commissionati</title>
+<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery-3.6.0.js"></script>
+<script src = "<%= request.getContextPath()%>/scripts/adminscripts.js"></script>
+
 </head>
 <body>
-	<%	OrdineDAODataSource dao = new OrdineDAODataSource();
-		Collection<OrdineDTO> ordini = dao.doRetrieveAll();
-		ProfileDAODataSource daop = new ProfileDAODataSource();
-	%>
-	
-	<h2>Ordini commissionati</h2>
-	<table border = "1">
-		<tr>
-			<th>ID ordine</th>
-			<th>Data</th>
-			<th>Ora</th>
-			<th>Metodo di spedizione</th>
-			<th>Metodo di consegna</th>
-			<th>Committente</th>
-		</tr>
-		<% if((ordini != null) && (ordini.size()!= 0)){
-				for(OrdineDTO ordine: ordini){%>
-					<tr>
-						<td><%=ordine.getIDOrdine() %></td>
-						<td><%=ordine.getDataOrdine() %></td>
-						<td><%=ordine.getOraOrdine() %></td>
-						<td><%=ordine.getMetodoSpedizione() %></td>
-						<td><%=ordine.getMetodoConsegna() %></td>
-						<%ProfileDTO person = daop.doRetrieveByKey(ordine.getUsernameOrdine()); %>
-						<td><%= person.getNome()%> <%= person.getCognome()%></td>
-					</tr>
-					
-				<%}
-		}else{%>
-			<tr>
-				<td colspan = "6">Nessun ordine commissionato</td>
-			</tr>
-		<% }%> 
-			
-	</table>
-	
-	<label for = "filter">Ordina per </label>
-	<select name = "filter">
-			<option>Data</option> <!-- selezionato deve mostrare un campo di inserimento data -->
-			<option>Cliente</option> <!-- selezionato deve mostrare un campo di inserimento nome e cognome -->
+	<label for = "filter">Scegli l'ordine con cui visualizzare gli ordini commissionati</label>
+	<select name = "filter" onchange = "filter()">
+		<option value = ""></option>
+		<option value = "DataOrdine">Data</option>
+		<option value = "Username">Utente</option>
 	</select>
+	
+	<div id = "divFieldDate" style = "display:none">
+	<label for = "Inizio">Data di inizio</label>
+		<input type = "text" name = "Inizio" id = "Inizio" value = "" required placeholder = "Data di inizio" pattern = "^\d{4}-\d{2}-\d{2}$" onchange = "controllo(this, document.getElementById('errorInizio'), errorData)">
+		<span id = "errorInizio"></span>
+	<br>
+	<label for = "Fine">Data di fine</label>
+		<input type = "text" name = "Fine" id = "Fine" value = "" required placeholder = "Data di fine" pattern = "^\d{4}-\d{2}-\d{2}$" onchange = "controllo(this, document.getElementById('errorFine'), errorData)">
+		<span id = "errorFine"></span>
+		<button class = "pulsante" onclick = "validDateFields(); getOrdersForDate();">Filtra</button>
+	</div>
+	
+	<div id = "divFieldUser" style = "display:none">
+			<%  ProfileDAODataSource profiledao = new ProfileDAODataSource();
+				Collection<ProfileDTO> users = profiledao.doRetrieveAll("COGNOME"); 
+				if(users.size()>0){%>
+					<label for = "Utente"> Utente: </label>
+						<select name = "Utente" id = "Utente" onchange = "getUserOrders()">
+						<%for(ProfileDTO p: users){%>
+							<option value = "<%= p.getUsername() %>"><%= p.toString()%></option>
+						<%}%>
+						</select>
+				<%}else{%>
+					<p>Nessun utente ancora registrato al sito</p>
+				<%} %>
+				<button class = "pulsante" onclick = "getUserOrders();">Esegui</button>
+	</div>
+	
+	<div id = "OrdersTable">
+	</div>
 	
 </body>
 </html>

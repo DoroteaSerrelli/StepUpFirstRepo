@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"
-    import = "model.ProductDTO, model.VetrinaDTO, dao.VetrinaDAODataSource, dao.IBeanVetrinaDAO, dao.IBeanProductDAO, dao.ProductDAODataSource, java.util.*"
+    import = "model.ProductDTO, model.VetrinaDTO, dao.VetrinaDAODataSource, dao.IBeanVetrinaDAO, dao.IBeanIntDAO, dao.ProductDAODataSource, java.util.*"
     %>
 <!DOCTYPE html>
 <html>

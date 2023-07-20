@@ -1,6 +1,7 @@
 package model;
 
 public class ProfileDTO{
+
 	private String username;
 	private String nome, cognome, telefono;
 	private String sesso;
@@ -51,5 +52,10 @@ public class ProfileDTO{
 
 	public void setSesso(String sesso) {
 		this.sesso = sesso;
+	}
+	
+	@Override
+	public String toString() {
+		return "" + nome + " " + cognome;
 	}
 }

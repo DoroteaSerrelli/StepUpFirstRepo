@@ -48,6 +48,27 @@ public class Carrello {
 	}
 	
 	public int getNumProdotti() {
-		return products.size();
+		int quantità = 0;
+		if(products == null)
+			return 0;
+		for(ItemCarrello prod : products) {
+			quantità += prod.getQuantità();
+		}
+		return quantità;
+	}
+
+	public void updateProduct(ItemCarrello item) {
+		for(ItemCarrello prod : products) {
+			if(prod.getIDProdotto() == item.getIDProdotto()) {
+				products.remove(prod);
+				products.add(item);
+				break;
+			}
+		}
+		
+	}
+
+	public void svuota() {
+		products.clear();
 	}
 }

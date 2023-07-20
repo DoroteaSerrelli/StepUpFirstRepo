@@ -1,20 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"
-    import = "model.ItemCarrello, model.Carrello, controller.ManageCarrello, java.util.List"%>
+    import = "model.ItemCarrello, model.Carrello, java.util.List, dao.PhotoControl"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Carrello</title>
-<script src = "scripts/CostoTotale.jsp"></script>
-<%@include file="Header.jsp"%>
+<script src = "<%=request.getContextPath() %>/scripts/Cart.js"></script>
 </head>
 <body>
-
+	<%@include file="Header.jsp"%>
 	<div id="page">
 		<h3>Il tuo carrello</h3>
 		<p>
-			<% Carrello cart = ((Carrello)request.getSession().getAttribute("Carrello"));  
+			<% double costo = 0.00; 
+			Carrello cart = ((Carrello)request.getSession().getAttribute("Carrello"));  
 			if (cart == null){%>
 				Numero di articoli: 0
 			<%}else{ %>
@@ -27,32 +27,44 @@
 				<tr>
 					<th></th>
 					<th>Nome</th>
-					<th>Descrizione breve</th>
+					<th>Prezzo unitario</th>
 					<th>Quantità</th>
-					<th>Prezzo</th>
+					<th>Prezzo per quantità</th>
 					<th>Cancella</th>
 				</tr>
-				<% 	if(cart != null){
+				<%
+				if (cart != null) {
 					List<ItemCarrello> items = cart.getProducts();
-					for(ItemCarrello i : items){%>
-						<tr>
-							<td><%= i.getNomeProdotto() %></td>
-							<td><%= i.getDescrizione_breve() %></td>
-							<td> <%= i.getQuantità() %></td>
-							<td><%= i.getPrezzo()*i.getQuantità() %></td>
-							<td><a href = "ManageCarrello?action=delete&codice=<%=i.getIDProdotto()%>">Cancella</a></td>
-						
-						</tr>
-					<%}}
+					for (ItemCarrello i : items) {
+				%>
+				<tr>
+					<td><img class="TopProduct"
+						src="GetProductTopImage?Codice=<%=i.getIDProdotto()%>"
+						onerror="this.src='<%=request.getContextPath()%>/images/NoPhotoAvailable.jpg'"
+						style="width: 100px; height: 100px" alt="Product_image" /></td>
+					<td><%=i.getNomeProdotto()%></td>
+					<td><%=i.getPrezzo()%></td>
+					<td><input type="number" min="1" max="10" id = "<%=i.getIDProdotto() %>"
+						value="<%=i.getQuantità()%>" onchange="changeQuantity(this)"></td>
+					<td><%costo += Math.round(i.getPrezzo() * i.getQuantità()*100.00)/100.00;%><%= Math.round(i.getPrezzo() * i.getQuantità() * 100.00)/100.00%></td>
+					<td><a
+						href="ManageCarrello?action=remove&codice=<%=i.getIDProdotto()%>">Cancella</a></td>
+
+				</tr>
+				<%
+				}
+				}
 				%>
 
 				<tr>
 
 				</tr>
 			</table>
-
-
-		<a href = "common/Ordine.jsp"><button type = "pulsante" name = "CheckOut">Acquista i prodotti</button></a>
+		<p>Costo totale: <%= Math.round(costo * 100.0) / 100.0 %></p>
+		<a href = "ManageCarrello?action=delete"><button class = "pulsante" name = "SvuotaCarrello">Svuota il carrello</button></a>
+		<%if(cart.getNumProdotti() > 0){ %>
+			<a href = "common/Ordine.jsp"><button class = "pulsante" name = "CheckOut">Acquista i prodotti</button></a>
+			<%} %>
 		</div>
 	</div>
 

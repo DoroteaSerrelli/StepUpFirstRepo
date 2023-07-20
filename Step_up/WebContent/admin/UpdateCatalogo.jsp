@@ -1,11 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"
-    import = "dao.ProductDAODataSource, model.ProductDTO,dao.IBeanProductDAO, dao.PhotoControl, java.util.*"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
+    import = "dao.ProductDAODataSource, model.ProductDTO,dao.IBeanIntDAO, dao.PhotoControl, java.util.*"
     %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Aggiornamento catalogo</title>
 <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery-3.6.0.js"></script>
 <script src = "<%= request.getContextPath()%>/scripts/adminscripts.js"></script>
@@ -57,16 +57,29 @@
 		<label for="Nome">Nome:</label><br> 
 		<input name="Nome" type="text" required placeholder="Inserisci nome prodotto"><br> 
 		
-		<label for="DescrizioneBreve">Descrizione:</label><br>
-		<textarea name="DescrizioneBreve" maxlength="100" rows="3" required placeholder="enter description"></textarea><br>
+		<label for="DescrizioneBreve">Descrizione breve:</label><br>
+		<textarea name="DescrizioneBreve" cols = "100" rows="10" required placeholder="Inserisci una breve descrizione del prodotto..."></textarea><br>
+		
+		<label for="DescrizioneDettagliata">Descrizione dettagliata:</label><br>
+		<textarea name="DescrizioneDettagliata" cols = "100" rows="10" required placeholder="Inserisci una descrizione dettagliata del prodotto..."></textarea><br>
+		
+		<label for="Brand">Brand:</label><br> 
+		<input name="Brand" type="text" required placeholder="Inserisci il brand"><br> 
 		
 		<label for="Prezzo">Prezzo:</label><br> 
-		<input name="Prezzo" type="number" min="0" value="" required><br>
+		<input name="Prezzo" type="number" step = "0.01" value="" required><br>
 
 		<label for="Categoria">Categoria:</label><br> 
-		<input name="Categoria" type="text" required><br>
-
-		<button id = "pulsante" type="submit">Aggiungi</button><input type="reset" value="Reset">
+		<select name = "Categoria">
+			<option value = "Sport">Sport</option>
+			<option value = "Moda">Moda</option>
+			<option value = "Scarpe">Scarpe</option>
+			<option value = "Accessori">Accessori</option>
+			<option value = "Integratori">Integratori</option>
+		</select>
+		<br><br>
+		<button id = "pulsante" type="submit">Aggiungi</button>
+		<input type="reset" value="Reset">
 	</form>
 	<h3>Inserimento immagine di evidenza</h3>
 	<form action="UploadProductTopImage" enctype="multipart/form-data" method="post">
@@ -85,7 +98,7 @@
 			%>
 		</select> <br> 
 		<input class="file" type="file" name="talkPhoto" value="" maxlength="255"> <br> 
-		<button id = "pulsante" type="submit" value="Upload"></button>
+		<button id = "pulsante" type="submit" value="Upload">Caricamento immagine</button>
 		<button id = "pulsante" type="reset">Reset</button>
 	</form>
 	<h3>Inserimento immagine in galleria immagini del prodotto</h3>

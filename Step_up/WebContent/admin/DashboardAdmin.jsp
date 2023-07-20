@@ -1,18 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Dashboard Admin</title>
 <link rel = "stylesheet" type = "text/css" href = "../style/admin.css">
-<%@include file = "../Header.jsp"%>
 </head>
 <body>
+<%@include file = "AdminHeader.jsp"%>
 <h1>Benvenuto nella Pagina Riservata</h1>
 
 <p>
-Congratulazioni! <br> Questa pagina è accessibile solo all'amministratore.
+Congratulazioni! <br> Questa pagina Ã¨ accessibile solo all'amministratore.
 </p>
 Le azioni che puoi fare sono:
 <br> <a href = "UpdateCatalogo.jsp"><button id = "pulsante">Aggiornare il catalogo dei prodotti</button></a>
@@ -23,6 +23,6 @@ Le azioni che puoi fare sono:
 <a href="<%=request.getContextPath()%>/common/Logout">Logout</a>
 </p>
 
-<%@ include file="../Footer.jsp" %>
+<%@include file = "AdminFooter.jsp"%>
 </body>
 </html>

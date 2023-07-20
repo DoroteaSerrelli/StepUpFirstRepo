@@ -1,4 +1,4 @@
-@charset "ISO-8859-1";
+@charset "UTF-8";
 
 header, footer{
 	width: 100%;
@@ -21,6 +21,18 @@ header, nav, footer, h1, h2, h3 {
   font-family: Arial, Geneva, sans-serif;
 }
 
+section {
+	width: 60%;
+	float: left;
+	margin: 0 0 20px 0;
+}
+
+aside {
+	float: left;
+	margin: 0 0 20px 0;
+	padding: 0;
+}
+
 #search_mini_form{
 	height: 20px;
 	width: 50px;
@@ -41,10 +53,93 @@ h1{
 	margin-left: auto;
 }
 
+#page{
+	max-width: 100%;
+	margin: auto;
+}
+
+/******INIZIO BANNER *******/
+
+#banner{
+	width: 100%;
+	height: 500px;
+	position: relative;
+	overflow: hidden;
+}
+
+#banner img{
+	position: absolute;
+	top: 0;
+	left : 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: opacity 1s ease-in-out;
+}
+
+#banner img.active{
+	opacity: 1;
+}
+/***********FINE BANNER************/
+
 /*---- INIZIO FORM ----*/
 
+h2.form-header{
+	text-align: center;
+	color:  #252525;
+}
+.form-text{
+	text-align: center;
+}
 
+form{
+	border: 5px solid #252525;
+	display: table;
+	background-color: #F1797A;
+	width: 600px;
+	height: 300px;
+	margin: 0 auto;
+	
+}
 
+div.form-tableRow {
+	display: table-row;
+	text-align: left;
+}
+
+div.form-tableRow input {
+	display: table-cell;
+	padding: 5px;
+	vertical-align: top;
+}
+
+form.pulsante{
+	margin: 0 auto;
+}
+
+form textarea {
+	width: 400px;
+	height: 250px;
+}
+
+div.tableRow {
+	display: table-row;
+}
+
+div.tableRow>input, div.tableRow>label{
+	display: table-cell;
+	padding: 5px;
+	vertical-align: top;
+	margin: 5px 5px;
+}
+
+div.tableRow>label:first-child {
+	text-align: left;
+}
+
+div#register-contatiner{
+	margin: 0 auto;
+}
 /*---- FINE FORM ----*/
 aside{
 	border: 3px solid #19204E;
@@ -61,7 +156,7 @@ aside{
 }
 
 /*---- BOTTONI ----*/
-#pulsante {
+.pulsante {
 	outline: none;
 	cursor: pointer;
 	text-align: center;
@@ -74,6 +169,53 @@ aside{
 	margin: 0 auto;
 }
 
-#pulsante:hover{
+.pulsante:hover{
 	background: #AAAEAC;
+}
+
+.carrello-button{
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-style: bold;
+	color: #fff;
+	padding: 10px 20px;
+	border: solid 1px #252525;
+	background: #F1797A;
+	margin: 0 auto;
+}
+
+.carrello-button:hover{
+	background: #AAAEAC;
+}
+
+.wishlist-button{
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-style: bold;
+	color: #fff;
+	padding: 10px 20px;
+	border: solid 1px #252525;
+	background: #A50D36;
+	margin: 0 auto;
+}
+
+.wishlist-button:hover{
+	background: #AAAEAC;
+}
+
+/*************ELENCO PRODOTTI*******************/
+div#product-field{
+	display: block;
+	border-style : groove;
+	border-color: #BF9680;
+	padding: 10px;
+    width: 250px;
+}
+
+@media screen and (max-width: 1550px){
+	
 }

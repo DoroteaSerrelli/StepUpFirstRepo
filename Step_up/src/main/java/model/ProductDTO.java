@@ -1,6 +1,7 @@
 package model;
 
 public class ProductDTO{
+
 	private int IDProdotto;
 	private String NomeProdotto;
 	private String Descrizione_breve;
@@ -86,4 +87,11 @@ public class ProductDTO{
 	public void setCategoria(String categoria) {
 		this.Categoria = categoria;
 	}
+	
+	@Override
+	public String toString() {
+		return "Prodotto [IDProdotto=" + IDProdotto + ", NomeProdotto=" + NomeProdotto + ", Prezzo=" + Prezzo
+				+ ", Categoria=" + Categoria + ", Brand=" + Brand + "]";
+	}
+	
 }

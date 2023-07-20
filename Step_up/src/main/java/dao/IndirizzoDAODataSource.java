@@ -35,56 +35,55 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 	public synchronized void doSave(IndirizzoDTO address, String username) throws SQLException {
 
 		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+	    PreparedStatement preparedStatement = null;
 
-		String insertSQL = "INSERT INTO " + IndirizzoDAODataSource.TABLE_NAME
-				+ " (IDINDIRIZZO, VIA, NUMCIVICO, CITTA, CAP, PROVINCIA) VALUES ( ?, ?, ?, ?, ?, ?)";
+	    String insertSQL = "INSERT INTO " + IndirizzoDAODataSource.TABLE_NAME
+	            + "(IDINDIRIZZO, VIA, NUMCIVICO, CITTA, CAP, PROVINCIA) VALUES (?, ?, ?, ?, ?, ?)";
 
-		try {
-			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(insertSQL);
-			preparedStatement.setInt(1, address.getIDIndirizzo());
-			preparedStatement.setString(2, address.getVia());
-			preparedStatement.setInt(3, address.getNumCivico());
-			preparedStatement.setString(4, address.getCittà());
-			preparedStatement.setInt(5, address.getCap());
-			preparedStatement.setString(6, address.getProvincia());
+	    try {
+	        connection = ds.getConnection();
+	        connection.setAutoCommit(false);
+	        preparedStatement = connection.prepareStatement(insertSQL);
+	        preparedStatement.setInt(1, address.getIDIndirizzo());
+	        preparedStatement.setString(2, address.getVia());
+	        preparedStatement.setString(3, address.getNumCivico());
+	        preparedStatement.setString(4, address.getCittà());
+	        preparedStatement.setString(5, address.getCap());
+	        preparedStatement.setString(6, address.getProvincia());
 
-			preparedStatement.executeUpdate();
-			
-			connection.setAutoCommit(false);
-			connection.commit();
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				if (connection != null)
-					connection.close();
-			}
-		}
-		
-		String insertSQL2 = "INSERT INTO risiede(USERNAME, IDINDIRIZZO) VALUES (?, ?)";
-		
-		try {
-			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(insertSQL2);
-			preparedStatement.setString(1, username);
-			preparedStatement.setInt(2, address.getIDIndirizzo());
-			preparedStatement.executeUpdate();
-			
-			connection.setAutoCommit(false);
-			connection.commit();
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				if (connection != null)
-					connection.close();
-			}
-		}
-		
+	        preparedStatement.executeUpdate();
+
+	        connection.commit();
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                connection.close();
+	        }
+	    }
+
+	    String insertSQL2 = "INSERT INTO RISIEDE(USERNAME, IDINDIRIZZO) VALUES (?, ?)";
+
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(insertSQL2);
+	        preparedStatement.setString(1, username);
+	        preparedStatement.setInt(2, address.getIDIndirizzo());
+	        preparedStatement.executeUpdate();
+
+	        connection.setAutoCommit(false);
+	        connection.commit();
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                connection.close();
+	        }
+	    }	
 	}
 
 	@Override
@@ -107,9 +106,9 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 			while (rs.next()) {
 				dto.setIDIndirizzo(rs.getInt("IDINDIRIZZO"));
 				dto.setVia(rs.getString("VIA"));
-				dto.setNumCivico(rs.getInt("NUMCIVICO"));
+				dto.setNumCivico(rs.getString("NUMCIVICO"));
 				dto.setCittà(rs.getString("CITTA"));
-				dto.setCap(rs.getInt("CAP"));
+				dto.setCap(rs.getString("CAP"));
 				dto.setProvincia(rs.getString("PROVINCIA"));
 			}
 
@@ -126,7 +125,7 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 	}
 
 	@Override
-	public synchronized boolean doDelete(int IDIndirizzo, String username) throws SQLException {
+	public synchronized boolean doDeleteAddress(int IDIndirizzo, String username) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -141,6 +140,7 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 			preparedStatement.setInt(2, IDIndirizzo);
 
 			result = preparedStatement.executeUpdate();
+			doDelete(IDIndirizzo);
 
 		} finally {
 			try {
@@ -151,6 +151,48 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 					connection.close();
 			}
 		}
+		return (result != 0);
+	}
+	
+	@Override
+	public synchronized boolean doDelete(int IDIndirizzo) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet risultato = null;
+
+		int result = 0;
+
+		String selectSQL = "SELECT * FROM RISIEDE WHERE (IDINDIRIZZO = ?)";
+
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, IDIndirizzo);
+
+			risultato = preparedStatement.executeQuery();
+			if(risultato.next()) {
+				result = 1;
+			}
+			
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		
+		if(result == 1) {
+			String deleteSQL = "DELETE FROM "+IndirizzoDAODataSource.TABLE_NAME+ " WHERE (IDINDIRIZZO = ?)";
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(deleteSQL);
+			preparedStatement.setInt(1, IDIndirizzo);
+			
+			result = preparedStatement.executeUpdate();
+		}
+		
 		return (result != 0);
 	}
 
@@ -179,9 +221,9 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 
 				dto.setIDIndirizzo(rs.getInt("IDINDIRIZZO"));
 				dto.setVia(rs.getString("VIA"));
-				dto.setNumCivico(rs.getInt("NUMCIVICO"));
+				dto.setNumCivico(rs.getString("NUMCIVICO"));
 				dto.setCittà(rs.getString("CITTA"));
-				dto.setCap(rs.getInt("CAP"));
+				dto.setCap(rs.getString("CAP"));
 				dto.setProvincia(rs.getString("PROVINCIA"));
 				addresses.add(dto);
 			}

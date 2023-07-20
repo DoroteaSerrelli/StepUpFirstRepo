@@ -15,7 +15,7 @@ import javax.sql.DataSource;
 import model.ProductDTO;
 
 
-public class ProductDAODataSource implements IBeanProductDAO{
+public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 	private static DataSource ds;
 
 	static {
@@ -182,4 +182,83 @@ public class ProductDAODataSource implements IBeanProductDAO{
 		}
 		return products;
 	}
+
+	@Override
+	public synchronized Collection<ProductDTO> searching(String searchTerm) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		Collection<ProductDTO> products = new LinkedList<ProductDTO>();
+
+		String selectSQLName = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE NOMEPRODOTTO LIKE ?";
+		
+
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQLName);
+			preparedStatement.setString(1, "%" + searchTerm + "%");
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				ProductDTO dto = new ProductDTO();
+
+				dto.setIDProdotto(rs.getInt("IDPRODOTTO"));
+				dto.setNomeProdotto(rs.getString("NOMEPRODOTTO"));
+				dto.setDescrizione_breve(rs.getString("DESCRIZIONE_BREVE"));
+				dto.setDescrizione_dettagliata(rs.getString("DESCRIZIONE_DETTAGLIATA"));
+				dto.setPrezzo(rs.getFloat("PREZZO"));
+				dto.setCategoria(rs.getString("CATEGORIA"));
+				dto.setBrand(rs.getString("BRAND"));
+				dto.setTopImage(rs.getBytes("TOPIMAGE"));
+				products.add(dto);
+			}
+
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+
+		String selectSQLDescription = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE ((DESCRIZIONE_BREVE LIKE ?) OR (DESCRIZIONE_DETTAGLIATA LIKE ?))";
+		
+
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQLDescription);
+			preparedStatement.setString(1, "%" + searchTerm + "%");
+			preparedStatement.setString(2, "%" + searchTerm + "%");
+			
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				ProductDTO dto = new ProductDTO();
+
+				dto.setIDProdotto(rs.getInt("IDPRODOTTO"));
+				dto.setNomeProdotto(rs.getString("NOMEPRODOTTO"));
+				dto.setDescrizione_breve(rs.getString("DESCRIZIONE_BREVE"));
+				dto.setDescrizione_dettagliata(rs.getString("DESCRIZIONE_DETTAGLIATA"));
+				dto.setPrezzo(rs.getFloat("PREZZO"));
+				dto.setCategoria(rs.getString("CATEGORIA"));
+				dto.setBrand(rs.getString("BRAND"));
+				dto.setTopImage(rs.getBytes("TOPIMAGE"));
+				products.add(dto);
+			}
+
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+
+		return products;
+	}
+
 }

@@ -3,9 +3,9 @@ package model;
 public class IndirizzoDTO {
 	private int IDIndirizzo;
 	private String via;
-	private int numCivico;
+	private String numCivico;
 	private String città;
-	private int cap;
+	private String cap;
 	private String provincia;
 	
 
@@ -26,11 +26,11 @@ public class IndirizzoDTO {
 		this.via = via;
 	}
 	
-	public int getNumCivico() {
+	public String getNumCivico() {
 		return numCivico;
 	}
 	
-	public void setNumCivico(int numCivico) {
+	public void setNumCivico(String numCivico) {
 		this.numCivico = numCivico;
 	}
 	
@@ -42,12 +42,12 @@ public class IndirizzoDTO {
 		this.città = città;
 	}
 	
-	public int getCap() {
+	public String getCap() {
 		return cap;
 	}
 	
-	public void setCap(int cap) {
-		this.cap = cap;
+	public void setCap(String string) {
+		this.cap = string;
 	}
 	
 	public String getProvincia() {

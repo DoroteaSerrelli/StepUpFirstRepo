@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
     import = "java.util.*, model.ProfileDTO,dao.ProfileDAODataSource, dao.IndirizzoDAODataSource, model.IndirizzoDTO"
     %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="UTF-8">
 <title>Area riservata</title>
 </head>
 <body>
-
+	<%@include file = "../Header.jsp" %>
 
 	<h1>Area riservata</h1>
 
@@ -39,12 +39,12 @@
 				<%= bean.getSesso() %>
 				Indirizzi:
 				<%for(IndirizzoDTO dt : addressesBean){%>
-					<p>Indirizzo n. <%= dt.getIDIndirizzo()%>: <%= dt.getVia()%> <%= dt.getNumCivico()%>, <%= dt.getCittà()%> (<%= dt.getProvincia()%>), <%= dt.getCap() %></p>
+					<p>Indirizzo n. <%= dt.getIDIndirizzo()%>: <%= dt.toString() %></p>
 			<% } %>
 
 			</p>
 		</jsp:useBean>
-		<a href="<%= request.getContextPath() %>/common/Profilo.jsp"><button id = "pulsante" >Aggiorna i dati personali</button></a>
+		<a href="<%= request.getContextPath() %>/common/Profilo.jsp"><button class = "pulsante" >Aggiorna i dati personali</button></a>
 
 
 	</fieldset>
@@ -52,6 +52,6 @@
 <legend>Ordini effettuati</legend>
 </fieldset>
 
-<a href="<%= request.getContextPath() %>/common/Logout">Logout</a>
+<a href="<%= request.getContextPath() %>/common/Logout"><button class = "pulsante">Logout</button></a>
 </body>
 </html>
