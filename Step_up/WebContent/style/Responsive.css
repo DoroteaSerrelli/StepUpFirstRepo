@@ -307,7 +307,8 @@ div#product-field{
 }
 
 @media screen and (max-width: 1250px){
-	#banne{
-		height: 200px;
+	#banner{
+
+		height: 400px;
 	}
 }
