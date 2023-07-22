@@ -12,7 +12,7 @@
 <script src = "<%=request.getContextPath() %>/scripts/Cart.js"></script>
 </head>
 <body>
-	<%int codice = Integer.parseInt(request.getParameter("Codice"));
+	<%int codice = Integer.parseInt(request.getParameter("codice"));
 	  ProductDAODataSource dao = new ProductDAODataSource();
 	  ProductDTO product = dao.doRetrieveByKey(codice);
 	%>

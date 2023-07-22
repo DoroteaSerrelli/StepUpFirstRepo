@@ -67,6 +67,15 @@ public class Carrello {
 		}
 		
 	}
+	
+	public double totaleSpesa() {
+		double costo = 0.00;
+		List<ItemCarrello> prodotti = this.getProducts();
+		for(ItemCarrello i : prodotti) {
+				costo += i.getPrezzo()*i.getQuantità();
+		}
+		return Math.round(costo*100.00)/100.00;
+	}
 
 	public void svuota() {
 		products.clear();

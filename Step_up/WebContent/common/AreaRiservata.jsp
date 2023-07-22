@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
-    import = "java.util.*, model.ProfileDTO,dao.ProfileDAODataSource, dao.IndirizzoDAODataSource, model.IndirizzoDTO"
+    import = "java.util.*, model.PagamentoDTO, model.ItemCarrello, model.ProductDTO, model.OrdineDTO, model.ProfileDTO, dao.ProductDAODataSource, dao.PagamentoDAODataSource, dao.OrdineDAODataSource, dao.ProfileDAODataSource, dao.IndirizzoDAODataSource, model.IndirizzoDTO"
     %>
 <!DOCTYPE html>
 <html>
@@ -20,38 +20,86 @@
 	<fieldset>
 
 		<legend>Dati personali</legend>
-		<jsp:useBean id="bean" class="model.ProfileDTO" scope="page">
 			<%
 			ProfileDAODataSource dao = new ProfileDAODataSource();
-			bean = dao.doRetrieveByKey((String) session.getAttribute("username"));
+			ProfileDTO bean = dao.doRetrieveByUsername((String) request.getSession().getAttribute("username"));
 			IndirizzoDAODataSource address = new IndirizzoDAODataSource();
 			Collection<IndirizzoDTO> addressesBean = address.doRetrieveAll("IDIndirizzo", bean.getUsername());
 			%>
 
-			<p>
-				Nome:
-				<%= bean.getNome() %>
-				Cognome:
-				<%= bean.getCognome() %>
+			<div class = "profileTable">
+				<div class = "profileRow">Nome:
+				<%= bean.getNome() %></div>
+				<div class = "profileRow">Cognome:
+				<%= bean.getCognome() %></div>
+				<div class = "profileRow">
+				Email: <%= bean.getEmail() %>
+				</div>
+				<div class = "profileRow">
 				Telefono:
 				<%= bean.getTelefono() %>
+				</div>
+				<div class = "profileRow">
 				Sesso:
 				<%= bean.getSesso() %>
-				Indirizzi:
+				</div>
+			</div>
+				<fieldset>
+
+		<legend>Indirizzi</legend>
+				
 				<%for(IndirizzoDTO dt : addressesBean){%>
 					<p>Indirizzo n. <%= dt.getIDIndirizzo()%>: <%= dt.toString() %></p>
 			<% } %>
-
-			</p>
-		</jsp:useBean>
+	</fieldset>
 		<a href="<%= request.getContextPath() %>/common/Profilo.jsp"><button class = "pulsante" >Aggiorna i dati personali</button></a>
-
+		<a href="<%= request.getContextPath() %>/common/Indirizzi.jsp"><button class = "pulsante" >Aggiorna gli indirizzi</button></a>
+		
 
 	</fieldset>
 	<fieldset>
-<legend>Ordini effettuati</legend>
-</fieldset>
+		<legend>Ordini effettuati</legend>
+		<%
+		OrdineDAODataSource ordineDao = new OrdineDAODataSource();
+		Collection<OrdineDTO> ordini = ordineDao.doRetrieveForUser(bean.getUsername());
+		PagamentoDAODataSource pagamentoDao = new PagamentoDAODataSource();
+		if(ordini != null && ordini.size() > 0){%>
+			<table>
+				<tr>
+				<th>Numero ordine</th>
+				<th>Importo</th>
+				<th>Prodotti</th>
+				<th>Data Ordine</th>
+				<th>Ora ordine</th>
+				<th>Metodo di spedizione</th>
+				</tr>
+				<% for(OrdineDTO o: ordini){
+					Collection <ItemCarrello> items = ordineDao.doRetrieveAllProducts(o.getIDOrdine());
+					ProductDAODataSource daoProduct = new ProductDAODataSource();
+					String products = "";
+					for(ItemCarrello i: items){
+						ProductDTO product = daoProduct.doRetrieveByKey(i.getIDProdotto());
+						products = products + " \n" + product.ordertoString() + "[prezzo di acquisto = "+
+								i.getPrezzo()+"], [quantità = "+ i.getQuantità()+"]";
+					}
+				%>
+				<tr>
+					<td><%= o.getIDOrdine() %></td>
+					<td><%= (pagamentoDao.doRetrieveByOrderID(o.getIDOrdine())).getImporto() %></td>
+					<td><%= products.toString() %></td>
+					<td><%= o.getDataOrdine() %></td>
+					<td><%= o.getOraOrdine() %></td>
+					<td><%= o.getMetSpedizione() %></td>
+				</tr>
+					
+				<% }%>
+			</table>
+		<%}else{%>
+			<p>Non hai acquistato prodotti nel nostro sito. Guarda le nostre vetrine nella nostra <a href= "<%=request.getContextPath() %>/Homepage.jsp">homepage</a>.</p>
+		<%}
+		%>
+	</fieldset>
 
-<a href="<%= request.getContextPath() %>/common/Logout"><button class = "pulsante">Logout</button></a>
+	<a href="<%= request.getContextPath() %>/common/Logout"><button class = "pulsante">Logout</button></a>
 </body>
 </html>

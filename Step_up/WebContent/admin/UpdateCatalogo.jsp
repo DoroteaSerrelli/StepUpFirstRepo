@@ -11,12 +11,12 @@
 <script src = "<%= request.getContextPath()%>/scripts/adminscripts.js"></script>
 </head>
 <body>
-<%@include file = "../Header.jsp" %>
+<%@include file = "AdminHeader.jsp" %>
 <%  ProductDAODataSource dao = new ProductDAODataSource();
 	Collection<ProductDTO> products = dao.doRetrieveAll("idprodotto"); %>
 	
 	<h2>Prodotti</h2>
-	<a href="product">List</a>
+
 	<table border="1">
 		<%
 			if (products != null && products.size() != 0) {
@@ -78,8 +78,8 @@
 			<option value = "Integratori">Integratori</option>
 		</select>
 		<br><br>
-		<button id = "pulsante" type="submit">Aggiungi</button>
-		<input type="reset" value="Reset">
+		<button class = "pulsante" type="submit">Aggiungi</button>
+		<button class = "pulsante " type="reset">Reset</button>
 	</form>
 	<h3>Inserimento immagine di evidenza</h3>
 	<form action="UploadProductTopImage" enctype="multipart/form-data" method="post">
@@ -98,8 +98,8 @@
 			%>
 		</select> <br> 
 		<input class="file" type="file" name="talkPhoto" value="" maxlength="255"> <br> 
-		<button id = "pulsante" type="submit" value="Upload">Caricamento immagine</button>
-		<button id = "pulsante" type="reset">Reset</button>
+		<button class = "pulsante" type="submit" value="Upload">Caricamento immagine</button>
+		<button class = "pulsante" type="reset">Reset</button>
 	</form>
 	<h3>Inserimento immagine in galleria immagini del prodotto</h3>
 	<form action="UploadProductImages" enctype="multipart/form-data" method="post">
@@ -118,8 +118,8 @@
 			%>
 		</select> <br> 
 		<input class="file" type="file" name="talkPhoto" value="" maxlength="255"> <br> 
-		<button id = "pulsante" type="submit" value="Upload">Caricamento</button>
-		<button id = "pulsante" type="reset">Reset</button>
+		<button class = "pulsante" type="submit" value="Upload">Caricamento</button>
+		<button class = "pulsante" type="reset">Reset</button>
 	</form>
 	
 	<h2>Cancellazione di un prodotto</h2>
@@ -139,7 +139,7 @@
 			%>
 		</select> <br> 
 		
-		<button id = "pulsante" type="submit">Cancella</button><input type="reset" value="Reset">
+		<button class = "pulsante" type="submit">Cancella</button><input type="reset" value="Reset">
 	</form>
 	
 	<h2>Cancellazione di un'immagine dalla galleria delle immagini di un prodotto</h2>
@@ -160,7 +160,7 @@
 		</select> <br> 
 		<fieldset id = "image-container"></fieldset>
 		
-		<button id = "pulsante" type="submit">Rimuovi</button><input type="reset" value="Reset">
+		<button class = "pulsante" type="submit">Rimuovi</button><input type="reset" value="Reset">
 	</form>
 	
 	
@@ -178,15 +178,28 @@
 		<label for="DescrizioneBreve">Descrizione:</label><br>
 		<textarea name="DescrizioneBreve" maxlength="100" rows="3" placeholder="enter description"></textarea><br>
 		
+		<label for="DescrizioneDettagliata">Descrizione dettagliata:</label><br>
+		<textarea name="DescrizioneDettagliata" cols = "100" rows="10" placeholder="Inserisci una descrizione dettagliata del prodotto..."></textarea><br>
+		
+		<label for="Brand">Brand:</label><br> 
+		<input name="Brand" type="text" placeholder="Inserisci il brand"><br> 
+		
 		<label for="Prezzo">Prezzo:</label><br> 
-		<input name="Prezzo" type="number" min="0" value="0"><br>
-
+		<input name="Prezzo" type="number" step = "0.01" value=""><br>
+		
 		<label for="Categoria">Categoria:</label><br> 
-		<input name="Categoria" type="text"><br>
-
-		<button id = "pulsante" type="submit">Modifica</button><input type="reset" value="Reset">
+		<select name = "Categoria">
+			<option value=""></option>
+			<option value="Sport">Sport</option>
+			<option value="Moda">Moda</option>
+			<option value="Scarpe">Scarpe</option>
+			<option value="Accessori">Accessori</option>
+			<option value="Integratori">Integratori</option>
+		</select>
+	<br><br>
+		<button class = "pulsante" type="submit">Modifica</button><input type="reset" value="Reset">
 	</form>
 	
-	<%@ include file="../Footer.jsp" %>
+	<%@ include file="AdminFooter.jsp" %>
 </body>
 </html>

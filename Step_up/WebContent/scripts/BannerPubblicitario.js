@@ -13,4 +13,4 @@ $(document).ready(function() {
 		}
 		banner.innerHTML = "<img src ='" + images[counter] + "' class = 'active'>";
 	}, 4000);
-})
+});

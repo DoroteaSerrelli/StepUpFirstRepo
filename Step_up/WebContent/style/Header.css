@@ -2,6 +2,9 @@ header{
 	background-color: #F1797A;
 	font-size: 16px;
 	color: #f2f2f2;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
 }
 
 header img.logo{
@@ -34,7 +37,7 @@ nav ul li{
 }
 
 nav li a{
-	text-decoration: none;	/*elimino le sottolineature dei link*/
+	text-decoration: none;
 	color:#A50D36;
 	transition: 0.3s ease;
 }

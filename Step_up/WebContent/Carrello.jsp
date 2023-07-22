@@ -13,7 +13,7 @@
 	<div id="page">
 		<h3>Il tuo carrello</h3>
 		<p>
-			<% double costo = 0.00; 
+			<% 
 			Carrello cart = ((Carrello)request.getSession().getAttribute("Carrello"));  
 			if (cart == null){%>
 				Numero di articoli: 0
@@ -44,9 +44,11 @@
 						style="width: 100px; height: 100px" alt="Product_image" /></td>
 					<td><%=i.getNomeProdotto()%></td>
 					<td><%=i.getPrezzo()%></td>
-					<td><input type="number" min="1" max="10" id = "<%=i.getIDProdotto() %>"
-						value="<%=i.getQuantità()%>" onchange="changeQuantity(this)"></td>
-					<td><%costo += Math.round(i.getPrezzo() * i.getQuantità()*100.00)/100.00;%><%= Math.round(i.getPrezzo() * i.getQuantità() * 100.00)/100.00%></td>
+					<td> <button type = "button" onclick = "changePlusQuantity(<%=i.getIDProdotto()%>)">+</button>
+					<input type="text" id = "<%=i.getIDProdotto() %>" value="<%=i.getQuantità()%>">
+						<button type = "button" onclick = "changeMinusQuantity(<%=i.getIDProdotto()%>)">-</button>
+						</td>
+					<td><%= Math.round(i.getPrezzo() * i.getQuantità() * 100.00)/100.00%></td>
 					<td><a
 						href="ManageCarrello?action=remove&codice=<%=i.getIDProdotto()%>">Cancella</a></td>
 
@@ -60,9 +62,9 @@
 
 				</tr>
 			</table>
-		<p>Costo totale: <%= Math.round(costo * 100.0) / 100.0 %></p>
+		<p>Costo totale: <%if(cart == null){%> 0.00<%}else{ %> <%= cart.totaleSpesa() %><%} %></p>
 		<a href = "ManageCarrello?action=delete"><button class = "pulsante" name = "SvuotaCarrello">Svuota il carrello</button></a>
-		<%if(cart.getNumProdotti() > 0){ %>
+		<%if(cart != null && cart.getNumProdotti() > 0){ %>
 			<a href = "common/Ordine.jsp"><button class = "pulsante" name = "CheckOut">Acquista i prodotti</button></a>
 			<%} %>
 		</div>

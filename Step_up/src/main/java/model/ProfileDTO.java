@@ -4,6 +4,8 @@ public class ProfileDTO{
 
 	private String username;
 	private String nome, cognome, telefono;
+	private String email;
+	
 	private String sesso;
 	
 	public ProfileDTO() {
@@ -12,6 +14,7 @@ public class ProfileDTO{
 		this.cognome = "";
 		this.telefono = "";
 		this.sesso = "";
+		this.email = "";
 	}
 
 	public String getUsername() {
@@ -44,6 +47,14 @@ public class ProfileDTO{
 
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+		
+	}
+	public String getEmail() {
+		return email;
 	}
 
 	public String getSesso() {

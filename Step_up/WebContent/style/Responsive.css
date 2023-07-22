@@ -1,5 +1,12 @@
 @charset "UTF-8";
 
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: Arial, Geneva, sans-serif;
+}
+
 header, footer{
 	width: 100%;
 	margin: 0;
@@ -17,10 +24,6 @@ header{
 	padding: 20px;
 }
 
-header, nav, footer, h1, h2, h3 {
-  font-family: Arial, Geneva, sans-serif;
-}
-
 section {
 	width: 60%;
 	float: left;
@@ -33,15 +36,10 @@ aside {
 	padding: 0;
 }
 
-#search_mini_form{
-	height: 20px;
-	width: 50px;
-}
-
 /*--- BODY ---*/
 body {
   	padding: 0px;
-	margin: 0px;
+	margin: auto;
 	font-family: Arial, Geneva, sans-serif;
 	line-height: 1.2em;
 	font-size: 1em;
@@ -54,9 +52,76 @@ h1{
 }
 
 #page{
-	max-width: 100%;
+	max-width: 1500px;
 	margin: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
+
+
+#searchBar_field{
+	width: 300px;
+	height: 400px;
+	box-shadow: 4px, 4px, 30px rgba(0, 0, 0, 0.06);
+	padding: 20px;
+	overflow-y: scroll;
+}
+
+#searchBar_field form{
+	width: 100%;
+	border: 1px solid #A50D36;
+	border-radius: 4px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+#searchBar_field form input{
+	border: none;
+	outline: none;
+	box-shadow: none;
+	width: 100%;
+	font-size: 16px;
+	font-weight: 400px;
+	padding: 8px 10px;
+}
+
+#searchBar_field form label{
+	padding-right: 5px;
+}
+
+.suggerimenti{
+	padding: 20px 0px;
+}
+
+.suggerimenti .prodotti{
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	padding-bottom: 15px;
+}
+
+
+.prodotti img{
+	width: 60px;
+	height: 60px;
+	object-fit: cover;
+	border-radius: 5px;
+}
+
+.prodotti-dettagli h2{
+	padding-left: 15px;
+	font-size: 20px;
+	color: #252525;
+}
+
+.prodotti-dettagli h3{
+	font-size: 18px;
+	color: #252525;
+}
+
 
 /******INIZIO BANNER *******/
 
@@ -167,6 +232,8 @@ aside{
 	border: solid 1px #252525;
 	background: #F1797A;
 	margin: 0 auto;
+	width: 165px;
+	height:40px;
 }
 
 .pulsante:hover{
@@ -184,6 +251,8 @@ aside{
 	border: solid 1px #252525;
 	background: #F1797A;
 	margin: 0 auto;
+	width: 165px;
+	height:40px;
 }
 
 .carrello-button:hover{
@@ -201,9 +270,30 @@ aside{
 	border: solid 1px #252525;
 	background: #A50D36;
 	margin: 0 auto;
+	width: 165px;
+	height:40px;
 }
 
 .wishlist-button:hover{
+	background: #AAAEAC;
+}
+
+.details-button{
+	outline: none;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	font-style: bold;
+	color: #fff;
+	padding: 10px 20px;
+	border: solid 1px #252525;
+	background: #BF9680;
+	width: 165px;
+	height:40px;
+	margin: 0 auto;
+}
+
+.details-button:hover{
 	background: #AAAEAC;
 }
 
@@ -216,6 +306,8 @@ div#product-field{
     width: 250px;
 }
 
-@media screen and (max-width: 1550px){
-	
+@media screen and (max-width: 1250px){
+	#banne{
+		height: 200px;
+	}
 }

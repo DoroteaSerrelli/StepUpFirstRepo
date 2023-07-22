@@ -8,4 +8,5 @@ public interface IBeanDAO<T>{
 	public boolean doDelete(String username) throws SQLException;
 	public T doRetrieveByKey(String username) throws SQLException;
 	public Collection<T> doRetrieveAll(String order) throws SQLException;
+	T doRetrieveByUsername(String username) throws SQLException;
 }

@@ -23,7 +23,7 @@ public class UserAccountDAODataSource implements IBeanDAO<UserAccountDTO>{
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
-			ds = (DataSource) envCtx.lookup("jdbc/users");
+			ds = (DataSource) envCtx.lookup("jdbc/stepup");
 
 		} catch (NamingException e) {
 			System.out.println("Error:" + e.getMessage());
@@ -39,14 +39,13 @@ public class UserAccountDAODataSource implements IBeanDAO<UserAccountDTO>{
 		PreparedStatement preparedStatement = null;
 
 		String insertSQL = "INSERT INTO " + UserAccountDAODataSource.TABLE_NAME
-				+ " (USERNAME, USERPASSWORD, EMAIL) VALUES (?, ?, ?);";
+				+ " (USERNAME, USERPASSWORD) VALUES (?, ?);";
 
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setString(1, user_account.getUsername());
 			preparedStatement.setString(2, user_account.getUserPassword());
-			preparedStatement.setString(3, user_account.getEmail());
 
 			if(preparedStatement.executeUpdate() == 0) {
 				System.out.println("Errore");
@@ -117,7 +116,6 @@ public class UserAccountDAODataSource implements IBeanDAO<UserAccountDTO>{
 
 				dto.setUsername(rs.getString("USERNAME"));
 				dto.setUserPassword(rs.getString("USERPASSWORD"));
-				dto.setEmail(rs.getString("EMAIL"));
 				users.add(dto);
 			}
 
@@ -147,7 +145,35 @@ public class UserAccountDAODataSource implements IBeanDAO<UserAccountDTO>{
 			while (rs.next()) {
 				dto.setUsername(rs.getString("USERNAME"));
 				dto.setUserPasswordRetrieve(rs.getString("USERPASSWORD"));
-				dto.setEmail(rs.getString("EMAIL"));
+			}
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		return dto;
+	}
+
+
+	@Override
+	public UserAccountDTO doRetrieveByUsername(String username) throws SQLException {
+		
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		UserAccountDTO dto = new UserAccountDTO();
+		String selectSQL = "SELECT * FROM " + UserAccountDAODataSource.TABLE_NAME + " WHERE USERNAME = ?";
+		try {
+			connection = ds.getConnection();	
+			preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement.setString(1, username);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				dto.setUsername(rs.getString("USERNAME"));
+				dto.setUserPasswordRetrieve(rs.getString("USERPASSWORD"));
 			}
 		} finally {
 			try {

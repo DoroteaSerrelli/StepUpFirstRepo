@@ -1,7 +1,9 @@
-package json;
+package control;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,21 +19,21 @@ import dao.ProductDAODataSource;
 import model.ProductDTO;
 
 /**
- * Servlet implementation class Ricerca
+ * Servlet implementation class GetRisultatiRicerca
  */
-@WebServlet("/Ricerca")
-public class Ricerca extends HttpServlet {
+@WebServlet("/GetRisultatiRicerca")
+public class GetRisultatiRicerca extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+ 
+    public GetRisultatiRicerca() {
+        super();
+    }
 
-	public Ricerca() {
-		super();
-	}
-
-
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String searchTerm = request.getParameter("value");
+		String searchTerm = request.getParameter("searchBar");
 		System.out.println("valore: "+ searchTerm);
-		if(searchTerm != null) {
+		if(searchTerm != null && searchTerm.trim() != "") {
 			ProductDAODataSource dao = new ProductDAODataSource();
 			Collection<ProductDTO> results = new LinkedList<ProductDTO>();
 			try {
@@ -42,15 +43,10 @@ public class Ricerca extends HttpServlet {
 				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Homepage.jsp");
 				rd.forward(request, response);
 			}
-			JSONArray jsonArray = new JSONArray();
-			for (ProductDTO product : results) {
-				JSONObject jsonObject = new JSONObject();
-				jsonObject.put("nomeProdotto", product.getNomeProdotto());
-				jsonArray.add(jsonObject);
-			}
-			String jsonProducts = jsonArray.toString();
-			response.setContentType("application/json");
-			response.getWriter().write(jsonProducts);
+			
+			request.setAttribute("risultati", results);
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/RisultatiRicerca.jsp");
+			rd.forward(request, response);
 		}
 	}
 
@@ -58,4 +54,5 @@ public class Ricerca extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
+
 }

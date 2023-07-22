@@ -7,10 +7,12 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Aggiornare vetrine</title>
+<meta name = "viewport " content="initial-scale=1, width=device-width">
 <script src = "<%= request.getContextPath()%>/scripts/adminscripts.js"></script>
 </head>
 <body>
-<%@include file = "../Header.jsp" %>
+<div id = "page">
+<%@include file = "AdminHeader.jsp"%>
 <%	VetrinaDAODataSource dao = new VetrinaDAODataSource();
 	Collection <VetrinaDTO> vetrine = dao.doRetrieveAll("idvetrina");
 	%>
@@ -48,20 +50,26 @@
 	</table>
 	
 	
-	<h2>Sei intenzionato ad aggiungere una nuova vetrina? <br>Inserimento vetrina</h2>
+	
 	<form name = "inserimento" action="ManageVetrina" method="POST" accept-charset="utf-8">
+	<h4>Per aggiungere una nuova vetrina compila i dati del seguente form</h4>
 		<input type = "hidden" name = "action" value = "insert">
-		
+		<div class="form-tableRow">
 		<label for="Codice">Codice:</label><br> 
 		<input name="Codice" type="text" required placeholder="Inserisci codice vetrina" onblur = "checkValue('inserimento', 'Codice'); showProducts('inserimento');"><br> 
-		
+		</div>
+		<div class="form-tableRow">
 		<label for="Nome">Nome:</label><br> 
 		<input name="Nome" type="text" required placeholder="Inserisci nome vetrina"><br> 
-		
+		</div>
+		<div class="form-tableRow">
 		<fieldset id = "addProductFieldset" style = "display: none">
 		</fieldset>
-
-		<button id = "pulsante" type="submit">Aggiungi</button><input type="reset" value="Reset">
+		</div>
+		<div class="form-tableRow">
+		<button class = "pulsante" type="submit">Aggiungi</button>
+		<button class = "pulsante" type = "reset">Reset</button>
+		</div>
 	</form>
 	
 	<h2>Sei intenzionato a cancellare una vetrina? Cancellazione vetrina</h2>
@@ -94,6 +102,7 @@
 
 		<button id = "pulsante" type="submit">Aggiorna la vetrina</button><input type="reset" value="Reset">
 	</form>
-	<%@include file = "../Footer.jsp" %>
+	<%@include file = "AdminFooter.jsp" %>
+	</div>
 </body>
 </html>

@@ -12,6 +12,7 @@
 
 </head>
 <body>
+<%@include file = "AdminHeader.jsp" %>
 	<label for = "filter">Scegli l'ordine con cui visualizzare gli ordini commissionati</label>
 	<select name = "filter" onchange = "filter()">
 		<option value = ""></option>
@@ -48,6 +49,6 @@
 	
 	<div id = "OrdersTable">
 	</div>
-	
+	<%@include file = "AdminFooter.jsp" %>
 </body>
 </html>

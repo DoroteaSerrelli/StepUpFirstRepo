@@ -24,7 +24,7 @@ public class VetrinaDAODataSource implements IBeanVetrinaDAO{
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
-			ds = (DataSource) envCtx.lookup("jdbc/users");
+			ds = (DataSource) envCtx.lookup("jdbc/stepup");
 
 		} catch (NamingException e) {
 			System.out.println("Error:" + e.getMessage());

@@ -227,13 +227,17 @@ function filter() {
   const option = document.getElementsByName("filter")[0];
   const divFieldDate = document.getElementById("divFieldDate");
   const divFieldUser = document.getElementById("divFieldUser");
+  let ordersField = document.getElementById("OrdersTable");
   console.log(option.value);
   if (option.value === "DataOrdine") {
     divFieldDate.style.display = "block";
     divFieldUser.style.display = "none";
+    ordersField.innerHTML = "";
+    
   } else if (option.value === "Username") {
     divFieldDate.style.display = "none";
     divFieldUser.style.display = "block";
+    ordersField.innerHTML = "";
   }
 }
 
@@ -273,28 +277,30 @@ function validDateFields(){
 	return valid;
 }
 
-function getOrdersForDate(){
-	let startDate = document.getElementById("Inizio"); 
-	let endDate = document.getElementById("Fine");
-	if(startDate != null && endDate != null){
-		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "GetOrdersforDate", true);
-		xhr.setRequestHeader("content-type", "x-www-form-urlencoded");
-		xhr.onreadystatechange = function(){
-		if(xhr.status === 200 && xhr.readyState === 4){
-			const orders = JSON.parse(xhr.responseText);
-			showOrdersForDate(orders);
-		}
-		xhr.onerror = function() {
-     	console.error("Errore nel recupero degli ordini: ", xhr.statusText);
-    	};
-    	xhr.send("start="+startDate.value+"&end="+endDate.value);
-	}
-	}
+function getOrdersForDate() {
+    let startDate = document.getElementById("Inizio");
+    let endDate = document.getElementById("Fine");
+    if (startDate != null && endDate != null) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "GetOrdersforDate", true);
+        xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.status === 200 && xhr.readyState === 4) {
+                const orders = JSON.parse(xhr.responseText);
+                showOrdersForDate(orders);
+            }
+        };
+        xhr.onerror = function () {
+            console.error("Errore nel recupero degli ordini: ", xhr.statusText);
+        };
+        xhr.send("date=" + encodeURIComponent(startDate.value) + "&endDateString=" + encodeURIComponent(endDate.value));
+
+    }
 }
 
+
 function showOrdersForDate(orders) {
-  let ordersTable = document.getElementById("ordersTable");
+  let ordersTable = document.getElementById("OrdersTable");
   ordersTable.innerHTML = "";
   const table = document.createElement("table");
   const headerRow = document.createElement("tr");
@@ -304,7 +310,7 @@ function showOrdersForDate(orders) {
   if (orders.length > 0) {
     orders.forEach(order => {
       const tableRow = document.createElement("tr");
-      tableRow.innerHTML = `<td>${order.id}</td><td>${order.utente}</td><td>${order.prodotti}</td><td>${order.metodoSpedizione}</td><td>${order.metodoConsegna}</td><td>${order.data}</td><td>${order.ora}</td>`;
+      tableRow.innerHTML = `<td>${order.IDORDINE}</td><td>${order.UTENTE}</td><td>${order.PRODOTTI}</td><td>${order.METODOSPEDIZIONE}</td><td>${order.METODOCONSEGNA}</td><td>${order.DATA}</td><td>${order.ORA}</td>`;
       table.appendChild(tableRow);
     });
   } else {
@@ -321,7 +327,8 @@ function showOrdersForDate(orders) {
 function getUserOrders(){
 	let user = document.getElementById("Utente");
 	var xhr = new XMLHttpRequest();
-	xhr.open("GET", "GetOrdersforUser", true);
+	xhr.open("POST", "GetOrdersforUser", true);
+	xhr.setRequestHeader("content-type", "application/x-www-form-urlencoded");
 	xhr.onreadystatechange = function(){
 		if(xhr.status == 200 && xhr.readyState == 4){
 			const orders = JSON.parse(xhr.responseText);
@@ -330,48 +337,32 @@ function getUserOrders(){
 		xhr.onerror = function() {
      	console.error("Errore nel recupero degli ordini: ", xhr.statusText);
     	};
-    	xhr.send();
 	}
+
+	xhr.send("username="+encodeURIComponent(user.value));
 }
 
 function showUserOrders(orders){
-	
+	let ordersTable = document.getElementById("OrdersTable");
+  ordersTable.innerHTML = "";
+  const table = document.createElement("table");
+  const headerRow = document.createElement("tr");
+  headerRow.innerHTML = "<th>Numero ordine</th><th>Prodotti</th><th>Metodo di spedizione</th><th>Metodo di consegna</th><th>Data ordine</th><th>Ora</th>";
+  table.appendChild(headerRow);
+
+  if (orders.length > 0) {
+    orders.forEach(order => {
+      const tableRow = document.createElement("tr");
+      tableRow.innerHTML = `<td>${order.IDORDINE}</td><td>${order.PRODOTTI}</td><td>${order.METODOSPEDIZIONE}</td><td>${order.METODOCONSEGNA}</td><td>${order.DATA}</td><td>${order.ORA}</td>`;
+      table.appendChild(tableRow);
+    });
+  } else {
+    const p = document.createElement("p");
+    p.textContent = "Nessun ordine commissionato da questo utente";
+    ordersTable.appendChild(p);
+  }
+
+  ordersTable.innerHTML = "";
+  ordersTable.appendChild(table);
+  ordersTable.style.display = "table";
 }
-
-
-/*
-	<%	OrdineDAODataSource dao = new OrdineDAODataSource();
-		Collection<OrdineDTO> ordini = dao.doRetrieveAll();
-		ProfileDAODataSource daop = new ProfileDAODataSource();
-	%>
-	
-	<h2>Ordini commissionati</h2>
-	<table border = "1">
-		<tr>
-			<th>ID ordine</th>
-			<th>Data</th>
-			<th>Ora</th>
-			<th>Metodo di spedizione</th>
-			<th>Metodo di consegna</th>
-			<th>Committente</th>
-		</tr>
-		<% if((ordini != null) && (ordini.size()!= 0)){
-				for(OrdineDTO ordine: ordini){%>
-					<tr>
-						<td><%=ordine.getIDOrdine() %></td>
-						<td><%=ordine.getDataOrdine() %></td>
-						<td><%=ordine.getOraOrdine() %></td>
-						<td><%=ordine.getMetodoSpedizione() %></td>
-						<td><%=ordine.getMetodoConsegna() %></td>
-						<%ProfileDTO person = daop.doRetrieveByKey(ordine.getUsernameOrdine()); %>
-						<td><%= person.getNome()%> <%= person.getCognome()%></td>
-					</tr>
-					
-				<%}
-		}else{%>
-			<tr>
-				<td colspan = "6">Nessun ordine commissionato</td>
-			</tr>
-		<% }%> 
-			
-	</table>*/

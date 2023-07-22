@@ -11,38 +11,46 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.ProfileDAODataSource;
 import dao.IndirizzoDAODataSource;
+import dao.ProfileDAODataSource;
 import model.IndirizzoDTO;
+import model.OrdineDTO;
 import model.ProfileDTO;
 
 /**
- * Servlet implementation class UpdateProfile
+ * Servlet implementation class ManageOrdine
  */
-@WebServlet("/common/UpdateProfile")
-public class UpdateProfile extends HttpServlet {
+@WebServlet("/common/ManageOrdine")
+public class ManageOrdine extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-   
-    public UpdateProfile() {
+    
+    public ManageOrdine() {
         super();
     }
+
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
 
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String action = request.getParameter("action");
+		String email = request.getParameter("Email");
 		String username = (String) request.getSession().getAttribute("username");
-
-		if(action.equals("updateProfile")) {
-
+		ProfileDAODataSource profiledao = new ProfileDAODataSource();
+		ProfileDTO profile = new ProfileDTO();
+		OrdineDTO ordine = new OrdineDTO();
+		try {
+			profile = profiledao.doRetrieveByKey(email);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		if(profile == null) {
+			//Aggiungo i dati inseriti nell'area riservata
 			String nome = request.getParameter("Nome");
 			String cognome = request.getParameter("Cognome");
 			String telefono = request.getParameter("Telefono");
 			String sesso = request.getParameter("Sesso");
-			String email = request.getParameter("Email");
 
 			ProfileDTO dto = new ProfileDTO();
 			ProfileDAODataSource dao = new ProfileDAODataSource();
@@ -53,31 +61,27 @@ public class UpdateProfile extends HttpServlet {
 			dto.setTelefono(telefono);
 			dto.setSesso(sesso);
 			try {
-				if(dao.doRetrieveByKey(username) != null) {
-					dao.doDelete(username);
+				if(dao.doRetrieveByKey(email) != null) {
+					dao.doDelete(email);
 					dao.doSave(dto);
 				}else
 					dao.doSave(dto);
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		}
-		if(action.equals("updateAddress")) {
+			
 			IndirizzoDTO address = new IndirizzoDTO();
 			IndirizzoDAODataSource daoI = new IndirizzoDAODataSource();
 			int min = 1;
 			int max =java.lang.Integer.MAX_VALUE;
 
 			Random random = new Random();
-			
-			System.out.println("Numero indirizzi: "+ Integer.parseInt(request.getParameter("numIndirizzi")));
-			for(int i = 1; i <= Integer.parseInt(request.getParameter("numIndirizzi")); i++) {
-				int IdAddress = random.nextInt(max - min + 1) + min;
-				String via = request.getParameter("Via"+i);
-				String civico = request.getParameter("Civico"+i);
-				String citta = request.getParameter("Citta"+i);
-				String provincia = request.getParameter("Provincia"+i);
-				String cap = request.getParameter("Cap"+i);
+			int IdAddress = random.nextInt(max - min + 1) + min;
+				String via = request.getParameter("Via1");
+				String civico = request.getParameter("Civico1");
+				String citta = request.getParameter("Citta1");
+				String provincia = request.getParameter("Provincia1");
+				String cap = request.getParameter("Cap1");
 
 				address.setIDIndirizzo(IdAddress);
 				address.setVia(via);
@@ -93,21 +97,21 @@ public class UpdateProfile extends HttpServlet {
 					e.printStackTrace();
 				}
 			}
+		
+		/*Creazione della pratica per l'ordine*/
 
-			String deleteAddress = request.getParameter("deleteAddress");
-			if(deleteAddress.equals("") == false) {
-				IndirizzoDAODataSource daoI2 = new IndirizzoDAODataSource();
-				try {
-					daoI2.doDeleteAddress(Integer.parseInt(deleteAddress), username);
-				} catch (NumberFormatException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		//Creazione IDOrdine
+		int min = 1;
+		int max =java.lang.Integer.MAX_VALUE;;
 
-		RequestDispatcher dispatcherToPersonalAreaPage = getServletContext().getRequestDispatcher("/common/AreaRiservata.jsp");
-		dispatcherToPersonalAreaPage.forward(request, response);
+		Random random = new Random();
+		int idOrdine = random.nextInt(max - min + 1) + min;
+
+		ordine.setIDOrdine(idOrdine);
+		ordine.setUsername(username);
+		
+		request.setAttribute("PraticaOrdine", ordine);
+		RequestDispatcher rd = getServletContext().getRequestDispatcher("/common/Pagamento.jsp");
+		rd.forward(request, response);
 	}
 }

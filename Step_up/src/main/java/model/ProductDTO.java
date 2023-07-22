@@ -94,4 +94,9 @@ public class ProductDTO{
 				+ ", Categoria=" + Categoria + ", Brand=" + Brand + "]";
 	}
 	
+	public String ordertoString() {
+		return "Prodotto [IDProdotto=" + IDProdotto + ", NomeProdotto=" + NomeProdotto + ", "
+				+ "Categoria=" + Categoria + ", Brand=" + Brand + "]";
+	}
+	
 }

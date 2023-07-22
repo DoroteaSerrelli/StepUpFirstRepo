@@ -25,14 +25,44 @@ function insertCart(element, span){
 	xhr.send();
 }
 
-function changeQuantity(element){
-	const product = element.id;
-	const productQuantity = element.value;
+function changePlusQuantity(element){
+	const product = document.getElementById(element);
+	let productQuantity = parseInt(product.value);
+	console.log(element);
+	console.log("quantità iniziale: " + productQuantity);
+	productQuantity += 1;
+	console.log("quantità iniziale: " + productQuantity);
+	var xhr = new XMLHttpRequest();
+
+	xhr.open("GET", "ManageCarrello?action=updateQuantity&codice="+element+"&quantity="+productQuantity, true);
+	xhr.onreadystatechange = function(){
+		if(xhr.status == 200 && xhr.readyState == 4){
+			console.log("Richiesta ricevuta");
+			location.reload();
+
+		}
+	};
+	xhr.error = function(){
+		console.log("Errore nella modifica della quantità: "+ error);
+	};
+	xhr.send();
+	
+}
+
+function changeMinusQuantity(element){
+	const product = document.getElementById(element);
+	let productQuantity = product.value;
+	console.log(element);
+	productQuantity -= 1;
+	
 	var xhr = new XMLHttpRequest();
 	if(productQuantity == 0){
-		xhr.open("GET", "ManageCarrello?action=remove&codice="+product);
+		xhr.open("GET", "ManageCarrello?action=remove&codice="+element, true);
+	
+	}else{
+		xhr.open("GET", "ManageCarrello?action=updateQuantity&codice="+element+"&quantity="+productQuantity, true);
 	}
-	xhr.open("GET", "ManageCarrello?action=updateQuantity&codice="+product+"&quantity="+productQuantity, true);
+	
 	xhr.onreadystatechange = function(){
 		if(xhr.status == 200 && xhr.readyState == 4){
 			console.log("Richiesta ricevuta");

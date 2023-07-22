@@ -1,7 +1,6 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +13,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import model.OrdineDTO;
 import model.PagamentoDTO;
 
 public class PagamentoDAODataSource implements IBeanPagamentoDAO{
@@ -25,7 +23,7 @@ public class PagamentoDAODataSource implements IBeanPagamentoDAO{
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
-			ds = (DataSource) envCtx.lookup("jdbc/users");
+			ds = (DataSource) envCtx.lookup("jdbc/stepup");
 
 		} catch (NamingException e) {
 			System.out.println("Error:" + e.getMessage());
@@ -47,7 +45,7 @@ public class PagamentoDAODataSource implements IBeanPagamentoDAO{
 			preparedStatement = connection.prepareStatement(insertSQL);
 			preparedStatement.setInt(1, payment.getIDPagamento());
 			preparedStatement.setInt(2, payment.getIDOrdine());
-			preparedStatement.setDate(3, (Date) payment.getDataPagamento());
+			preparedStatement.setDate(3, new java.sql.Date(payment.getDataPagamento().getTime()));
 			preparedStatement.setTime(4, Time.valueOf(payment.getOraPagamento()));
 			preparedStatement.setString(5, payment.getMetodoPagamento());
 			preparedStatement.setFloat(6, payment.getImporto());
@@ -178,4 +176,43 @@ public class PagamentoDAODataSource implements IBeanPagamentoDAO{
 		return pagamenti;
 	}
 
+	@Override
+	public PagamentoDTO doRetrieveByOrderID(int IDOrdine) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		PagamentoDTO pagamento = new PagamentoDTO();
+
+		String selectSQL = "SELECT * FROM " + PagamentoDAODataSource.TABLE_NAME + " WHERE IDORDINE = ?";
+		
+
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, IDOrdine);
+
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while (rs.next()) {
+				PagamentoDTO dto = new PagamentoDTO();
+
+				dto.setIDOrdine(rs.getInt("IDORDINE"));
+				dto.setIDPagamento(rs.getInt("IDPAGAMENTO"));
+				dto.setDataPagamento(rs.getDate("DATAPAG"));
+				dto.setOraPagamento((rs.getTime("ORAPAG")).toLocalTime());
+				dto.setImporto(rs.getFloat("IMPORTO"));
+				dto.setMetodoPagamento(rs.getString("METODOPAG"));
+			}
+
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		return pagamento;
+	}
 }

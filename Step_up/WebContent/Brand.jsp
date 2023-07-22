@@ -37,6 +37,9 @@ Collection<ProductDTO> products = pdao.doRetrieveAll("nomeprodotto");
 			<a
 				href="<%=request.getContextPath() %>/common/ManageWishlist?action=insert&codice=<%= p.getIDProdotto()%>"><button
 					class = "wishlist-button" type="button" name="Wishlist">Aggiungi alla wishlist</button></a>
+					<a
+					href="<%=request.getContextPath()%>/Prodotto.jsp?codice=<%=p.getIDProdotto()%>"><button
+						class="details-button">Dettagli</button></a>
 		</div>
 		<br><span id="productAdded<%=p.getIDProdotto()%>"></span><br>
 		

@@ -8,12 +8,10 @@ public class UserAccountDTO{
 
 	private String username;
 	private String userpassword;
-	private String email;
 	
 	public UserAccountDTO() {
 		this.username = "";
 		this.userpassword = "";
-		this.email = "";
 	}
 	
 	public void setUsername(String username) {
@@ -44,11 +42,6 @@ public class UserAccountDTO{
 		
 	}
 	
-	public void setEmail(String email) {
-		this.email = email;
-		
-	}
-	
 	public String getUsername() {
 		return username;
 	}
@@ -57,7 +50,4 @@ public class UserAccountDTO{
 		return userpassword;
 	}
 	
-	public String getEmail() {
-		return email;
-	}
 }

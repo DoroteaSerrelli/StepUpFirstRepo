@@ -53,7 +53,6 @@ public class Catalogo extends HttpServlet {
 				try {
 					dao.doSave(p);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -75,8 +74,10 @@ public class Catalogo extends HttpServlet {
 				int codice = Integer.parseInt(request.getParameter("Codice"));
 				String nome = request.getParameter("Nome");
 				String descrBreve = request.getParameter("DescrizioneBreve");
-				float prezzo = Float.parseFloat(request.getParameter("Prezzo"));
+				String prezzo = request.getParameter("Prezzo");
 				String categoria = request.getParameter("Categoria");
+				String descrDettagliata = request.getParameter("DescrizioneDettagliata");
+				String brand = request.getParameter("Brand");
 
 				ProductDTO p = new ProductDTO();
 				ProductDAODataSource dao = new ProductDAODataSource();
@@ -84,33 +85,53 @@ public class Catalogo extends HttpServlet {
 					p = dao.doRetrieveByKey(codice);
 					System.out.println("Prodotto trovato");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
 				if((nome != null) && (!nome.trim().equals(""))){
-					p.setNomeProdotto(nome);
+					try {
+						dao.updateData(p.getIDProdotto(), "NOMEPRODOTTO",nome);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 				if((descrBreve != null) && (!descrBreve.trim().equals(""))) {
-					p.setDescrizione_breve(descrBreve);
+					try {
+						dao.updateData(p.getIDProdotto(), "DESCRIZIONE_BREVE", descrBreve);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
-				if(prezzo != 0) {
-					p.setPrezzo(prezzo);
+				if((descrDettagliata != null) && (!descrDettagliata.trim().equals(""))) {
+					try {
+						dao.updateData(p.getIDProdotto(), "DESCRIZIONE_DETTAGLIATA", descrDettagliata);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				if((brand != null) && (!brand.trim().equals(""))) {
+					try {
+						dao.updateData(p.getIDProdotto(), "BRAND", brand);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+				if(prezzo != null ) {
+					float prezzoV = Float.parseFloat(prezzo);
+					try {
+						dao.updatePrice(p.getIDProdotto(), prezzoV);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}			
 				}
 				if((categoria != null) && (!categoria.trim().equals(""))){
-					p.setCategoria(categoria);
+					try {
+						dao.updateData(p.getIDProdotto(), "CATEGORIA", categoria);
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 				
-				
-				try {
-					dao.doDelete(codice);
-					System.out.println("Prodotto cancellato!");
-					dao.doSave(p);
-					System.out.println("Prodotto salvato!");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 			
 		}
@@ -118,7 +139,6 @@ public class Catalogo extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 	
-
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);

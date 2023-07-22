@@ -1,1 +1,3 @@
-<img src ="<%= request.getContextPath()%>/images/footerAdmin.png">
+<footer>
+<img id = "image-footer" src ="<%= request.getContextPath()%>/images/footerAdmin.png">
+</footer>

@@ -1,14 +1,13 @@
 package model;
 
 public class IndirizzoDTO {
-	private int IDIndirizzo;
-	private String via;
-	private String numCivico;
-	private String città;
-	private String cap;
-	private String provincia;
+	private int IDIndirizzo = 0;
+	private String via = "";
+	private String numCivico = "";
+	private String città = "";
+	private String cap = "";
+	private String provincia = "";
 	
-
 
 	public int getIDIndirizzo() {
 		return IDIndirizzo;

@@ -25,7 +25,7 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 			Context initCtx = new InitialContext();
 			Context envCtx = (Context) initCtx.lookup("java:comp/env");
 
-			ds = (DataSource) envCtx.lookup("jdbc/users");
+			ds = (DataSource) envCtx.lookup("jdbc/stepup");
 
 		} catch (NamingException e) {
 			System.out.println("Error:" + e.getMessage());
@@ -50,9 +50,11 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 			preparedStatement.setString(2, order.getUsername());
 			preparedStatement.setString(3, order.getMetSpedizione());
 			preparedStatement.setString(4, order.getMetConsegna());
-			preparedStatement.setDate(5, (Date) order.getDataOrdine());
+			preparedStatement.setDate(5, new java.sql.Date(order.getDataOrdine().getTime()));
 			preparedStatement.setTime(6, Time.valueOf(order.getOraOrdine()));
 			
+			preparedStatement.executeUpdate();
+
 			connection.setAutoCommit(false);
 			connection.commit();
 		} finally {
@@ -178,48 +180,49 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 	}
 
 	@Override
-	public Collection<OrdineDTO> doRetrieveForDate(java.util.Date startDate, java.util.Date endDate) throws SQLException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+	public synchronized Collection<OrdineDTO> doRetrieveForDate(Date startDate, Date endDate) throws SQLException {
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
 
-		Collection<OrdineDTO> ordini = new LinkedList<OrdineDTO>();
+	    Collection<OrdineDTO> ordini = new LinkedList<OrdineDTO>();
 
-		String selectSQL = "SELECT * FROM " + OrdineDAODataSource.TABLE_NAME + " WHERE (DATAORDINE >= ? AND DATAORDINE <= ?)";
-		
-		try {
-			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(selectSQL);
-			preparedStatement.setDate(1, (Date) startDate);
-			preparedStatement.setDate(2, (Date) endDate);
+	    String selectSQL = "SELECT * FROM " + OrdineDAODataSource.TABLE_NAME + " WHERE (DATAORDINE BETWEEN ? AND ?)";
+	    System.out.println("START: "+ startDate);
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(selectSQL);
+	        preparedStatement.setDate(1, startDate);
+	        preparedStatement.setDate(2, endDate);
 
-			ResultSet rs = preparedStatement.executeQuery();
-			
-			while (rs.next()) {
-				OrdineDTO dto = new OrdineDTO();
+	        ResultSet rs = preparedStatement.executeQuery();
 
-				dto.setIDOrdine(rs.getInt("IDORDINE"));
-				dto.setUsername(rs.getString("USERNAME"));
-				dto.setMetSpedizione(rs.getString("METODOSPEDIZIONE"));
-				dto.setMetConsegna(rs.getString("METODOCONSEGNA"));
-				dto.setDataOrdine(rs.getDate("DATAORDINE"));
-				dto.setOraOrdine((rs.getTime("ORA")).toLocalTime());
-				ordini.add(dto);
-			}
+	        while (rs.next()) {
+	            OrdineDTO dto = new OrdineDTO();
 
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				if (connection != null)
-					connection.close();
-			}
-		}
-		return ordini;
+	            dto.setIDOrdine(rs.getInt("IDORDINE"));
+	            dto.setUsername(rs.getString("USERNAME"));
+	            dto.setMetSpedizione(rs.getString("METODOSPEDIZIONE"));
+	            dto.setMetConsegna(rs.getString("METODOCONSEGNA"));
+	            dto.setDataOrdine(rs.getDate("DATAORDINE"));
+	            dto.setOraOrdine((rs.getTime("ORA")).toLocalTime());
+	            ordini.add(dto);
+	        }
+
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                connection.close();
+	        }
+	    }
+	    return ordini;
 	}
 
+
 	@Override
-	public Collection<OrdineDTO> doRetrieveForUser(String user) throws SQLException {
+	public synchronized Collection<OrdineDTO> doRetrieveForUser(String user) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -230,7 +233,7 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 		try {
 			connection = ds.getConnection();
 			preparedStatement = connection.prepareStatement(selectSQL);
-			preparedStatement.setString(2, user);
+			preparedStatement.setString(1, user);
 
 			ResultSet rs = preparedStatement.executeQuery();
 			
@@ -259,7 +262,7 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 	}
 
 	@Override
-	public Collection<ItemCarrello> doRetrieveAllProducts(int IDOrdine) throws SQLException {
+	public synchronized Collection<ItemCarrello> doRetrieveAllProducts(int IDOrdine) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -299,7 +302,7 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 	}
 
 	@Override
-	public boolean addProducttoOrder(int IDOrdine, ItemCarrello product) throws SQLException {
+	public synchronized boolean addProducttoOrder(int IDOrdine, ItemCarrello product) throws SQLException {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
@@ -334,7 +337,14 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 	}
 
 	@Override
-	public Collection<OrdineDTO> searching(String searchTerm) throws SQLException {
+	public synchronized Collection<OrdineDTO> searching(String searchTerm) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<OrdineDTO> doRetrieveForDate(java.util.Date startDate, java.util.Date endDate)
+			throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

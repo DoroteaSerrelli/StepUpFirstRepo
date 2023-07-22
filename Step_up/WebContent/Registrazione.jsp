@@ -16,13 +16,9 @@
 			<h2>Creazione account</h2>
 			<p>Unisciti a noi!<br> Compila i seguenti campi del form per creare
 				il tuo account su Step Up.</p>
-			<div id=tebleRow>
-				<label for="email">Email: </label> <input type="email" name="email"
-					placeholder="E-mail" maxlength="50">
-			</div>
 			<div id="tableRow">
 				<label for="username">Username: </label> <input type="text"
-					name="username" placeholder="Username" maxlength="50">
+					name="username" placeholder="Username" maxlength="25">
 			</div>
 			<div id="tableRow">
 				<label for="password">Password: </label> <input type="password"

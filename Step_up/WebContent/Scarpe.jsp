@@ -24,7 +24,7 @@ Collection<ProductDTO> products = pdao.doRetrieveAll("nomeprodotto");
 			for (ProductDTO p : products) {
 				if (p.getCategoria().equals("Scarpe")) {
 		%>
-		<div id="product">
+		<div id="product-field">
 			<img class="TopProduct"
 				src="GetProductTopImage?Codice=<%=p.getIDProdotto()%>"
 				onerror="this.src='<%=request.getContextPath()%>/images/NoPhotoAvailable.jpg'"
@@ -38,6 +38,9 @@ Collection<ProductDTO> products = pdao.doRetrieveAll("nomeprodotto");
 			
 			<a	href="<%=request.getContextPath()%>/common/ManageWishlist?action=insert&codice="><button
 					class = "wishlist-button" id = "<%=p.getIDProdotto()%>" type="button" name="Wishlist" onclick = "">Aggiungi alla wishlist</button></a>
+					<a
+					href="<%=request.getContextPath()%>/Prodotto.jsp?codice=<%=p.getIDProdotto()%>"><button
+						class="details-button">Dettagli</button></a>
 		</div>
 		<br><span id="productAdded<%=p.getIDProdotto()%>"></span><br>
 		<%}

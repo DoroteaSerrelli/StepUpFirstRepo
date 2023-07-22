@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"
+    import = "model.OrdineDTO"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,9 +9,10 @@
 <script src = "<%= request.getContextPath()%>/scripts/commonscripts.js"></script>
 </head>
 <body>
-
+	<%OrdineDTO pratica = (OrdineDTO) request.getAttribute("PraticaOrdine");%>
 	<div id="PagamentoField">
 		<form name="Pagamento" action="ManagePagamento" method="POST">
+		<input type = "hidden" name = "IDOrdine" value = "<%= pratica.getIDOrdine()%>">
 		<fieldset>
 			<legend>Dettagli sulla spedizione</legend>
 			<label for = "MetSpedizione">Metodo di spedizione</label>

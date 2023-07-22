@@ -17,6 +17,7 @@ const emptyFieldErrorMessage = "Questo campo non può essere vuoto";
 
 
 function validateFormElem(formElem, span, errorMessage) {
+	console.log("SPAN: "+ span);
 	if(formElem.checkValidity()){
 		formElem.classList.remove("error");
 		span.style.color = "black";
@@ -34,7 +35,7 @@ function validateFormElem(formElem, span, errorMessage) {
 }
 
 
-function validate() {
+function validateDati() {
 	
 	let valid = true;	
 	let form = document.getElementById("regForm");
@@ -57,32 +58,38 @@ function validate() {
 		valid = false;
 	}
 	
-	for (let i = 1; i < count; i++){
+	return valid;
+}
+
+function validateIndirizzi() {
+	let valid = true;	
+	
+	for (let i = 1; i < count; i++) {
 		let spanAddress = document.getElementById("errorAddress" + i);
 		let spanVia = document.getElementById("errorVia" + i);
 		let spanCivico = document.getElementById("errorCivico" + i);
 		let spanCitta = document.getElementById("errorCitta" + i);
 		let spanProvincia = document.getElementById("errorProvincia" + i);
 		let spanCap = document.getElementById("errorCap" + i);
-		if (spanAddress == null){ // è stato rimosso
+		if (spanAddress == null) { // è stato rimosso
 			continue;
 		} else {
-			if (!validateFormElem(document.getElementById("Via" + i), spanVia, viaErrorMessage)){
+			if (!validateFormElem(document.getElementById("Via" + i), spanVia, viaErrorMessage)) {
 				valid = false;
 			}
-			if (!validateFormElem(document.getElementById("Civico" + i), spanCivico, civicoErrorMessage)){
+			if (!validateFormElem(document.getElementById("Civico" + i), spanCivico, civicoErrorMessage)) {
 				valid = false;
 			}
-			if (!validateFormElem(document.getElementById("Citta" + i), spanCitta, cittaErrorMessage)){
+			if (!validateFormElem(document.getElementById("Citta" + i), spanCitta, cittaErrorMessage)) {
 				valid = false;
 			}
-			if (!validateFormElem(document.getElementById("Provincia" + i), spanProvincia, provinciaErrorMessage)){
+			if (!validateFormElem(document.getElementById("Provincia" + i), spanProvincia, provinciaErrorMessage)) {
 				valid = false;
 			}
-			if (!validateFormElem(document.getElementById("Cap" + i), spanCap, capErrorMessage)){
+			if (!validateFormElem(document.getElementById("Cap" + i), spanCap, capErrorMessage)) {
 				valid = false;
 			}
-		}	
+		}
 	}
 	return valid;
 }
@@ -117,7 +124,7 @@ function addAddress() {
 	
 	let viaElement = document.createElement("input");
 	viaElement.type = "text";
-	viaElement.name = "Via";
+	viaElement.name = "Via"+count;
 	viaElement.id = "Via" + count;
 	viaElement.pattern = "^[A-Za-z\\s]+$";
 	viaElement.required = true;
@@ -142,7 +149,7 @@ function addAddress() {
 	
 	let civicoElement = document.createElement("input");
 	civicoElement.type = "text";
-	civicoElement.name = "Civico";
+	civicoElement.name = "Civico"+count;
 	civicoElement.id = "Civico" + count;
 	civicoElement.pattern = "^(([0-9])|(([0-9]+|\\w)(\\w|[0-9]+)))$";
 	civicoElement.required = true;
@@ -166,7 +173,7 @@ function addAddress() {
 	
 	let cittaElement = document.createElement("input");
 	cittaElement.type = "text";
-	cittaElement.name = "Citta";
+	cittaElement.name = "Citta"+count;
 	cittaElement.id = "Citta" + count;
 	cittaElement.pattern = "^[A-Za-z\\s]+$";
 	cittaElement.required = true;
@@ -190,7 +197,7 @@ function addAddress() {
 	
 	let provinciaElement = document.createElement("input");
 	provinciaElement.type = "text";
-	provinciaElement.name = "Provincia";
+	provinciaElement.name = "Provincia"+count;
 	provinciaElement.id = "Provincia" + count;
 	provinciaElement.pattern = "^[A-Za-z\\s]+$";
 	provinciaElement.required = true;
@@ -205,6 +212,32 @@ function addAddress() {
 	let br5 = document.createElement("br");
 	div.appendChild(br5);
 	
+	
+	
+	/*************CAP *************/
+	let labelCap = document.createElement("label");
+	labelCap.htmlFor = "Cap" + count;
+	labelCap.appendChild(document.createTextNode("CAP: "));	
+	div.appendChild(labelCap);
+	
+	let capElement = document.createElement("input");
+	capElement.type = "text";
+	capElement.name = "Cap"+count;
+	capElement.id = "Cap" + count;
+	capElement.pattern = "^\\d{5}$";
+	capElement.required = true;
+	capElement.placeholder = "Inserisci il CAP";
+	div.appendChild(capElement);
+	
+	let spanCap = document.createElement("span");
+	spanCap.id = "errorCap" + count;
+	div.appendChild(spanCap);
+	capElement.addEventListener("change", function() {validateFormElem(capElement, spanCap, capErrorMessage)});
+	
+	let br6 = document.createElement("br");
+	div.appendChild(br6);
+	
+	
 	let input = document.createElement("input");
 	input.type = "button";
 	input.value = "-";
@@ -217,8 +250,17 @@ function addAddress() {
 	input2.addEventListener("click", function() {addAddress(div.id)});
 	div.appendChild(input2);
 	
+	numIndirizzi(count);
 	count++;
+	console.log("Conteggio: " + count);
 	container.appendChild(div);
+}
+
+function numIndirizzi(numero){
+	let inputNum = document.getElementById("numIndirizzi");
+	let inputNumValue = parseInt(inputNum.value);
+	inputNumValue = numero;
+	inputNum.value = inputNumValue;
 }
 
 function removeAddress(id) {

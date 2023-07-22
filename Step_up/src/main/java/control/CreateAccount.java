@@ -38,20 +38,17 @@ public class CreateAccount extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		String email = request.getParameter("email");
 		
 		//Verificare che non esista un account con l'username passato nel DB
 		
 		UserAccountDTO utente = new UserAccountDTO();
 		utente.setUsername(username);
 		utente.setUserPassword(password);
-		utente.setEmail(email);
 		
 		UserAccountDAODataSource utentedao = new UserAccountDAODataSource();
 		try {
 			utentedao.doSave(utente);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
