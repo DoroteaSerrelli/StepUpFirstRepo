@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,6 +17,7 @@ import model.IndirizzoDTO;
 
 public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 	private static DataSource ds;
+	private static final Logger LOGGER = Logger.getLogger(IndirizzoDAODataSource.class.getName());
 
 	static {
 		try {
@@ -25,7 +27,7 @@ public class IndirizzoDAODataSource implements IBeanIndirizzoDAO{
 			ds = (DataSource) envCtx.lookup("jdbc/stepup");
 
 		} catch (NamingException e) {
-			System.out.println("Error:" + e.getMessage());
+			LOGGER.log(null, "Error:" + e.getMessage());
 		}
 	}
 

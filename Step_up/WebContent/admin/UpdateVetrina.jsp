@@ -77,10 +77,7 @@
 		<input type = "hidden" name = "action" value = "delete">
 		
 		<label for="Codice">Codice:</label><br> 
-		<input name="Codice" type="text" required placeholder="Inserisci codice vetrina"><br> 
-		
-		<label for="Nome">Nome:</label><br> 
-		<input name="Nome" type="text" required placeholder="Inserisci nome vetrina"><br> 
+		<input name="Codice" type="text" required placeholder="Inserisci codice vetrina"><br>  
 	<button id = "pulsante" type="submit">Elimina</button><input type="reset" value="Reset">
 	</form>
 	
@@ -90,9 +87,6 @@
 		
 		<label for="Codice">Codice:</label><br> 
 		<input name="Codice" type="text" required placeholder="Inserisci codice vetrina" onblur = "checkValue('aggiornamento', 'Codice'); fetchProducts('aggiornamento'); showOtherProducts('aggiornamento');"><br> 
-		
-		<label for="Nome">Nome:</label><br> 
-		<input name="Nome" type="text" required placeholder="Inserisci nome vetrina"><br> 
 		
 		<fieldset id = "productFieldset" style = "display: none">
 		</fieldset>
