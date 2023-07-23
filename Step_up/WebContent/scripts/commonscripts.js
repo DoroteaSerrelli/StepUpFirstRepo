@@ -5,11 +5,22 @@
  /**************** PAGINA PAGAMENTO *****************/
 
 const IntestatarioErrorMessage = "Il nominativo dell'intestatario deve contenere solo lettere ed evetualmente spazi";
-const emptyFieldErrorMessage = "Questo campo non può essere vuoto";
+const emptyFieldErrorMessage1 = "Questo campo non può essere vuoto";
 const NumeroCartaErrorMessage = "Il numero della carta deve avere solo 16 cifre numeriche";
 const DataCartaErrorMessage = "La data di scadenza deve avere formato mm/aa (mese/anno)";
 const CVCCartaErrorMessage = "Il codice CVC deve essere formato da 3 cifre numeriche";
+const emailIntErrorMessage = "L'email deve essere nel formato username@domain.ext";
+ const nameOrLastnameErrorMessage = "Questo campo deve contenere solo lettere ed eventualmente spazi";
 const emailErrorMessage = "L'email deve essere nel formato username@domain.ext";
+const phoneErrorMessage = "Il numero di cellulare deve essere nel formato xxx-xxx-xxxx";
+
+const addressErrorMessage = "errore";
+const viaErrorMessage = "La via deve essere una sequenza di lettere ed eventualmente spazi";
+const civicoErrorMessage = "Il civico è formato o da una sequenza di numeri o dalla sequenza lettera-numeri (es. A10) o numeri-lettera (es. 10A)";
+const cittaErrorMessage = "La città è una sequenza di lettere ed eventualmente spazi";
+const capErrorMessage = "Il CAP è una sequenza di numeri nel formato #####";
+const provinciaErrorMessage = "La provincia è una sequenza di caratteri ed eventualmente spazi";
+const emptyFieldErrorMessage = "Questo campo non può essere vuoto";
 
 function validateFormElem(formElem, span, errorMessage){
 	if(formElem.checkValidity()){
@@ -21,7 +32,7 @@ function validateFormElem(formElem, span, errorMessage){
 	formElem.classList.add("error");
 	span.style.color = "#A50D36";
 	if (formElem.validity.valueMissing){	//l'utente non ha fornito un valore
-		span.innerHTML = emptyFieldErrorMessage;
+		span.innerHTML = emptyFieldErrorMessage1;
 	} else {
 		span.innerHTML = errorMessage;	//pattern mismatched
 	}
@@ -37,7 +48,7 @@ function validateFormElem(formElem, span, errorMessage){
 		valid = false;
 	 }
 	 let spanEmail = document.getElementById("errorEmail");
-	 if (!validateFormElem(form.Email, spanEmail, emailErrorMessage)){
+	 if (!validateFormElem(form.Email, spanEmail, emailIntErrorMessage)){
 		valid = false;
 	 }
 	 let spanCarta = document.getElementById("errorNumeroCarta");
@@ -108,7 +119,7 @@ function validateFormElem(formElem, span, errorMessage){
 				   let spanEmail = document.createElement("span");
 				   spanEmail.id = "errorEmail";
 				   fieldDati.appendChild(spanEmail);
-				   inputEmail.addEventListener("change", function() {validateFormElem(inputEmail, spanEmail, emailErrorMessage)});
+				   inputEmail.addEventListener("change", function() {validateFormElem(inputEmail, spanEmail, emailIntErrorMessage)});
 
 				   let br2 = document.createElement("br");
 				   fieldDati.appendChild(br2);
@@ -174,8 +185,9 @@ function validateFormElem(formElem, span, errorMessage){
 				   fieldDati.appendChild(br5);
 				   
 				   let buttonSubmit = document.createElement("button");
-				   buttonSubmit.id = "pulsante";
+				   buttonSubmit.name = "Carta";
 				   buttonSubmit.type = "submit";
+				   buttonSubmit.classList.add("pulsante");
 				   buttonSubmit.value = "Carta";
 				   buttonSubmit.addEventListener("click", function(){validazione()});
 				   buttonSubmit.appendChild(document.createTextNode("Effettua il pagamento"));
@@ -191,9 +203,9 @@ function validateFormElem(formElem, span, errorMessage){
 				   fieldDati.style.display= "block";
 				   let buttonPayPal = document.createElement("button");
 				   buttonPayPal.name = "Paypal";
+				   buttonPayPal.classList.add("pulsante");
 				   buttonPayPal.type = "submit";
 				   buttonPayPal.value = "Paypal";
-				   buttonPayPal.addEventListener("click", function(){validazione()});
 				   buttonPayPal.appendChild(document.createTextNode("Paga con Paypal"));
 				   fieldDati.appendChild(buttonPayPal);
 			   }
@@ -206,9 +218,9 @@ function validateFormElem(formElem, span, errorMessage){
 				   fieldDati.style.display= "block";
 				   let buttonContanti = document.createElement("button");
 				   buttonContanti.name = "Contanti";
+				   buttonContanti.classList.add("pulsante");
 				   buttonContanti.type = "submit";
 				   buttonContanti.value = "Contanti";
-				   buttonContanti.addEventListener("click", function(){validazione()});
 				   buttonContanti.appendChild(document.createTextNode("Paga in contanti alla consegna"));
 				   fieldDati.appendChild(buttonContanti);
 			   }
@@ -216,3 +228,85 @@ function validateFormElem(formElem, span, errorMessage){
   }	
  }
  }
+ 
+ /*******************PAGINA ORDINI *******************/
+
+
+
+function validateFormElem(formElem, span, errorMessage) {
+	if(formElem.checkValidity()){
+		formElem.classList.remove("error");
+		span.style.color = "black";
+		span.innerHTML = "";
+		return true;
+	}
+	formElem.classList.add("error");
+	span.style.color = "#A50D36";
+	if (formElem.validity.valueMissing){	//l'utente non ha fornito un valore
+		span.innerHTML = emptyFieldErrorMessage;
+	} else {
+		span.innerHTML = errorMessage;	//pattern mismatched
+	}
+	return false;
+}
+
+
+function validateDati() {
+	console.log("INVOCATA")
+	let valid = true;	
+	let form = document.getElementById("Ordine");
+	
+	let spanName = document.getElementById("errorName");
+	if(!validateFormElem(form.Nome, spanName, nameOrLastnameErrorMessage)){
+		valid = false;
+	}
+	let spanSurname = document.getElementById("errorLastname");
+	if (!validateFormElem(form.Cognome, spanSurname, nameOrLastnameErrorMessage)){
+		valid = false;
+	}
+	let spanEmail = document.getElementById("errorEmail");
+	if (!validateFormElem(form.Email, spanEmail, emailErrorMessage)){
+		valid = false;
+	}
+	
+	let spanPhone = document.getElementById("errorPhone");
+	if(!validateFormElem(form.Telefono, spanPhone, phoneErrorMessage)){
+		valid = false;
+	}
+	validateIndirizzi();
+	return valid;
+}
+
+function validateIndirizzi() {
+	console.log("INVOCATA")
+	let i = 1;
+	let valid = true;	
+	
+		let spanAddress = document.getElementById("errorAddress" + i);
+		let spanVia = document.getElementById("errorVia" + i);
+		let spanCivico = document.getElementById("errorCivico" + i);
+		let spanCitta = document.getElementById("errorCitta" + i);
+		let spanProvincia = document.getElementById("errorProvincia" + i);
+		let spanCap = document.getElementById("errorCap" + i);
+		if (spanAddress == null) { // è stato rimosso
+			;
+		} else {
+				console.log("dentro")
+			if (!validateFormElem(document.getElementById("Via"+i), spanVia, viaErrorMessage)) {
+				valid = false;
+			}
+			if (!validateFormElem(document.getElementById("Civico" + i), spanCivico, civicoErrorMessage)) {
+				valid = false;
+			}
+			if (!validateFormElem(document.getElementById("Citta" + i), spanCitta, cittaErrorMessage)) {
+				valid = false;
+			}
+			if (!validateFormElem(document.getElementById("Provincia" + i), spanProvincia, provinciaErrorMessage)) {
+				valid = false;
+			}
+			if (!validateFormElem(document.getElementById("Cap" + i), spanCap, capErrorMessage)) {
+				valid = false;
+			}
+		}
+		return valid;
+	}

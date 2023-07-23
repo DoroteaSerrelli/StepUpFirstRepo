@@ -6,8 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name = "viewport" content = "width:device-width, initial-scale = 1.0">
-
-<script src = "scripts/Validate.js"></script>
+<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery-3.6.0.js"></script>
+<script src="<%= request.getContextPath()%>/scripts/Searchbar.js"></script>
+<script src = "<%=request.getContextPath() %>/scripts/servizioClienti.js"></script>
 <title>Servizio clienti</title>
 </head>
 <body>
@@ -18,7 +19,7 @@
 
 	<h2>Contattaci</h2>
 	
-	<p>Compila il seguente form e sarai contattato dal nostro Customer Service</p>
+	<p class = "information">Compila il seguente form e sarai contattato dal nostro Customer Service</p>
 	<aside>
 	<h3>Preferisci contattare un nostro operatore?</h3>
 	<p>Il nostro Customer Service è a tua disposizione per rispondere alle tue domande,<br>
@@ -30,25 +31,26 @@
 		Domenica: 10.00 - 13.00 ; 14.30 - 19.30
 	</p>
 	</aside>
-		<form name = "servizioClienti" action = "ServizioClienti" method = "post">
+		<form class = "richieste" id = "servizioClienti" name = "servizioClienti" action = "ServizioClienti" method = "post">
 			<div id = "tableRow">
 				<label for = "Nome">Nome: </label>
-					<input type = "text" name = "Nome" value = "" placeholder = "Nome" pattern="^[A-Za-z]+$" onchange="validateFormElem(this, document.getElementById('errorName'), nameOrLastnameErrorMessage)"/><span id = "errorName"></span>
+					<input id = "Nome" type = "text" name = "Nome" required value = "" placeholder = "Nome" pattern="^[A-Za-z\s]+$" onchange="validateFormElem(this, document.getElementById('errorName'), nameOrLastnameErrorMessage)"/>
+					<span id = "errorName"></span>
 					<br>
 			</div>
 			<div id = "tableRow">
 				<label for = "Cognome">Cognome: </label>
-					<input type = "text" name = "Cognome" value = "" placeholder = "Cognome" pattern="^[A-Za-z]+$" onchange="validateFormElem(this, document.getElementById('errorSurname'), nameOrLastnameErrorMessage)"/><span id = "errorSurname"></span>
+					<input id = "Cognome" type = "text" name = "Cognome" required value = "" placeholder = "Cognome" pattern="^[A-Za-z\s]+$" onchange="validateFormElem(this, document.getElementById('errorSurname'), nameOrLastnameErrorMessage)"/><span id = "errorSurname"></span>
 					<br>
 			</div>
 			<div id = "tableRow">
 				<label for = "Email">Email: </label>
-					<input type = "email" name = "Email" value = "" placeholder = "Indirizzo email" required pattern = "^\S+@\S+\.\S+$" onchange="validateFormElem(this, document.getElementById('errorEmail'), emailErrorMessage)" />
+					<input id = "Email" type = "email" name = "Email" value = "" placeholder = "Indirizzo email" required pattern = "^\S+@\S+\.\S+$" onchange="validateFormElem(this, document.getElementById('errorEmail'), emailErrorMessage)" />
 					<span id="errorEmail"></span><br>
 			</div>
 			<div id = "tableRow">
 				<label for = "Telefono">Telefono: </label>
-					<input type = "tel" name = "Telefono" value = "" placeholder = "Telefono" required pattern = "^\d{3}-\d{3}-\d{4}$" onchange = "validateFormElem(this, document.getElementById('errorPhone'), phoneErrorMessage)"/>
+					<input id = "Telefono" type = "tel" name = "Telefono" value = "" placeholder = "Telefono" required pattern = "^\d{3}-\d{3}-\d{4}$" onchange = "validateFormElem(this, document.getElementById('errorPhone'), phoneErrorMessage)"/>
 					<span id = "errorPhone"></span>
 					<br>
 			</div>
@@ -67,10 +69,10 @@
 			</div>
 			<div id = "tableRow">
 				<label for = "Messaggio">Messaggio: </label><br>
-					<textarea name = "Messaggio" placeholder = "Inserisci un messaggio di richiesta" required onchange = "validateFormElement(this, document.getElementById('errorQuestionMessage'), questionErrorMessage)"></textarea>
+					<textarea id = "Messaggio" name = "Messaggio" placeholder = "Inserisci un messaggio di richiesta" required onchange = "validateFormElem(this, document.getElementById('errorQuestionMessage'), questionErrorMessage)"></textarea>
 				<span id = "errorQuestionMessage"></span>
 			</div>
-			<button id = "pulsante" type = "submit" onclick = "validateFormElem()">Invia Richiesta</button>
+			<button class = "pulsante" type = "button" onclick = "validateDati()">Invia Richiesta</button>
 		</form>
 
 	<div id = "InfCustomerService">

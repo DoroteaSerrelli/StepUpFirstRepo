@@ -6,14 +6,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width:device-width, initial-scale = 1.0">
 <title>Ordine</title>
 <script src="<%= request.getContextPath()%>/scripts/commonscripts.js"></script>
-<script src="<%=request.getContextPath()%>/scripts/Validazione.js"></script>
 </head>
 <body>
-
+<%@include file = "../Header.jsp" %>
+<div id = "page">
 	<h1>Compila il form per acquistare i tuoi prodotti</h1>
-	<form name = "Ordine" method = "POST" action = "ManageOrdine">
+	<form class = "richieste" id = "Ordine" class = "richieste" name = "Ordine" method = "POST" action = "ManageOrdine">
 	<%
 	UserAccountDAODataSource accountDao =  new UserAccountDAODataSource();
 		UserAccountDTO account = accountDao.doRetrieveByKey((String) request.getSession().getAttribute("username"));
@@ -22,7 +23,8 @@
 		ProfileDTO profilo = new ProfileDTO();
 		ProfileDAODataSource profiledao = new ProfileDAODataSource();
 		profilo = profiledao.doRetrieveByUsername( (String)request.getSession().getAttribute("username"));
-		if (profilo != null) {
+		System.out.println("EMAIL: "+profilo.getEmail());
+		if (!((profilo.getEmail()).equals(""))) {
 	%>
 	<div class="tableRow">
 		<p>
@@ -57,12 +59,6 @@
 				%>
 			
 		</select>
-		<p>
-			Se i dati inseriti non sono corretti oppure vuoi modificare la lista
-			dei tuoi indirizzi, ti invitiamo ad aggiornare i dati presso la
-			tua <a href="<%=request.getContextPath()%>/common/AreaRiservata.jsp">area
-				riservata</a>.
-		</p>
 
 	</div>
 	
@@ -71,12 +67,20 @@
 			<button class = "pulsante" type = "submit" >Ordina</button>
 		</p>
 	</div>
-
+</form>
+<p class = "information">
+			Se i dati inseriti non sono corretti oppure vuoi modificare la lista
+			dei tuoi indirizzi, ti invitiamo ad aggiornare i dati presso la
+			tua <a href="<%=request.getContextPath()%>/common/AreaRiservata.jsp">area
+				riservata</a>.
+		</p>
 	<%
 	} else {
 	%>
 	<p>I dati che compilerai per effettuare l'acquisto verranno inseriti nella tua area riservata. 
 	Potrai modificarli nella tua area riservata per gli acquisti successivi nel nostro sito.</p>
+	<form class = "richieste" id = "Ordine" class = "richieste" name = "Ordine" method = "POST" action = "ManageOrdine">
+	
 	<div class="tableRow">
 		<label for="Nome">Nome:</label><input type="text" name="Nome"
 			id="firstname" required pattern="^[A-Za-z\s]+$"
@@ -129,13 +133,14 @@
 				placeholder="Inserisci il CAP" required pattern="^([0-9]{5})$"
 				onchange="validateFormElem(this, document.getElementById('errorCap1'), capErrorMessage)"><span
 				id="errorCap1"></span>
+				<span id = "errorAddress1"></span>
 
 		</div>
 	</div>
 	<div class="tableRow">
 		<p></p>
 		<p>
-			<input type="submit" value="Ordina" onclick = "return validate()">Ordina
+			<button class = "pulsante" type="submit" onclick = "return validateDati()">Ordina</button>
 		</p>
 	</div>
 	</form>
@@ -186,5 +191,7 @@
 				<%=Math.round(costo * 100.00) / 100.00%></p>
 		</div>
 	</aside>
+	</div>
+	<%@include file = "../Footer.jsp" %>
 </body>
 </html>

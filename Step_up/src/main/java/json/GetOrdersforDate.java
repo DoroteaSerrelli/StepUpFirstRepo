@@ -54,12 +54,10 @@ public class GetOrdersforDate extends HttpServlet {
         }
         try {
             
-        	ZoneId defaultZoneId = ZoneId.systemDefault();
-            LocalDate startDate = LocalDate.parse(startDateString);
+        	LocalDate startDate = LocalDate.parse(startDateString);
             LocalDate endDate = LocalDate.parse(endDateString);
             
             OrdineDAODataSource dao = new OrdineDAODataSource();
-            System.out.println("DATA INIZIO: "+ startDate);
             Collection<OrdineDTO> orders = dao.doRetrieveForDate(java.sql.Date.valueOf(startDate), java.sql.Date.valueOf(endDate));
             JSONArray jsonArray = new JSONArray();
             for (OrdineDTO o : orders) {
@@ -80,7 +78,7 @@ public class GetOrdersforDate extends HttpServlet {
     			}
     			jsonObject.put("PRODOTTI", productsStr);
     			ProfileDAODataSource profiledao = new ProfileDAODataSource();
-                ProfileDTO profilo = profiledao.doRetrieveByKey((String) request.getSession().getAttribute("username"));
+                ProfileDTO profilo = profiledao.doRetrieveByUsername(o.getUsername());
                 String utente = ""+profilo.getNome()+" "+profilo.getCognome();
                 jsonObject.put("UTENTE", utente);
     			jsonObject.put("METODOSPEDIZIONE", o.getMetSpedizione());

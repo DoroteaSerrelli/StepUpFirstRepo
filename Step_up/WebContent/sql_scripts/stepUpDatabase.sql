@@ -1,35 +1,34 @@
-DROP SCHEMA IF EXISTS users;
-CREATE SCHEMA users;
-USE users;
+DROP SCHEMA IF EXISTS stepup;
+CREATE SCHEMA stepup;
+USE stepup;
 
 CREATE TABLE user_account (
 username varchar(25) NOT NULL,
 userpassword varchar(129) NOT NULL,
-email varchar(30) NOT NULL,
 
 PRIMARY KEY(username) 
 ) ENGINE=InnoDB;
 
-CREATE TABLE dati_anagrafici(
+CREATE TABLE dati_personali(
 username varchar(25) NOT NULL,
 nome varchar(30) NOT NULL,
 cognome varchar(40) NOT NULL,
+email varchar(40) NOT NULL,
 telefono char(16),
 CHECK(telefono LIKE '___-___-____'),
 sesso enum('Uomo', 'Donna'),
 
-PRIMARY KEY(nome, cognome, username),
+PRIMARY KEY(email),
 FOREIGN KEY (username) REFERENCES user_account(username)
 						ON DELETE CASCADE ON UPDATE CASCADE
-
 ) ENGINE=InnoDB;
 
 CREATE TABLE indirizzo(
 idIndirizzo int NOT NULL AUTO_INCREMENT, 
 via char(50) NOT NULL,
-numCivico smallint NOT NULL,
+numCivico varchar(4) NOT NULL,
 citta varchar(50) NOT NULL,
-CAP smallint NOT NULL,
+CAP char(5) NOT NULL,
 provincia varchar(50) NOT NULL,
 
 PRIMARY KEY(idIndirizzo)
@@ -48,7 +47,6 @@ FOREIGN KEY (username) REFERENCES user_account(username)
 
 CREATE TABLE categoria(
 nomeCategoria varchar(50) NOT NULL,
-Icona blob,
 Descrizione text,
 
 PRIMARY KEY(nomeCategoria)
@@ -56,12 +54,13 @@ PRIMARY KEY(nomeCategoria)
 
 CREATE TABLE prodotto(
 IDProdotto int NOT NULL,
-NomeProdotto varchar(30) NOT NULL,
+NomeProdotto varchar(80) NOT NULL,
 Descrizione_breve text NOT NULL,
 Descrizione_dettagliata text,
 Prezzo float NOT NULL,
 Categoria varchar(30) NOT NULL,
 Brand varchar(50),
+flag_disponibile boolean NOT NULL,
 TopImage mediumblob ,
 
 PRIMARY KEY(IDProdotto),
@@ -148,17 +147,9 @@ IDOrdine int NOT NULL,
 DataPag date NOT NULL,
 OraPag time NOT NULL,
 MetodoPag varchar(50) NOT NULL,
-Importo smallint NOT NULL,
+Importo float NOT NULL,
 
 PRIMARY KEY(IDPagamento),
 FOREIGN KEY (IDOrdine) REFERENCES ordine(IDOrdine)
 						ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE = InnoDB;
-
-
-
-INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Sport", "Raccolta di attrezzature sportive");
-INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Moda", "Abbigliamento sportivo");
-INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Integratori", "Raccolta di integratori sportivi");
-INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Scarpe", "Scarpe per attività fisica");
-INSERT INTO categoria(nomeCategoria, descrizione) VALUES ("Accessori", "Accessori per il wellness e il fitness");

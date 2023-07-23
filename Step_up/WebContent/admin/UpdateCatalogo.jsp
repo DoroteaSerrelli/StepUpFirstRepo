@@ -7,13 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Aggiornamento catalogo</title>
+<meta name="viewport" content="width:device-width, initial-scale = 1.0">
 <script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery-3.6.0.js"></script>
 <script src = "<%= request.getContextPath()%>/scripts/adminscripts.js"></script>
 </head>
 <body>
 <%@include file = "AdminHeader.jsp" %>
 <%  ProductDAODataSource dao = new ProductDAODataSource();
-	Collection<ProductDTO> products = dao.doRetrieveAll("idprodotto"); %>
+	Collection<ProductDTO> products = dao.doRetrieveAllExistent("idprodotto"); %>
 	
 	<h2>Prodotti</h2>
 

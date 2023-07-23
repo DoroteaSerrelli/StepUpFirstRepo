@@ -41,7 +41,7 @@ public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 		PreparedStatement preparedStatement = null;
 
 		String insertSQL = "INSERT INTO " + ProductDAODataSource.TABLE_NAME
-				+ " (IDPRODOTTO, NOMEPRODOTTO, DESCRIZIONE_BREVE, DESCRIZIONE_DETTAGLIATA, PREZZO, CATEGORIA, BRAND, TOPIMAGE) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				+ " (IDPRODOTTO, NOMEPRODOTTO, DESCRIZIONE_BREVE, DESCRIZIONE_DETTAGLIATA, PREZZO, CATEGORIA, BRAND, TOPIMAGE, FLAG_DISPONIBILE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			connection = ds.getConnection();
@@ -54,6 +54,7 @@ public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 			preparedStatement.setString(6, product.getCategoria());
 			preparedStatement.setString(7, product.getBrand());
 			preparedStatement.setBytes(8, product.getTopImage());
+			preparedStatement.setInt(9, product.getFlag_disponibile());
 
 			
 			System.out.println("Righe aggiornate: " + preparedStatement.executeUpdate());
@@ -119,7 +120,7 @@ public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 
 		int result = 0;
 
-		String deleteSQL = "DELETE FROM " + ProductDAODataSource.TABLE_NAME + " WHERE IDPRODOTTO = ?";
+		String deleteSQL = "UPDATE " + ProductDAODataSource.TABLE_NAME + " SET FLAG_DISPONIBILE = 0 WHERE IDPRODOTTO = ?";
 
 		try {
 			connection = ds.getConnection();
@@ -186,6 +187,96 @@ public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 		}
 		return products;
 	}
+	
+	@Override
+	public synchronized Collection<ProductDTO> doRetrieveAllDeleted(String order) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		Collection<ProductDTO> products = new LinkedList<ProductDTO>();
+
+		String selectSQL = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE FLAG_DISPONIBILE = 0";
+
+		if (order != null && !order.equals("")) {
+			selectSQL += " ORDER BY " + order;	//ordine dei prodotti per nome
+		}
+
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQL);
+
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while (rs.next()) {
+				ProductDTO dto = new ProductDTO();
+
+				dto.setIDProdotto(rs.getInt("IDPRODOTTO"));
+				dto.setNomeProdotto(rs.getString("NOMEPRODOTTO"));
+				dto.setDescrizione_breve(rs.getString("DESCRIZIONE_BREVE"));
+				dto.setDescrizione_dettagliata(rs.getString("DESCRIZIONE_DETTAGLIATA"));
+				dto.setPrezzo(rs.getFloat("PREZZO"));
+				dto.setCategoria(rs.getString("CATEGORIA"));
+				dto.setBrand(rs.getString("BRAND"));
+				dto.setTopImage(rs.getBytes("TOPIMAGE"));
+				products.add(dto);
+			}
+
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		return products;
+	}
+	
+	@Override
+	public synchronized Collection<ProductDTO> doRetrieveAllExistent(String order) throws SQLException {
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+
+		Collection<ProductDTO> products = new LinkedList<ProductDTO>();
+
+		String selectSQL = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE FLAG_DISPONIBILE = 1";
+
+		if (order != null && !order.equals("")) {
+			selectSQL += " ORDER BY " + order;	//ordine dei prodotti per nome
+		}
+
+		try {
+			connection = ds.getConnection();
+			preparedStatement = connection.prepareStatement(selectSQL);
+
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while (rs.next()) {
+				ProductDTO dto = new ProductDTO();
+
+				dto.setIDProdotto(rs.getInt("IDPRODOTTO"));
+				dto.setNomeProdotto(rs.getString("NOMEPRODOTTO"));
+				dto.setDescrizione_breve(rs.getString("DESCRIZIONE_BREVE"));
+				dto.setDescrizione_dettagliata(rs.getString("DESCRIZIONE_DETTAGLIATA"));
+				dto.setPrezzo(rs.getFloat("PREZZO"));
+				dto.setCategoria(rs.getString("CATEGORIA"));
+				dto.setBrand(rs.getString("BRAND"));
+				dto.setTopImage(rs.getBytes("TOPIMAGE"));
+				products.add(dto);
+			}
+
+		} finally {
+			try {
+				if (preparedStatement != null)
+					preparedStatement.close();
+			} finally {
+				if (connection != null)
+					connection.close();
+			}
+		}
+		return products;
+	}
 
 	@Override
 	public synchronized Collection<ProductDTO> searching(String searchTerm) throws SQLException {
@@ -194,7 +285,7 @@ public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 
 		Collection<ProductDTO> products = new LinkedList<ProductDTO>();
 
-		String selectSQLName = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE NOMEPRODOTTO LIKE ?";
+		String selectSQLName = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE (NOMEPRODOTTO LIKE ? AND FLAG_DISPONIBILE = 1)";
 		
 
 		try {
@@ -227,7 +318,7 @@ public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 			}
 		}
 
-		String selectSQLDescription = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE ((DESCRIZIONE_BREVE LIKE ?) OR (DESCRIZIONE_DETTAGLIATA LIKE ?))";
+		String selectSQLDescription = "SELECT * FROM " + ProductDAODataSource.TABLE_NAME + " WHERE (FLAG_DISPONIBILE = 1 AND ((DESCRIZIONE_BREVE LIKE ?) OR (DESCRIZIONE_DETTAGLIATA LIKE ?)))";
 		
 
 		try {
@@ -339,7 +430,7 @@ public class ProductDAODataSource implements IBeanIntDAO<ProductDTO>{
 		}
 		return (result != 0);
 	}
-
+	
 	@Override
 	public Collection<OrdineDTO> doRetrieveForDate(Date startDate, Date endDate) throws SQLException {
 		// TODO Auto-generated method stub

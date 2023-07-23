@@ -6,6 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width:device-width, initial-scale = 1.0">
 <title>Area riservata</title>
 </head>
 <body>
@@ -47,10 +48,13 @@
 				<fieldset>
 
 		<legend>Indirizzi</legend>
-				
-				<%for(IndirizzoDTO dt : addressesBean){%>
+				<br>
+				<%	if(addressesBean != null){
+					for(IndirizzoDTO dt : addressesBean){%>
 					<p>Indirizzo n. <%= dt.getIDIndirizzo()%>: <%= dt.toString() %></p>
-			<% } %>
+			<% }}else{ %>
+				<p>Non hai un indirizzo inserito</p>
+				<%} %>
 	</fieldset>
 		<a href="<%= request.getContextPath() %>/common/Profilo.jsp"><button class = "pulsante" >Aggiorna i dati personali</button></a>
 		<a href="<%= request.getContextPath() %>/common/Indirizzi.jsp"><button class = "pulsante" >Aggiorna gli indirizzi</button></a>

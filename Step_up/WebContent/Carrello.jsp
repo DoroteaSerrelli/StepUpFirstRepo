@@ -1,11 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"
     import = "model.ItemCarrello, model.Carrello, java.util.List, dao.PhotoControl"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta name="viewport" content="width:device-width, initial-scale = 1.0">
+<meta charset="UTF-8">
 <title>Carrello</title>
+<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery-3.6.0.js"></script>
+<script src="<%= request.getContextPath()%>/scripts/Searchbar.js"></script>
 <script src = "<%=request.getContextPath() %>/scripts/Cart.js"></script>
 </head>
 <body>
@@ -28,8 +31,8 @@
 					<th></th>
 					<th>Nome</th>
 					<th>Prezzo unitario</th>
-					<th>Quantità</th>
-					<th>Prezzo per quantità</th>
+					<th>QuantitÃ </th>
+					<th>Prezzo per quantitÃ </th>
 					<th>Cancella</th>
 				</tr>
 				<%
@@ -45,10 +48,10 @@
 					<td><%=i.getNomeProdotto()%></td>
 					<td><%=i.getPrezzo()%></td>
 					<td> <button type = "button" onclick = "changePlusQuantity(<%=i.getIDProdotto()%>)">+</button>
-					<input type="text" id = "<%=i.getIDProdotto() %>" value="<%=i.getQuantità()%>">
+					<input type="text" id = "<%=i.getIDProdotto() %>" value="<%=i.getQuantitÃ ()%>">
 						<button type = "button" onclick = "changeMinusQuantity(<%=i.getIDProdotto()%>)">-</button>
 						</td>
-					<td><%= Math.round(i.getPrezzo() * i.getQuantità() * 100.00)/100.00%></td>
+					<td><%= Math.round(i.getPrezzo() * i.getQuantitÃ () * 100.00)/100.00%></td>
 					<td><a
 						href="ManageCarrello?action=remove&codice=<%=i.getIDProdotto()%>">Cancella</a></td>
 

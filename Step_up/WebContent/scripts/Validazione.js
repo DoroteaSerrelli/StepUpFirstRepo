@@ -8,6 +8,7 @@ const nameOrLastnameErrorMessage = "Questo campo deve contenere solo lettere ed 
 const emailErrorMessage = "L'email deve essere nel formato username@domain.ext";
 const phoneErrorMessage = "Il numero di cellulare deve essere nel formato xxx-xxx-xxxx";
 
+const addressErrorMessage = "errore";
 const viaErrorMessage = "La via deve essere una sequenza di lettere ed eventualmente spazi";
 const civicoErrorMessage = "Il civico è formato o da una sequenza di numeri o dalla sequenza lettera-numeri (es. A10) o numeri-lettera (es. 10A)";
 const cittaErrorMessage = "La città è una sequenza di lettere ed eventualmente spazi";
@@ -17,7 +18,6 @@ const emptyFieldErrorMessage = "Questo campo non può essere vuoto";
 
 
 function validateFormElem(formElem, span, errorMessage) {
-	console.log("SPAN: "+ span);
 	if(formElem.checkValidity()){
 		formElem.classList.remove("error");
 		span.style.color = "black";
@@ -38,7 +38,7 @@ function validateFormElem(formElem, span, errorMessage) {
 function validateDati() {
 	
 	let valid = true;	
-	let form = document.getElementById("regForm");
+	let form = document.getElementById("datiPersonali");
 	
 	let spanName = document.getElementById("errorName");
 	if(!validateFormElem(form.Nome, spanName, nameOrLastnameErrorMessage)){
@@ -74,7 +74,8 @@ function validateIndirizzi() {
 		if (spanAddress == null) { // è stato rimosso
 			continue;
 		} else {
-			if (!validateFormElem(document.getElementById("Via" + i), spanVia, viaErrorMessage)) {
+
+			if (!validateFormElem(document.getElementById("Via"+i), spanVia, viaErrorMessage)) {
 				valid = false;
 			}
 			if (!validateFormElem(document.getElementById("Civico" + i), spanCivico, civicoErrorMessage)) {
@@ -205,7 +206,7 @@ function addAddress() {
 	div.appendChild(provinciaElement);
 	
 	let spanProvincia = document.createElement("span");
-	spanProvincia.id = "errorCitta" + count;
+	spanProvincia.id = "errorProvincia" + count;
 	div.appendChild(spanProvincia);
 	provinciaElement.addEventListener("change", function() {validateFormElem(provinciaElement, spanProvincia, provinciaErrorMessage)});
 	
@@ -250,6 +251,11 @@ function addAddress() {
 	input2.addEventListener("click", function() {addAddress(div.id)});
 	div.appendChild(input2);
 	
+	let span = document.createElement("span");
+	span.id = "errorAddress" + count;
+	div.appendChild(span);
+	hiddenelement.addEventListener("change", function() {validateFormElem(hiddenelement, span, addressErrorMessage)});
+	
 	numIndirizzi(count);
 	count++;
 	console.log("Conteggio: " + count);
@@ -259,11 +265,15 @@ function addAddress() {
 function numIndirizzi(numero){
 	let inputNum = document.getElementById("numIndirizzi");
 	let inputNumValue = parseInt(inputNum.value);
-	inputNumValue = numero;
+	inputNumValue = numero-1;
 	inputNum.value = inputNumValue;
 }
 
 function removeAddress(id) {
 	let element = document.getElementById(id);
 	element.parentNode.removeChild(element);
+	let inputNum = document.getElementById("numIndirizzi");
+	let inputNumValue = parseInt(inputNum.value);
+	console.log("Conteggio: " + inputNumValue);
+	inputNum.value = inputNumValue;
 }

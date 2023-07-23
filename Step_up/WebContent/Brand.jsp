@@ -6,6 +6,8 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width:device-width, initial-scale = 1.0">
+<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery-3.6.0.js"></script>
+<script src="<%= request.getContextPath()%>/scripts/Searchbar.js"></script>
 <title>Brand</title>
 <script src = "<%=request.getContextPath() %>/scripts/Cart.js"></script>
 </head>
@@ -13,7 +15,7 @@
 <body>
 	<%@include file="Header.jsp"%>
 	<%ProductDAODataSource pdao = new ProductDAODataSource();
-Collection<ProductDTO> products = pdao.doRetrieveAll("nomeprodotto");
+Collection<ProductDTO> products = pdao.doRetrieveAllExistent("nomeprodotto");
 
 %>
 	<div id="page">

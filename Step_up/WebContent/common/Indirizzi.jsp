@@ -5,13 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width:device-width, initial-scale = 1.0">
 <title>Aggiornamento profilo</title>
 <script src = "<%=request.getContextPath()%>/scripts/Validazione.js"></script>
 </head>
 <body>
 <%@include file = "../Header.jsp" %>
 <%! int i = 1; %>
-<form name = "indirizziPersonali" action = "UpdateProfile" enctype = "application/x-www-form-urlencoded" method = "POST">
+<form id = "indirizzi" class = "richieste" name = "indirizziPersonali" action = "UpdateProfile" enctype = "application/x-www-form-urlencoded" method = "POST">
 			<input type= "hidden" name = "action" value = "updateAddress">
 			<div id="addresses">
 				<div id="addressRow0">
@@ -38,7 +39,7 @@
 					<input type="text" name="Cap1" id="Cap1" placeholder="Inserisci il CAP" required pattern="^([0-9]{5})$"
 						onchange="validateFormElem(this, document.getElementById('errorCap1'), capErrorMessage)"><span id="errorCap1"></span>
 						
-					<input type="button" value="+" onclick="addAddress()"><span id="errorAddress2"></span>
+					<input type="button" value="+" onclick="addAddress()"><span id="errorAddress1"></span>
 					<input type = "hidden" id = "numIndirizzi" name = "numIndirizzi" value = "1">
 				</div>
 				<%
@@ -57,11 +58,11 @@
 						<input type = "hidden" name = "deleteAddress" value = "">
 					<%} %>
 			</div>
+			
 			<div>
-				<input type = "submit" value = "Aggiorna gli indirizzi" onclick="return validateIndirizzi()">
-				<input type="reset" value="Reset">
+				<button class = "pulsante" type = "submit" onclick="return validateIndirizzi()">Aggiorna gli indirizzi</button>
+				<button class = "pulsante" type="reset">Reset</button>
 			</div>		
-
 		</form>
 		<%@ include file="../Footer.jsp" %>
 </body>

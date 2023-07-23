@@ -10,6 +10,7 @@ public class ProductDTO{
 	private String Categoria;
 	private String Brand;
 	private byte[] TopImage;
+	private int Flag_disponibile;
 
 	public ProductDTO() {
 
@@ -87,6 +88,14 @@ public class ProductDTO{
 	public void setCategoria(String categoria) {
 		this.Categoria = categoria;
 	}
+	public int getFlag_disponibile() {
+		return Flag_disponibile;
+	}
+
+
+	public void setFlag_disponibile(int flag_disponibile) {
+		Flag_disponibile = flag_disponibile;
+	}
 	
 	@Override
 	public String toString() {
@@ -98,5 +107,5 @@ public class ProductDTO{
 		return "Prodotto [IDProdotto=" + IDProdotto + ", NomeProdotto=" + NomeProdotto + ", "
 				+ "Categoria=" + Categoria + ", Brand=" + Brand + "]";
 	}
-	
+
 }

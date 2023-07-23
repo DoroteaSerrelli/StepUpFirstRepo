@@ -7,6 +7,11 @@
 	font-family: Arial, Geneva, sans-serif;
 }
 
+p.information, ul.information{
+	padding: 20px;
+	width: 60%;
+}
+
 header, footer{
 	width: 100%;
 	margin: 0;
@@ -31,9 +36,14 @@ section {
 }
 
 aside {
-	float: left;
-	margin: 0 0 20px 0;
-	padding: 0;
+	width: 200px;
+	background-color: #f2f2f2;
+	padding: 20px;
+
+  position: absolute;
+	top: 50;
+  right: 0;
+	
 }
 
 /*--- BODY ---*/
@@ -62,17 +72,14 @@ h1{
 
 
 #searchBar_field{
-	width: 300px;
-	height: 400px;
-	box-shadow: 4px, 4px, 30px rgba(0, 0, 0, 0.06);
-	padding: 20px;
+	width: 30%;
+	margin: 0 auto;
+	padding-left: 10px;
 	overflow-y: scroll;
 }
 
 #searchBar_field form{
 	width: 100%;
-	border: 1px solid #A50D36;
-	border-radius: 4px;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -92,39 +99,13 @@ h1{
 	padding-right: 5px;
 }
 
-.suggerimenti{
-	padding: 20px 0px;
-}
-
-.suggerimenti .prodotti{
+.suggests {
+	cursor: pointer;
 	display: flex;
 	align-items: center;
-	cursor: pointer;
-	padding-bottom: 15px;
 }
-
-
-.prodotti img{
-	width: 60px;
-	height: 60px;
-	object-fit: cover;
-	border-radius: 5px;
-}
-
-.prodotti-dettagli h2{
-	padding-left: 15px;
-	font-size: 20px;
-	color: #252525;
-}
-
-.prodotti-dettagli h3{
-	font-size: 18px;
-	color: #252525;
-}
-
 
 /******INIZIO BANNER *******/
-
 #banner{
 	width: 100%;
 	height: 500px;
@@ -157,12 +138,12 @@ h2.form-header{
 	text-align: center;
 }
 
-form{
+form.richieste{
 	border: 5px solid #252525;
 	display: table;
 	background-color: #F1797A;
-	width: 600px;
-	height: 300px;
+	width: 80%px;
+	
 	margin: 0 auto;
 	
 }
@@ -180,6 +161,10 @@ div.form-tableRow input {
 
 form.pulsante{
 	margin: 0 auto;
+}
+
+input[type=text]:focus input[type=email]{
+	background-color: #D6D6D6;
 }
 
 form textarea {
@@ -206,6 +191,7 @@ div#register-contatiner{
 	margin: 0 auto;
 }
 /*---- FINE FORM ----*/
+
 aside{
 	border: 3px solid #19204E;
 	display: block;
@@ -213,6 +199,10 @@ aside{
 	float: right;
 	margin: 0 0 20px 0;
 	padding: 0px;
+}
+
+aside#cart{
+	float: right;
 }
 
 #InfCustomerService{
@@ -308,7 +298,58 @@ div#product-field{
 
 @media screen and (max-width: 1250px){
 	#banner{
-
 		height: 400px;
 	}
+	
+}
+
+@media screen and (max-width: 1030px){
+	aside{
+		position:static;
+		width: 100%;
+	}
+	nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav li {
+    margin: 20px 5px;
+  }
+}
+
+@media screen and (max-width: 600px){
+	header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo {
+  margin-top: 20px;
+}
+
+nav {
+	position: sticky;
+  margin-top: 20px;
+  margin-right: 50px;
+}
+nav ul{
+	flex-direction:column;
+	align-items: center;
+}
+nav ul li{
+	display: table;
+}
+
+form#tableRow, form input[type=submit]{
+	width: 100%;
+    margin-top: 0;
+}
+
 }

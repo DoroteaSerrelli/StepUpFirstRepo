@@ -47,6 +47,7 @@ public class Catalogo extends HttpServlet {
 				p.setDescrizione_dettagliata(descrDett);
 				p.setBrand(brand);
 				p.setPrezzo(prezzo);
+				p.setFlag_disponibile(1);
 				p.setCategoria(categoria);
 
 				ProductDAODataSource dao = new ProductDAODataSource();
@@ -116,7 +117,7 @@ public class Catalogo extends HttpServlet {
 						e.printStackTrace();
 					}
 				}
-				if(prezzo != null ) {
+				if(prezzo != null && (!prezzo.trim().equals(""))) {
 					float prezzoV = Float.parseFloat(prezzo);
 					try {
 						dao.updatePrice(p.getIDProdotto(), prezzoV);

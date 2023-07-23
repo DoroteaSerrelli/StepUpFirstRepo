@@ -8,6 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width:device-width, initial-scale = 1.0">
+<script type="text/javascript" src="<%= request.getContextPath()%>/scripts/jquery-3.6.0.js"></script>
+<script src="<%= request.getContextPath()%>/scripts/Searchbar.js"></script>
 <title>Login</title>
 </head>
 <body>
@@ -15,19 +17,7 @@
 	<%@include file="Header.jsp"%>
 	<div id="page">
 
-		<%
-		List<String> errors = (List<String>) request.getAttribute("errors");
-		if (errors != null) {
-			for (String error : errors) {
-		%>
-		<%=error%>
-		<br>
-		<%
-		}
-		}
-		%>
-
-		<form name="login" method="post" action="LoginCheck">
+		<form class = "richieste" name="login" method="post" action="LoginCheck">
 			<h2 class = "form-header">Login</h2>
 			<p class = "form-text">Accedi a tutti i tuoi acquisti e servizi presso Step up</p>
 
@@ -45,6 +35,17 @@
 				<button class="pulsante" type="submit">Accedi</button>
 				<button class="pulsante" type="reset">Reset</button>
 			</div>
+			<%
+		List<String> errors = (List<String>) request.getAttribute("errors");
+		if (errors != null) {
+			for (String error : errors) {
+		%>
+		<%=error%>
+		<br>
+		<%
+		}
+		}
+		%>
 
 		</form>
 		<div class="register-container">

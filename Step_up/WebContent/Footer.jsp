@@ -1,6 +1,4 @@
-<!-- <script src="https://kit.fontawesome.com/1571ce3e73.js" crossorigin="anonymous"></script> -->
-<meta name = "viewport" content = "width:device-width, initial-scale = 1.0">
-<link type = "text/css" rel = "stylesheet" href = "style/Footer.css">
+<link type = "text/css" rel = "stylesheet" href = "<%=request.getContextPath() %>/style/Footer.css">
 
 <footer>
 <table>
@@ -10,17 +8,14 @@
 	<th>F.A.Q.</th>
 	</tr>
 	<tr>
-	<td><a href = "../CondizioniVendita.jsp">Condizioni generali di vendita</a></td>
-	<td><a href = "../ServizioClienti.jsp">Servizio clienti</a></td>
-	<td><a href = "../InfoRegistrazione.jsp">Come registrarsi</a></td>
+	<td><a href = "<%=request.getContextPath() %>/CondizioniVendita.jsp">Condizioni generali di vendita</a></td>
+	<td><a href = "<%=request.getContextPath() %>/ServizioClienti.jsp">Servizio clienti</a></td>
+	<td><a href = "<%=request.getContextPath() %>/InfoRegistrazione.jsp">Come registrarsi</a></td>
 	</tr>
 	<tr>
-	<td><a href = "../Privacy.jsp">Privacy</a></td>
-	<td>Seguici su  <i class="fa-brands fa-square-facebook fa-xs"></i>   <i class="fa-brands fa-square-twitter"></i>   <i class="fa-brands fa-square-instagram"></i></td>
-	<td><a href = "../InfoAcquisti.jsp">Come acquistare sul sito</a></td>
-	</tr>
-	<tr>
-	<td><a href = "../CookiesPolicy.jsp">Cookies policy</a></td>
+	<td><a href = "<%=request.getContextPath() %>/Privacy.jsp">Privacy</a></td>
+	<td>Seguici su  Facebook, Instagram e Twitter</td>
+	<td><a href = "<%=request.getContextPath() %>/InfoAcquisti.jsp">Come acquistare sul sito</a></td>
 	</tr>
 	
 </table>

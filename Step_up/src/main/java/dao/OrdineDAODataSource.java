@@ -2,6 +2,7 @@ package dao;
 
 import model.ItemCarrello;
 import model.OrdineDTO;
+import model.ProductDTO;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -345,6 +346,18 @@ public class OrdineDAODataSource implements IBeanOrdineDAO{
 	@Override
 	public Collection<OrdineDTO> doRetrieveForDate(java.util.Date startDate, java.util.Date endDate)
 			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<ProductDTO> doRetrieveAllExistent(String order) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<ProductDTO> doRetrieveAllDeleted(String order) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

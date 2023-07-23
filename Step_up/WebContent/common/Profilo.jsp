@@ -6,14 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Aggiornamento profilo</title>
+<meta name="viewport" content="width:device-width, initial-scale = 1.0">
 <script src = "<%=request.getContextPath()%>/scripts/Validazione.js"></script>
 </head>
 <body>
 <%@include file = "../Header.jsp" %>
-<form name = "datiPersonali" action = "UpdateProfile" enctype = "application/x-www-form-urlencoded" method = "POST">
+<form class = "richieste" id = "datiPersonali" name = "datiPersonali" action = "UpdateProfile" enctype = "application/x-www-form-urlencoded" method = "POST">
 		<input type= "hidden" name = "action" value = "updateProfile">
-		<fieldset>
-		<legend>Informazioni personali</legend>
+		<h2 class = "form-header">Informazioni personali</h2>
 		<%! int i = 1;%>
 			<div>
 				<label for="Nome">Nome:</label><input type="text"
@@ -48,10 +48,10 @@
 					id="phone"><span id="errorPhone"></span>
 			</div>
 			<div>
-				<input type = "submit" value = "Aggiorna il profilo" onclick="return validateDati()">
-				<input type="reset" value="Reset">
+				<button class = "pulsante" type = "submit" onclick="return validateDati()">Aggiorna il profilo</button>
+				<button class = "pulsante" type = "reset">Reset</button>
+				
 			</div>		
-		</fieldset>
 		</form>
 		<%@ include file="../Footer.jsp" %>
 </body>

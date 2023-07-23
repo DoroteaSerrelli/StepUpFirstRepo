@@ -310,7 +310,7 @@ function showOrdersForDate(orders) {
   if (orders.length > 0) {
     orders.forEach(order => {
       const tableRow = document.createElement("tr");
-      tableRow.innerHTML = `<td>${order.IDORDINE}</td><td>${order.UTENTE}</td><td>${order.PRODOTTI}</td><td>${order.METODOSPEDIZIONE}</td><td>${order.METODOCONSEGNA}</td><td>${order.DATA}</td><td>${order.ORA}</td>`;
+      tableRow.innerHTML = `<td>${order.IDORDINE}</td><td>${order.PRODOTTI}</td><td>${order.UTENTE}</td><td>${order.METODOSPEDIZIONE}</td><td>${order.METODOCONSEGNA}</td><td>${order.DATA}</td><td>${order.ORA}</td>`;
       table.appendChild(tableRow);
     });
   } else {

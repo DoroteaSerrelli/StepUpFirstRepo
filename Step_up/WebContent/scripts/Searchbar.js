@@ -7,6 +7,7 @@ function searchingKeywords(){
 	var searchBar = document.getElementById("searchBar");
 	var searchTerm = searchBar.value;
 	var xhr = new XMLHttpRequest();
+	if(searchTerm != ""){
 	xhr.open("GET", "Ricerca?value="+encodeURIComponent(searchTerm), true);
 	xhr.onreadystatechange = function(){
 		if(xhr.status == 200 && xhr.readyState == 4){
@@ -19,6 +20,11 @@ function searchingKeywords(){
 		console.log("Errore: " + error);
 	};
 	xhr.send();
+	}else{
+		const fieldset = document.getElementById("suggests");
+  	fieldset.style.display = "none";
+			
+	}
 }
 
 function insertSuggestFieldset(products){
