@@ -1,5 +1,5 @@
+<link type = "text/css" rel = "stylesheet" href = "<%= request.getContextPath()%>/style/Responsive.css">
 <link type = "text/css" rel = "stylesheet" href = "<%=request.getContextPath() %>/style/Footer.css">
-
 <footer>
 <table>
 	<tr>

@@ -29,6 +29,16 @@ header{
 	padding: 20px;
 }
 
+#page{
+	padding: 0px;
+	max-width: 1550px;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
 section {
 	width: 60%;
 	float: left;
@@ -59,15 +69,6 @@ body {
 h1{
 	margin-right: auto;
 	margin-left: auto;
-}
-
-#page{
-	max-width: 1500px;
-	margin: auto;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
 }
 
 
