@@ -89,6 +89,7 @@
 				%>
 				<tr>
 					<td><%= o.getIDOrdine() %></td>
+					<%System.out.println(" "+ (pagamentoDao.doRetrieveByOrderID(o.getIDOrdine())).getImporto()); %>
 					<td><%= (pagamentoDao.doRetrieveByOrderID(o.getIDOrdine())).getImporto() %></td>
 					<td><%= products.toString() %></td>
 					<td><%= o.getDataOrdine() %></td>

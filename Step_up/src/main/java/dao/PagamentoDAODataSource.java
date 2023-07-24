@@ -178,41 +178,40 @@ public class PagamentoDAODataSource implements IBeanPagamentoDAO{
 
 	@Override
 	public PagamentoDTO doRetrieveByOrderID(int IDOrdine) throws SQLException {
-		Connection connection = null;
-		PreparedStatement preparedStatement = null;
+	    Connection connection = null;
+	    PreparedStatement preparedStatement = null;
 
-		PagamentoDTO pagamento = new PagamentoDTO();
+	    PagamentoDTO pagamento = null;
 
-		String selectSQL = "SELECT * FROM " + PagamentoDAODataSource.TABLE_NAME + " WHERE IDORDINE = ?";
-		
+	    String selectSQL = "SELECT * FROM " + PagamentoDAODataSource.TABLE_NAME + " WHERE IDORDINE = ?";
 
-		try {
-			connection = ds.getConnection();
-			preparedStatement = connection.prepareStatement(selectSQL);
-			preparedStatement.setInt(1, IDOrdine);
+	    try {
+	        connection = ds.getConnection();
+	        preparedStatement = connection.prepareStatement(selectSQL);
+	        preparedStatement.setInt(1, IDOrdine);
 
-			ResultSet rs = preparedStatement.executeQuery();
-			
-			while (rs.next()) {
-				PagamentoDTO dto = new PagamentoDTO();
+	        ResultSet rs = preparedStatement.executeQuery();
 
-				dto.setIDOrdine(rs.getInt("IDORDINE"));
-				dto.setIDPagamento(rs.getInt("IDPAGAMENTO"));
-				dto.setDataPagamento(rs.getDate("DATAPAG"));
-				dto.setOraPagamento((rs.getTime("ORAPAG")).toLocalTime());
-				dto.setImporto(rs.getFloat("IMPORTO"));
-				dto.setMetodoPagamento(rs.getString("METODOPAG"));
-			}
+	        if (rs.next()) {
+	            pagamento = new PagamentoDTO();
 
-		} finally {
-			try {
-				if (preparedStatement != null)
-					preparedStatement.close();
-			} finally {
-				if (connection != null)
-					connection.close();
-			}
-		}
-		return pagamento;
+	            pagamento.setIDOrdine(rs.getInt("IDORDINE"));
+	            pagamento.setIDPagamento(rs.getInt("IDPAGAMENTO"));
+	            pagamento.setDataPagamento(rs.getDate("DATAPAG"));
+	            pagamento.setOraPagamento((rs.getTime("ORAPAG")).toLocalTime());
+	            pagamento.setImporto(rs.getFloat("IMPORTO"));
+	            pagamento.setMetodoPagamento(rs.getString("METODOPAG"));
+	        }
+
+	    } finally {
+	        try {
+	            if (preparedStatement != null)
+	                preparedStatement.close();
+	        } finally {
+	            if (connection != null)
+	                connection.close();
+	        }
+	    }
+	    return pagamento;
 	}
 }
